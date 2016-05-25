@@ -11,6 +11,7 @@
   "engines": {
     "firefox": ">=38.0a1"
   },
+  "updateURL": "https://testpilot.firefox.com/static/addon/update.rdf",
   "bugs": {
     "url": "https://github.com/meandavejustice/min-vid/issues"
   },
