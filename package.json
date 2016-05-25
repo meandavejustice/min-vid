@@ -12,6 +12,7 @@
     "firefox": ">=38.0a1"
   },
   "updateURL": "https://testpilot.firefox.com/static/addon/update.rdf",
+  "updateLink": "https://testpilot.firefox.com/static/addon/addon.xpi",
   "bugs": {
     "url": "https://github.com/meandavejustice/min-vid/issues"
   },
