@@ -4,38 +4,34 @@
  * http://mozilla.org/MPL/2.0/.
  */
 
-html,body {
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    background: rgba(249, 249, 249, 0.77);
-}
-
-.video {
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    margin: 0;
-    padding: 0;
-}
-
-iframe {
-    height: 100%;
-    width: 100%;
+html, body, iframe {
     border: none;
     margin: 0;
     padding: 0;
 }
 
+html, body {
+    background: rgba(249, 249, 249, 0.77);
+    text-align: center;
+}
+
+.video-wrapper {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    width: 100%;
+}
+
 .controls {
-    font-size: 25px;
     background: rgba(56, 56, 56, 0.82);
+    font-size: 25px;
     padding-bottom: 5px;
 }
 
 .controls a {
-    padding: 5px 10px;
     color: #71ffaa;
+    padding: 5px 10px;
     text-decoration: none;
 }
 
