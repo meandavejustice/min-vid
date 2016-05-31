@@ -4,6 +4,7 @@
  * http://mozilla.org/MPL/2.0/.
  */
 
+const qs = require('sdk/querystring');
 var panel = require("sdk/panel").Panel({
   contentURL: "./default.html",
   contentScriptFile: "./controls.js",
@@ -17,6 +18,7 @@ var panel = require("sdk/panel").Panel({
 
 var { getActiveView } = require("sdk/view/core");
 getActiveView(panel).setAttribute("noautohide", true);
+getActiveView(panel).setAttribute("backdrag", true);
 
 panel.port.on('link', opts => {
   var title = opts.title;
@@ -27,12 +29,6 @@ panel.port.on('link', opts => {
   } else if (title === 'close') {
     updatePanel('');
     panel.hide();
-  } else if (title === 'play') {
-    console.log('not implemented');
-  } else if (title === 'pause') {
-    console.log('not implemented');
-  } else if (title === 'mute') {
-    console.log('not implemented');
   }
 });
 
@@ -59,5 +55,13 @@ function updatePanel(url) {
 }
 
 function constructYoutubeEmbedUrl(url) {
-  return "https://www.youtube.com/embed/" + require('get-youtube-id')(url) + '?autoplay=0&showinfo=0&controls=0';
+  const params = qs.stringify({
+    autoplay: 0,
+    showinfo: 0,
+    controls: 0,
+    enablejsapi: 1,
+    modestbranding: 1
+  });
+
+  return "https://www.youtube.com/embed/" + require('get-youtube-id')(url) + '?' + params;
 }

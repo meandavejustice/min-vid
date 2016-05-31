@@ -1,15 +1,20 @@
 <!-- This Source Code is subject to the terms of the Mozilla Public License
      version 2.0 (the 'License'). You can obtain a copy of the License at
      http://mozilla.org/MPL/2.0/.
--->
+  -->
 <!DOCTYPE html>
 <html>
-  <head><meta charset="utf-8"></head>
+  <head>
+    <meta charset="utf-8">
+    <title>MINVID PANEL</title>
+    <link rel="stylesheet" href="panel.css" type="text/css" media="screen" />
+  </head>
   <body>
     <div class="welcome">
       <h1>Min Vid</h1>
       <p>loading yr video...</p>
     </div>
+
     <div class="controls">
       <a title="play" href="">&rtrif;</a>
       <a title="pause" href="">&parallel;</a>
@@ -17,8 +22,34 @@
       <a title="send-to-tab" href="">&#9757;</a>
       <a title="close" href="">&#10006;</a>
     </div>
-    <div class="video">
-      <iframe frameborder="0"></iframe>
-    </div>
+
+    <div class="video-wrapper"><iframe id="video" frameborder="0"></iframe></div>
+    <script src="https://youtube.com/iframe_api"></script>
+    <script>
+     console.log('default.html loaded');
+
+     var frame = document.querySelector('#video');
+     frame.onload = updatePlayer;
+
+     function updatePlayer(ev) {
+       if (!frame.src) return;
+       window.ytPlayer = new YT.Player('video', {
+         events: {
+           'onReady': onPlayerReady
+         }
+       });
+     }
+
+     function onYouTubeIframeAPIReady() {
+       console.log('yt api ready');
+     }
+
+     function onPlayerReady(ev) {
+       console.log('yt player ready');
+       document.querySelector('.welcome').style.display = 'none';
+       document.querySelector('.controls').style.display = 'block';
+       document.querySelector('.video-wrapper').style.display = 'block';
+     }
+    </script>
   </body>
 </html>
