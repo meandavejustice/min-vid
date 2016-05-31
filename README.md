@@ -23,20 +23,16 @@ This is a proof of concept, there are bugs. contributions welcome. To get starte
 
 `npm install` 
 
-3.  Install jpm, the utility for Mozilla Add-ons:
-
-`npm install jpm --global`
-
-4. Before submitting a Pull Request, package the Add-on:
+3. Before submitting a Pull Request, package the Add-on:
 
 `npm run package`
 
 ## Helpful
-Use jpm with the [Extension Auto-Installer](https://addons.mozilla.org/en-US/firefox/addon/autoinstaller/) to automatically update your add-on when you make changes.
+Use the [Extension Auto-Installer](https://addons.mozilla.org/en-US/firefox/addon/autoinstaller/) to automatically update your add-on when you make changes.
 
 After you install Extension Auto-Installer, run:
 
-`jpm watchpost --post-url http://localhost:8888/`
+`npm run watch`
 
 ## LICENSE
 Mozilla Public License 2.0
