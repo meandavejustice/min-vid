@@ -22,9 +22,15 @@ getActiveView(panel).setAttribute('backdrag', true);
 
 panel.port.on('link', opts => {
   var title = opts.title;
+  var ytTab = 'https://youtube.com/watch?v=' + parseYoutubeId(opts.src) + '&t=' + opts.time;
+  var vineTab = getVinePageURL(opts.src);
 
   if (title === 'send-to-tab') {
-    require('sdk/tabs').open('https://youtube.com/watch?v=' + parseYoutubeId(opts.src) + '&t=' + opts.time);
+    if (isYoutube(opts.src)) {
+      require('sdk/tabs').open(ytTab);
+    } else if (isVine(opts.src)) {
+      require('sdk/tabs').open(vineTab);
+    }
     updatePanel('');
     panel.hide();
   } else if (title === 'close') {
@@ -51,8 +57,20 @@ panel.port.on('link', opts => {
   }
 });
 
+function isYoutube(url) {
+  return (url.indexOf('youtube') > -1);
+}
+
+function isVine(url) {
+  return (url.indexOf('vine') > -1); 
+}
+
 function parseYoutubeId(src) {
   return src.substr(src.indexOf('embed/') + 6);
+}
+
+function getVinePageURL(src) {
+  return src.replace('embed/simple', '');
 }
 
 var cm = require('sdk/context-menu');
@@ -82,9 +100,64 @@ cm.Item({
   }
 });
 
+cm.Item({
+  label: "Send to mini player",
+  context: [
+    cm.PredicateContext(checkLocation),	
+    cm.SelectorContext('[src*="mediasource:https://vine.co/"]')
+  ],
+  contentScript: "self.on('click', function (node, data) {" +
+                 "  self.postMessage(document.URL);" +
+                 "});",
+  onMessage: function(url) {
+    updatePanel(constructVineEmbedUrl(url));
+  }
+});
+
+cm.Item({
+  label: "Send to mini player",
+  context: cm.SelectorContext('[href*="vine.co/v/"]'),  
+  contentScript: "self.on('click', function (node, data) {" +
+                 "  self.postMessage(node.href);" +
+                 "});",
+  onMessage: function(url) {
+    updatePanel(constructVineEmbedUrlFromHref(url));
+  }
+});
+
+function checkLocation(opts) {
+  if ((opts.linkURL !== null) && (opts.linkURL.indexOf('vine.co/v/') > -1)) {
+    return true;
+  } else if ((opts.linkURL !== null) && (opts.linkURL.indexOf('twitter.com') > -1)) {
+    return true;
+  } else if ((opts.srcURL !== null) && (opts.srcURL.indexOf('vine.co/v/') > -1)) {
+    return true;
+  } else if ((opts.srcURL !== null) && (opts.srcURL.indexOf('twitter.com') > -1)) {
+    return true;
+  } else if ((opts.documentURL.indexOf('vine.co/v/') > -1)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function updatePanel(url) {
   panel.port.emit('set-video', url);
   panel.show();
+}
+
+function constructVineEmbedUrl(url) {
+  if ((url.indexOf('vine') > -1) && (url.indexOf('embed') > -1)) {
+    return url;
+  } else if (url.indexOf('vine') > -1) {
+    url = url + "/embed/simple";
+    return url;
+  }
+}
+
+function constructVineEmbedUrlFromHref(url) {
+  url = url + "/embed/simple";
+  return url;
 }
 
 function constructYoutubeEmbedUrl(url) {

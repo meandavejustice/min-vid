@@ -60,13 +60,16 @@
      frame.onload = updatePlayer;
 
      function updatePlayer(ev) {
-       if (!frame.src) return;
-       window.ytPlayer = new YT.Player('video', {
-         events: {
-           'onReady': showVideo,
-           'onError': onYTError
-         }
-       });
+       if (frame.src.indexOf('youtube') > -1) {
+         window.ytPlayer = new YT.Player('video', {
+           events: {
+             'onReady': showVideo,
+             'onError': onYTError
+           }
+         });
+       } else if (frame.src.indexOf('vine') > -1) {
+         showVideo();
+       }
      }
 
      function onYTError() {
