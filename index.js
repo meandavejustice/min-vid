@@ -22,13 +22,13 @@ getActiveView(panel).setAttribute('backdrag', true);
 
 panel.port.on('link', opts => {
   var title = opts.title;
-  var ytTab = 'https://youtube.com/watch?v=' + parseYoutubeId(opts.src) + '&t=' + opts.time;
-  var vineTab = getVinePageURL(opts.src);
 
   if (title === 'send-to-tab') {
     if (isYoutube(opts.src)) {
+      var ytTab = 'https://youtube.com/watch?v=' + parseYoutubeId(opts.src) + '&t=' + opts.time;
       require('sdk/tabs').open(ytTab);
     } else if (isVine(opts.src)) {
+      var vineTab = getVinePageURL(opts.src);
       require('sdk/tabs').open(vineTab);
     }
     updatePanel('');
@@ -126,13 +126,9 @@ cm.Item({
 });
 
 function checkLocation(opts) {
-  if ((opts.linkURL !== null) && (opts.linkURL.indexOf('vine.co/v/') > -1)) {
+  if ((opts.linkURL !== null) && ((opts.linkURL.indexOf('vine.co/v/') > -1) || (opts.linkURL.indexOf('twitter.com') > -1))) {
     return true;
-  } else if ((opts.linkURL !== null) && (opts.linkURL.indexOf('twitter.com') > -1)) {
-    return true;
-  } else if ((opts.srcURL !== null) && (opts.srcURL.indexOf('vine.co/v/') > -1)) {
-    return true;
-  } else if ((opts.srcURL !== null) && (opts.srcURL.indexOf('twitter.com') > -1)) {
+  } else if ((opts.srcURL !== null) && ((opts.srcURL.indexOf('vine.co/v/') > -1) || (opts.srcURL.indexOf('twitter.com') > -1))) {
     return true;
   } else if ((opts.documentURL.indexOf('vine.co/v/') > -1)) {
     return true;

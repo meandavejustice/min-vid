@@ -60,6 +60,7 @@
      frame.onload = updatePlayer;
 
      function updatePlayer(ev) {
+      if (!frame.src) return;
        if (frame.src.indexOf('youtube') > -1) {
          window.ytPlayer = new YT.Player('video', {
            events: {
