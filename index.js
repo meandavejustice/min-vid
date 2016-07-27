@@ -27,8 +27,11 @@ panel.port.on('message', opts => {
 
   if (title === 'send-to-tab') {
     const pageUrl = getPageUrl(opts.domain, opts.id);
-    if (pageUrl) require('sdk/tabs').open(pageUrl);
-    else console.error('could not parse page url for ', opts); // eslint-disable-line no-console
+    if (pageUrl) {
+      require('sdk/tabs').open(pageUrl);
+    } else {
+      console.error('could not parse page url for ', opts); // eslint-disable-line no-console
+    }
     panel.hide();
   } else if (title === 'close') {
     panel.hide();
@@ -76,7 +79,9 @@ cm.Item({
     const id = getVideoId(url);
     updatePanel({domain: 'youtube.com', id: id, src: ''});
     getYouTubeUrl(id, function(err, streamUrl) {
-      if (!err) updatePanel({src: streamUrl});
+      if (!err) {
+        updatePanel({src: streamUrl});
+      }
     });
   }
 });
@@ -94,7 +99,9 @@ cm.Item({
     const id = getVideoId(url);
     updatePanel({domain: 'youtube.com', id: id, src: ''});
     getYouTubeUrl(id, function(err, streamUrl) {
-      if (!err) updatePanel({src: streamUrl});
+      if (!err) {
+        updatePanel({src: streamUrl});
+      }
     });
   }
 });
@@ -110,7 +117,9 @@ cm.Item({
     const id = getVideoId(url);
     updatePanel({domain: 'vimeo.com', id: id, src: ''});
     getVimeoUrl(id, function(err, streamUrl) {
-      if (!err) updatePanel({src: streamUrl});
+      if (!err) {
+        updatePanel({src: streamUrl});
+      }
     });
   }
 });

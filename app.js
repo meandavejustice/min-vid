@@ -130,7 +130,9 @@ const PlayerView = React.createClass({
       window.AppData.playing = false;
     }
 
-    if (window.AppData.playing) requestAnimationFrame(this.step);
+    if (window.AppData.playing) {
+      requestAnimationFrame(this.step);
+    }
   },
   onLoaded: function() {
     window.AppData = Object.assign(window.AppData, {
