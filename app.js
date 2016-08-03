@@ -20,11 +20,53 @@ const defaultData = {
 
 window.AppData = new Proxy(defaultData, {
   set: function(obj, prop, value) {
+    // TODO: if more than one non-UI component needs to detect state changes,
+    // update this function to use proper pub-sub: subscribe to state changes,
+    // call callbacks on matching state change (or find a nice library).
+    // Inlining metrics code for now.
+    if (prop in obj && obj[prop] !== value) {
+      console.log(Date.now() + ': changing ' + prop + ' from ' + obj[prop] + ' to ' + value);
+      recordEvent({
+        state: prop,
+        oldValue: prop in obj && obj[prop] || null,
+        newValue: value || null
+      });
+    }
     obj[prop] = value;
     renderApp();
     return true;
   }
 });
+
+// recordEvent filters through state changes and sends interesting events to
+// telemetry, along with the app's current state.
+//
+// o is an object with the keys state, oldValue, newValue.
+function recordEvent(o) {
+  // Always ignore 'progress' changes, because they fire a LOT.
+  if (o.state === 'progress') {
+    return;
+  }
+
+  // Rules for sending an event:
+  // If the ID changes to a truthy value, then the user just selected a video.
+  // If 'playing' changes, the user clicked play or pause.
+  // If 'minimized' changes, the user clicked minimize btn.
+  // If 'muted' changes, the user clicked the mute btn.
+  //
+  // We detect 'close' or 'send to tab' by manually calling recordEvent with
+  // state: 'close', oldValue: false, newValue: true
+  // state: 'send-to-tab', oldValue: false, newValue: true
+  // TODO: will this make sense on the server / dashboard?
+  //
+  // Note: ignoring the volume and progress sliders, which change continuously.
+  // We can later add custom events like we do for 'close' and 'send-to-tab'.
+  const loggedEvents = ['playing', 'minimized', 'muted', 'close', 'send-to-tab'];
+  if ((o.state === 'id' && !!o.newValue) || loggedEvents.indexOf(o.state) > -1) {
+    // Just send all the things and figure out the details on the server.
+    sendPing(o, window.AppData);
+  }
+}
 
 function formatTime(seconds) {
   const now = new Date(seconds * 1000);
