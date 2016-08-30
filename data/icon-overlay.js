@@ -23,18 +23,23 @@ if ((host.indexOf('youtube.com') > -1) && ytHomeContainers.length) {
 }
 
 // YOUTUBE WATCH PAGE
-const ytWatchContainer = document.querySelector('.html5-video-player');
-if ((host.indexOf('youtube.com') > -1) && ytWatchContainer) {
-  ytWatchContainer.classList.add('minvid__overlay__wrapper');
-  const tmp = getTemplate();
-  tmp.addEventListener('click', function(ev) {
-    evNoop(ev);
-    self.port.emit('launch', {
-      url: window.location.href,
-      domain: host
-    });
-  });
-  ytWatchContainer.appendChild(tmp);
+if (host.indexOf('youtube.com') > -1) {
+  const intervalID = setInterval(() => {
+    const ytWatchContainer = document.querySelector('.html5-video-player');
+    if (ytWatchContainer) {
+      clearInterval(intervalID);
+      ytWatchContainer.classList.add('minvid__overlay__wrapper');
+      const tmp = getTemplate();
+      tmp.addEventListener('click', function(ev) {
+        evNoop(ev);
+        self.port.emit('launch', {
+          url: window.location.href,
+          domain: host
+        });
+      });
+      ytWatchContainer.appendChild(tmp);
+    }
+  }, 2000);
 }
 
 // VIMEO HOME PAGE
