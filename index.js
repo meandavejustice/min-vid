@@ -4,14 +4,14 @@
  * http://mozilla.org/MPL/2.0/.
  */
 
-// const system = require('sdk/system');
+const system = require('sdk/system');
 const pageMod = require('sdk/page-mod');
 const getYouTubeUrl = require('./lib/get-youtube-url.js');
 const getVimeoUrl = require('./lib/get-vimeo-url.js');
 const launchVideo = require('./lib/launch-video');
 const sendMetricsData = require('./lib/send-metrics-data.js');
 const initContextMenuHandlers = require('./lib/context-menu-handlers.js');
-// const makePanelDraggable = require('./lib/make-panel-draggable.js');
+const makePanelDraggable = require('./lib/make-panel-draggable.js');
 const { getActiveView } = require('sdk/view/core');
 
 const panel = require('sdk/panel').Panel({
@@ -25,12 +25,10 @@ const panel = require('sdk/panel').Panel({
   }
 });
 
-getActiveView(panel).setAttribute('noautohide', true);
-
-// check for linux here
-// if (system.platform !== 'linux') {
-//   makePanelDraggable(panel);
-// }
+// Draggability seems to work for windows and mac, but not linux.
+if (system.platform === 'winnt' || system.platform === 'darwin') {
+  makePanelDraggable(panel);
+}
 
 panel.port.on('addon-message', opts => {
   const title = opts.action;
