@@ -24,8 +24,8 @@ const panel = require('sdk/panel').Panel({
   }
 });
 
-// check for linux here
-if (system.platform !== 'linux') {
+// Draggability seems to work for windows and mac, but not linux.
+if (system.platform === 'winnt' || system.platform === 'darwin') {
   makePanelDraggable(panel);
 }
 
