@@ -25,6 +25,8 @@ const panel = require('sdk/panel').Panel({
   }
 });
 
+getActiveView(panel).setAttribute('noautohide', true);
+
 // Draggability seems to work for windows and mac, but not linux.
 if (system.platform === 'winnt' || system.platform === 'darwin') {
   makePanelDraggable(panel);
