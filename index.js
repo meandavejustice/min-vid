@@ -6,30 +6,68 @@
 
 const system = require('sdk/system');
 const pageMod = require('sdk/page-mod');
+const { getActiveView } = require('sdk/view/core');
 const getYouTubeUrl = require('./lib/get-youtube-url.js');
 const getVimeoUrl = require('./lib/get-vimeo-url.js');
 const launchVideo = require('./lib/launch-video');
 const sendMetricsData = require('./lib/send-metrics-data.js');
 const initContextMenuHandlers = require('./lib/context-menu-handlers.js');
 const makePanelDraggable = require('./lib/make-panel-draggable.js');
-const { getActiveView } = require('sdk/view/core');
+const { setTimeout } = require('sdk/timers');
+
+const dimensions = {
+  width: 320,
+  height: 180,
+  minimizedHeight: 40
+};
 
 const panel = require('sdk/panel').Panel({
   contentURL: './default.html',
   contentScriptFile: './controls.js',
-  width: 320,
-  height: 180,
+  width: dimensions.width,
+  height: dimensions.height,
   position: {
     bottom: 10,
     left: 10
   }
 });
 
+// Init the panel's location state
+panel.coords = { bottomOffset: -10, leftOffset: 10 };
+
 getActiveView(panel).setAttribute('noautohide', true);
 
 // Draggability seems to work for windows and mac, but not linux.
 if (system.platform === 'winnt' || system.platform === 'darwin') {
-  makePanelDraggable(panel);
+  // We have to wait until XBL has initialized before changing the 'type'.
+  setTimeout(() => { makePanelDraggable(panel, dimensions); }, 5000);
+}
+
+function adjustHeight(newHeight) {
+  // Resize the panel by changing the height of the panel, iframe, and stack
+  // elements.
+  // On linux, makePanelDraggable isn't invoked, so the stack doesn't exist.
+  const xulPanel = getActiveView(panel);
+  const stack = xulPanel.getElementsByTagName('stack') && xulPanel.getElementsByTagName('stack')[0];
+  const frame = xulPanel.getElementsByTagName('iframe')[0];
+
+  frame.setAttribute('height', newHeight);
+  if (stack) { stack.setAttribute('height', newHeight); }
+  xulPanel.sizeTo(dimensions.width, newHeight);
+
+  redrawPanel();
+}
+
+function redrawPanel() {
+  const xulPanel = getActiveView(panel);
+
+  // travel up the DOM to get a document pointer
+  let doc = xulPanel;
+  while (doc !== null && doc.nodeType !== 9) {
+    doc = doc.parentNode;
+  }
+
+  xulPanel.moveToAnchor(doc.documentElement, 'bottomleft bottomleft', panel.coords.leftOffset, panel.coords.bottomOffset);
 }
 
 panel.port.on('addon-message', opts => {
@@ -46,25 +84,13 @@ panel.port.on('addon-message', opts => {
     panel.hide();
   } else if (title === 'close') {
     panel.port.emit('set-video', {domain: '', src: ''});
+    // If the panel has been minimized, reset it to full height.
+    adjustHeight(dimensions.height);
     panel.hide();
   } else if (title === 'minimize') {
-    panel.hide();
-    panel.show({
-      height: 40,
-      position: {
-        bottom: 0,
-        left: 10
-      }
-    });
+    adjustHeight(dimensions.minimizedHeight);
   } else if (title === 'maximize') {
-    panel.hide();
-    panel.show({
-      height: 180,
-      position: {
-        bottom: 10,
-        left: 10
-      }
-    });
+    adjustHeight(dimensions.height);
   } else if (title === 'metrics-event') {
     sendMetricsData(opts, panel);
   }
@@ -92,8 +118,7 @@ pageMod.PageMod({
   onAttach: function(worker) {
     worker.port.on('resized', function() {
       if (panel.isShowing) {
-        panel.hide();
-        panel.show();
+        redrawPanel();
       }
     });
   }
