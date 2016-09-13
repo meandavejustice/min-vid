@@ -52,7 +52,7 @@ function adjustHeight(newHeight) {
   const frame = xulPanel.getElementsByTagName('iframe')[0];
 
   frame.setAttribute('height', newHeight);
-  if (stack) { stack.setAttribute('height', newHeight); }
+  if (stack) stack.setAttribute('height', newHeight);
   xulPanel.sizeTo(dimensions.width, newHeight);
 
   redrawPanel();
@@ -84,8 +84,6 @@ panel.port.on('addon-message', opts => {
     panel.hide();
   } else if (title === 'close') {
     panel.port.emit('set-video', {domain: '', src: ''});
-    // If the panel has been minimized, reset it to full height.
-    adjustHeight(dimensions.height);
     panel.hide();
   } else if (title === 'minimize') {
     adjustHeight(dimensions.minimizedHeight);
