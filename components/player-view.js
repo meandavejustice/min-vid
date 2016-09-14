@@ -58,10 +58,16 @@ module.exports = React.createClass({
 
     requestAnimationFrame(this.step);
   },
-  componentWillMount: function() {
+  componentWillUpdate: function() {
     this.isYt = !!~this.props.domain.indexOf('youtube.com');
   },
-  componentDidMount: function() {
+  componentDidUpdate: function(prevProps, prevState) {
+    if (prevProps.src !== this.props.src) {
+      this.attachVideoListeners();
+    }
+  },
+  attachVideoListeners: function() {
+    if (!this.props.src) return;
     if (this.isYt) {
       const PLAYING = window.YT.PlayerState.PLAYING;
       const PAUSED = window.YT.PlayerState.PAUSED;
@@ -78,10 +84,9 @@ module.exports = React.createClass({
           console.error('Error: ytCtrl: ', err); // eslint-disable-line no-console
         }
       });
-    } else {
-      this.refs.video.addEventListener('canplay', this.onLoaded);
-      this.refs.video.addEventListener('durationchange', this.onLoaded);
     }
+    this.refs.video.addEventListener('canplay', this.onLoaded);
+    this.refs.video.addEventListener('durationchange', this.onLoaded);
   },
   play: function() {
     if (this.hasExited() && !this.isYt) {
@@ -181,7 +186,7 @@ module.exports = React.createClass({
   },
   hasExited: function() {
     if (!this.refs.video || !window.AppData.loaded) return false;
-    const currentTime = this.isYt ? ytCtrl.getTime() : this.refs.video.currentTime;
+    const currentTime = (this.isYt && window.YTPlayer) ? ytCtrl.getTime() : this.refs.video.currentTime;
     return (!this.props.playing && (currentTime >= this.props.duration - 1)); // TODO: the "-1" is a hack to force YouTube embeds to do what we want. #184
   },
   handleVideoClick: function(ev) {
@@ -193,7 +198,7 @@ module.exports = React.createClass({
     const noop = () => false;
     const videoEl = this.isYt ?
           (<iframe id={'video'} ref={'video'} src={this.props.src} onContextMenu={noop} />) :
-          (<video id={'video'} ref={'video'} src={this.props.src} autoplay={false} onContextMenu={noop} />);
+          (<video id={'video'} ref={'video'} src={this.props.src} autoplay={false} onContextMenu={noop}/>);
 
     return (
         <div className={'video-wrapper'} onMouseEnter={this.enterPlayer}
