@@ -1,37 +1,46 @@
 .minvid__overlay__container {
     align-items: center;
-    border-radius: 4px;
+    background-color: rgba(0,0,0,0);
+    border-radius: 0 0 4px 4px;
     display: flex;
     height: 100%;
     justify-content: center;
     left: 4%;
-    max-width: 48px;
     max-height: 36px;
+    max-width: 36px;
+    padding: 2px 2px 4px;
     position: absolute;
-    top: 5%;
+    top: 0;
     width: 100%;
     z-index: 999999;
 }
 
 .minvid__overlay__container:hover {
-    background: rgba(0,0,0,.2);
-}
-
-.minvid__overlay__container:hover .minvid__overlay__icon {
-    opacity: 1;
-    transition: opacity .1s cubic-bezier(0.4,0.0,1,1);
+    background: rgba(0,0,0,0.9);
 }
 
 .minvid__overlay__icon {
     background: url('img/overlay-player-icon.svg') no-repeat;
-    background-size: contain;
+    background-position: center bottom;
+    background-size: 32px auto;
     cursor: pointer;
     height: 100%;
-    opacity: .1;
+    opacity: 0;
     width: 100%;
 }
 
-.minvid__overlay__wrapper:hover .minvid__overlay__icon {
-    opacity: .9;
-    transition: opacity .25s cubic-bezier(0.0,0.0,0.2,1);
+.minvid__overlay__wrapper:hover .minvid__overlay__container {
+    background-color: rgba(0, 0, 0, .8);
 }
+
+.minvid__overlay__wrapper:hover .minvid__overlay__icon {
+    opacity: .8;
+}
+
+.minvid__overlay__container:hover .minvid__overlay__icon {
+    opacity: 1;
+}
+
+
+
+
