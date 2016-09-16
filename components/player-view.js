@@ -160,9 +160,13 @@ module.exports = React.createClass({
 
     if (this.isYt) {
       ytCtrl.setTime(window.AppData.duration * clickedValue);
+      ytCtrl.forceUpdateTime();
     } else {
       this.refs.video.currentTime = window.AppData.duration * clickedValue;
     }
+
+    // if we are paused force the ui to update
+    if (!this.props.playing) this.step();
   },
   replay: function() {
     sendMetricsEvent('player_view', 'replay');

@@ -9,6 +9,7 @@ module.exports = {
   getTime: getTime,
   setTime: setTime,
   getDuration: getDuration,
+  forceUpdateTime: forceUpdateTime
 };
 
 function init(id, opts) {
@@ -58,4 +59,15 @@ function setTime(seconds) {
 
 function getDuration() {
   return window.YTPlayer.getDuration();
+}
+
+// if the player is paused and setTime is
+// called, the currentTime property is not
+// updated until the video is played.
+// So we force the update here by playing
+// and pausing.
+// https://github.com/meandavejustice/min-vid/issues/259
+function forceUpdateTime() {
+  play();
+  pause();
 }
