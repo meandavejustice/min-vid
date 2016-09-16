@@ -124,9 +124,18 @@ module.exports = React.createClass({
   unmute: function() {
     sendMetricsEvent('player_view', 'unmute');
 
+    let volumeEvt = {target: {value: '0.5'}};
+    // bump volume up to 50% if less than 5% since it is likely
+    // if the volume is < 5%, that the user dragged the volume
+    // slider down to 0% in order to mute.
+    if (parseInt(window.AppData.volume, 10) > 0.05) {
+      volumeEvt = {target: {value: window.AppData.volume}};
+    }
+
+    this.setVolume(volumeEvt);
+
     if (this.isYt) {
       ytCtrl.unmute();
-      ytCtrl.setVolume(window.AppData.volume * 100);
     } else {
       this.refs.video.muted = false;
     }
