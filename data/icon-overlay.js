@@ -67,9 +67,12 @@ function ytWatchElementHandler(el) {
   const tmp = getTemplate();
   tmp.addEventListener('click', function(ev) {
     evNoop(ev);
+    const videoEl = document.querySelector('video');
+    videoEl.pause();
     self.port.emit('launch', {
       url: window.location.href,
-      domain: 'youtube.com'
+      domain: 'youtube.com',
+      time: videoEl.currentTime
     });
   });
   el.appendChild(tmp);
