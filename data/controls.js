@@ -4,6 +4,12 @@
  * http://mozilla.org/MPL/2.0/.
  */
 
+// Ping the addon when ready, and whenever the addon asks if we are ready.
+self.port.emit('worker-ready');
+self.port.on('worker-ready-check', () => {
+  self.port.emit('worker-ready');
+});
+
 self.port.on('set-video', opts => {
   opts = Object.assign(opts, {
     loaded: false,
