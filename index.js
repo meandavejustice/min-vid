@@ -36,6 +36,7 @@ const panel = require('sdk/panel').Panel({
 panel.coords = { bottomOffset: -10, leftOffset: 10 };
 
 getActiveView(panel).setAttribute('noautohide', true);
+getActiveView(panel).setAttribute('level', 'top');
 
 // Draggability seems to work for windows and mac, but not linux.
 if (system.platform === 'winnt' || system.platform === 'darwin') {
