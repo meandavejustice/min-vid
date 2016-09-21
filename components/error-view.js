@@ -1,7 +1,9 @@
 const React = require('react');
 const cn = require('classnames');
 const ReactTooltip = require('react-tooltip');
-const GeneralControls = require('./general-controls.js');
+const sendToAddon = require('../client-lib/send-to-addon');
+const sendMetricsEvent = require('../client-lib/send-metrics-event');
+const GeneralControls = require('./general-controls');
 
 module.exports = React.createClass({
   getInitialState: function() {
@@ -13,6 +15,19 @@ module.exports = React.createClass({
   leaveView: function() {
     this.setState({hovered: false});
   },
+  sendToTab: function(ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    sendMetricsEvent('error_view', 'send_to_tab');
+
+    sendToAddon({
+      action: 'send-to-tab',
+      id: this.props.id,
+      domain: this.props.domain,
+      time: 0
+    });
+  },
   render: function() {
     return (
         <div className={'error'} onMouseEnter={this.enterView} onMouseLeave={this.leaveView}>
@@ -21,10 +36,13 @@ module.exports = React.createClass({
             <div className='left' />
             <GeneralControls {...this.props} />
           </div>
-          <img src={'img/sadface.png'}
-               alt={'sadface because of error'}
-               width={164} height={164}></img>
-          <p className="error-message">{this.props.error}</p>
+          <div className='error-message-container'>
+            <p className='error-message'>{"Something's gone wrong with this video, Try again later."}
+              <br/>
+              <br/>
+              <span className='error-link' onClick={this.sendToTab}>{"Open in new tab"}</span>
+            </p>
+          </div>
         </div>
     );
   }

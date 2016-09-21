@@ -13,7 +13,6 @@ self.port.on('worker-ready-check', () => {
 self.port.on('set-video', opts => {
   opts = Object.assign(opts, {
     loaded: false,
-    error: false,
     progress: 0,
     playing: false
   });

@@ -2,10 +2,10 @@ const React = require('react');
 const ReactTooltip = require('react-tooltip');
 const cn = require('classnames');
 
-const ytCtrl = require('../client-lib/yt-ctrl.js');
-const sendMetricsEvent = require('../client-lib/send-metrics-event.js');
-const sendToAddon = require('../client-lib/send-to-addon.js');
-const GeneralControls = require('./general-controls.js');
+const ytCtrl = require('../client-lib/yt-ctrl');
+const sendMetricsEvent = require('../client-lib/send-metrics-event');
+const sendToAddon = require('../client-lib/send-to-addon');
+const GeneralControls = require('./general-controls');
 
 function formatTime(seconds) {
   const now = new Date(seconds * 1000);
@@ -43,6 +43,12 @@ module.exports = React.createClass({
   onLoaded: function() {
     sendMetricsEvent('player_view', 'video_loaded');
     const duration = this.isYt ? ytCtrl.getDuration() : this.refs.video.duration;
+
+    // for YouTube we need to detect if the duration is 0 to see
+    // if there was a problem loading.
+    if (this.isYt && duration === 0) {
+      window.AppData = Object.assign(window.AppData, {error: true});
+    }
 
     // here we store the muted prop before it gets set in the
     // setVolume call so we can restore it afterwards.

@@ -1,7 +1,7 @@
 const React = require('react');
 const cn = require('classnames');
 const ReactTooltip = require('react-tooltip');
-const GeneralControls = require('./general-controls.js');
+const GeneralControls = require('./general-controls');
 
 module.exports = React.createClass({
   getInitialState: function() {

@@ -1,7 +1,7 @@
 const React = require('react');
 const cn = require('classnames');
 const sendToAddon = require('../client-lib/send-to-addon');
-const sendMetricsEvent = require('../client-lib/send-metrics-event.js');
+const sendMetricsEvent = require('../client-lib/send-metrics-event');
 
 module.exports = React.createClass({
   getView: function() {

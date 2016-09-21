@@ -5,12 +5,13 @@
  */
 
 const pageMod = require('sdk/page-mod');
-const getYouTubeUrl = require('./lib/get-youtube-url.js');
-const getVimeoUrl = require('./lib/get-vimeo-url.js');
+
+const getYouTubeUrl = require('./lib/get-youtube-url');
+const getVimeoUrl = require('./lib/get-vimeo-url');
 const launchVideo = require('./lib/launch-video');
-const sendMetricsData = require('./lib/send-metrics-data.js');
-const initContextMenuHandlers = require('./lib/context-menu-handlers.js');
-const panelUtils = require('./lib/panel-utils.js');
+const sendMetricsData = require('./lib/send-metrics-data');
+const initContextMenuHandlers = require('./lib/context-menu-handlers');
+const panelUtils = require('./lib/panel-utils');
 
 // handle browser resizing
 pageMod.PageMod({

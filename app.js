@@ -1,6 +1,6 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-const AppView = require('./components/app-view.js');
+const AppView = require('./components/app-view');
 
 const defaultData = {
   id: '',

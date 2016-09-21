@@ -59,15 +59,29 @@ video#video {
     background-repeat: no-repeat;
     background-size: cover;
     background: url('img/static.gif');
+    height: 100%;
+}
+
+.error-message-container {
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 .error-message {
-    position: absolute;
-    top: 20%;
     color: white;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-    font-size: 25px;
+    font-size: 17px;
     text-align: center;
+}
+
+.error-link {
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .exited {
@@ -220,7 +234,7 @@ video#video {
 }
 
 input[type=range]::-moz-focus-outer {
-    border: 0;       
+    border: 0;
 }
 
 .progress {
@@ -229,7 +243,7 @@ input[type=range]::-moz-focus-outer {
     box-sizing: border-box;
     flex-direction: column;
     height: 50px;
-    padding-top: 6px;  
+    padding-top: 6px;
     position: absolute;
     width: 100%;
 }
