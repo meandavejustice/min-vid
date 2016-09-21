@@ -9,8 +9,7 @@ self.port.on('set-video', opts => {
     loaded: false,
     error: false,
     progress: 0,
-    playing: false,
-    volume: '0.5'
+    playing: false
   });
   unsafeWindow.AppData = Object.assign(unsafeWindow.AppData, opts);
 });

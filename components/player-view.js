@@ -44,12 +44,24 @@ module.exports = React.createClass({
     sendMetricsEvent('player_view', 'video_loaded');
     const duration = this.isYt ? ytCtrl.getDuration() : this.refs.video.duration;
 
+    // here we store the muted prop before it gets set in the
+    // setVolume call so we can restore it afterwards.
+    const wasMuted = this.props.muted;
+
     // set initial volume
     this.setVolume({
       target: {
         value: this.props.volume
       }
     });
+
+    // set muted/unmuted (must be called before setVolume below)
+    if (wasMuted) {
+      this.mute();
+    } else {
+      this.unmute();
+    }
+
 
     window.AppData = Object.assign(window.AppData, {
       loaded: true,
