@@ -3,7 +3,7 @@
   "name": "min-vid",
   "version": "0.1.9",
   "private": true,
-  "icon": "resource://min-vid/docs/images/gradient-logo.png",
+  "icon": "resource://min-vid/docs/images/dark-logo.png",
   "description": "Minimize a web video into a small always-on-top panel in Firefox.",
   "homepage": "https://github.com/meandavejustice/min-vid",
   "repository": "meandavejustice/min-vid",

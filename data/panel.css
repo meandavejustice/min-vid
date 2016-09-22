@@ -242,8 +242,10 @@ input[type=range]::-moz-focus-outer {
 .video-progress {
     background: #ffffffaa;
     border: none;
+    border-radius: 5px;
     height: 10px;
     margin-top: 6px;
+    overflow: hidden;
     width: 95%;
 }
 
