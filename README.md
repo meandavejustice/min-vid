@@ -6,13 +6,12 @@
 
 [![Build Status](https://travis-ci.org/meandavejustice/min-vid.svg?branch=master)](https://travis-ci.org/meandavejustice/min-vid)
 
-Min Vid is a Firefox add-on which lets you minimize a web video and
-keep it within the browser window. The video panel stays visible even
-when you switch tabs, so you can keep watching while you browse.
+Min Vid is a Firefox add-on that gives you **complete control** over the videos in your browser.
+You can pop out, sticky, resize, and drag videos anywhere within the browser - it even stays visible when you switch tabs, so you can keep watching while you browse.
 
-The goal is to experiment with what it means to start to give the user
-control over the media they are consuming on the web. Users should be
-able to consume content in whatever mean they feel comfortable. In the
+This is an experiment - seeing what happens when users have
+total control over the media they're consuming on the web. Users should be
+able to consume content in whatever way they feel comfortable. In the
 future we may be exploring these concepts with other forms of media,
 such as audio or pdfs.
 
