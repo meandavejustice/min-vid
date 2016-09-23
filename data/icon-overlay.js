@@ -47,6 +47,20 @@ function ytEmbedChecks() {
     sendMetric('available');
     ytRelatedContainers.forEach(ytHomePageHandler);
   }
+
+  // YouTube Channel Page videos featured section
+  const ytChannelFeaturedContainers = Array.from(document.querySelectorAll('#browse-items-primary .lohp-thumb-wrap'));
+  if (ytChannelFeaturedContainers.length) {
+    sendMetric('available');
+    ytChannelFeaturedContainers.forEach(ytHomePageHandler);
+  }
+
+  // YouTube Channel Page videos uploads section
+  const ytChannelUploadsContainers = Array.from(document.querySelectorAll('#browse-items-primary .yt-lockup-thumbnail'));
+  if (ytChannelUploadsContainers.length) {
+    sendMetric('available');
+    ytChannelUploadsContainers.forEach(ytHomePageHandler);
+  }
 }
 
 function ytHomePageHandler(el) {
