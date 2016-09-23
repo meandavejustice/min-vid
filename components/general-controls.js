@@ -5,6 +5,7 @@ const sendMetricsEvent = require('../client-lib/send-metrics-event');
 
 module.exports = React.createClass({
   getView: function() {
+    if (this.props.error) return 'error_view';
     return this.props.loaded ? 'player_view' : 'loading_view';
   },
   close: function() {
