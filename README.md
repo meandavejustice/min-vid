@@ -36,21 +36,10 @@ overlay icon over videos on YouTube and Vimeo.
 You can also launch Min Vid by right clicking on a video link and
 sending to the player from the context menu.
 
-<img width="650" src="docs/images/send-to-player.png">
-
-<br>
-<hr>
-<br>
-
-You can switch tabs and continue browsing as usual
-<img width="650" src="docs/images/playing.png">
-
-<br>
-<hr>
-<br>
-
-You may also minimize the video while still controlling playback
-<img width="650" src="docs/images/minimized.png">
+<img src="docs/images/launching.gif">
+<br/>
+<img src="docs/images/dragging.gif">
+<br/>
 
 ## Development
 Contributions welcome. To get started,
