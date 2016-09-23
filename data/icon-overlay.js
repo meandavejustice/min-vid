@@ -40,6 +40,13 @@ function ytEmbedChecks() {
     sendMetric('available');
     ytWatchElementHandler(ytWatchContainer);
   }
+
+  // YouTube Watch Page related videos
+  const ytRelatedContainers = Array.from(document.querySelectorAll('.watch-sidebar-section .thumb-wrapper'));
+  if (ytRelatedContainers.length) {
+    sendMetric('available');
+    ytRelatedContainers.forEach(ytHomePageHandler);
+  }
 }
 
 function ytHomePageHandler(el) {
