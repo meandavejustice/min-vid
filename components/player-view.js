@@ -144,9 +144,7 @@ module.exports = React.createClass({
 
     window.AppData = Object.assign(window.AppData, {muted: true});
   },
-  unmute: function() {
-    sendMetricsEvent('player_view', 'unmute');
-
+  clickedUnmute: function() {
     let volumeEvt = {target: {value: '0.5'}};
     // bump volume up to 50% if less than 5% since it is likely
     // if the volume is < 5%, that the user dragged the volume
@@ -156,6 +154,11 @@ module.exports = React.createClass({
     }
 
     this.setVolume(volumeEvt);
+
+    this.unmute();
+  },
+  unmute: function() {
+    sendMetricsEvent('player_view', 'unmute');
 
     if (this.isYt) {
       ytCtrl.unmute();
@@ -176,9 +179,14 @@ module.exports = React.createClass({
     }
 
     window.AppData = Object.assign(window.AppData, {
-      muted: muted,
       volume: value
     });
+
+    if (muted && !this.props.muted) {
+      this.mute();
+    } else if (!muted && this.props.muted) {
+      this.unmute();
+    }
   },
   setTime: function(ev) {
     ev.stopPropagation();
@@ -250,7 +258,7 @@ module.exports = React.createClass({
                  className={cn('pause', {hidden: !this.props.playing})} />
               <a onClick={this.mute} data-tip='Mute'
                  className={cn('mute', {hidden: this.props.muted})} />
-              <a onClick={this.unmute} data-tip='Unmute'
+              <a onClick={this.clickedUnmute} data-tip='Unmute'
                  className={cn('unmute', {hidden: !this.props.muted})} />
               <input type='range' className={cn('volume', {hidden: !this.state.showVolume})}
                      min='0' max='1' step='.01' value={this.props.muted ? 0 : this.props.volume}
