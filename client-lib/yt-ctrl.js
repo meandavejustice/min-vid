@@ -58,7 +58,14 @@ function setTime(seconds) {
 }
 
 function getDuration() {
-  return window.YTPlayer.getDuration();
+  // #184 getDuration always seems to round up
+  // whereas the player on YouTube always has
+  // the float. This causes our ui to appear
+  // as if it exits one second early.
+  const dur = window.YTPlayer.getDuration();
+  if (dur > 1) {
+    return dur - 1;
+  } else return dur;
 }
 
 // if the player is paused and setTime is

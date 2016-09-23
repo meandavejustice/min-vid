@@ -27,9 +27,7 @@ module.exports = React.createClass({
       progress: currentTime / window.AppData.duration
     });
 
-    // TODO: the "-1" is a hack to force YouTube embeds to do what we
-    // want. #184
-    if (currentTime >= window.AppData.duration - 1) {
+    if (currentTime >= window.AppData.duration) {
       window.AppData = Object.assign(window.AppData, {
         playing: false,
         playedCount: (window.AppData.playedCount + 1)
@@ -220,7 +218,7 @@ module.exports = React.createClass({
   hasExited: function() {
     if (!this.refs.video || !window.AppData.loaded) return false;
     const currentTime = (this.isYt && window.YTPlayer) ? ytCtrl.getTime() : this.refs.video.currentTime;
-    return (!this.props.playing && (currentTime >= this.props.duration - 1)); // TODO: the "-1" is a hack to force YouTube embeds to do what we want. #184
+    return (!this.props.playing && (currentTime >= this.props.duration));
   },
   getTime: function() {
     return this.isYt ? ytCtrl.getTime() : this.refs.video.currentTime;
