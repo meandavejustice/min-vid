@@ -187,7 +187,7 @@ module.exports = React.createClass({
 
     if (this.isYt) {
       ytCtrl.setTime(window.AppData.duration * clickedValue);
-      ytCtrl.forceUpdateTime();
+      if (!this.props.playing) ytCtrl.forceUpdateTime();
     } else {
       this.refs.video.currentTime = window.AppData.duration * clickedValue;
     }
