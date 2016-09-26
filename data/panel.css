@@ -43,9 +43,7 @@ video#video {
 }
 
 .loading {
-    background-repeat: no-repeat;
-    background-size: cover;
-    background: url('img/testcard.jpeg');
+    background: black;
 }
 
 .loading p {
