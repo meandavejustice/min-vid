@@ -88,7 +88,6 @@ to the number of seconds since Firefox app startup, and wraps the payload under 
     "method": "pause",               // Event type
 
     "domain": "youtube.com",         // Domain from a whitelist of video hosting sites
-    "played_count": 2,               // count of full video playback
 
     "video_x": 1150,                 // Distance in pixels from left side of browser
                                      // window to left side of Min Vid panel
@@ -121,7 +120,6 @@ local schema = {
     {"object",                     "VARCHAR",   255,     nil,         "payload[object]"},
     {"method",                     "VARCHAR",   255,     nil,         "payload[method]"},
     {"domain",                     "VARCHAR",   255,     nil,         "payload[domain]"},
-    {"played_count",               "INTEGER",   4,       nil,         "payload[played_count]"},
 
     {"video_x",                    "INTEGER",   4,       nil,         "payload[video_x]"},
     {"video_y",                    "INTEGER",   4,       nil,         "payload[video_y]"},

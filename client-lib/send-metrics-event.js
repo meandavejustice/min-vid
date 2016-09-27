@@ -8,8 +8,7 @@ function sendMetricsEvent(object, method) {
     payload: {
       object: object,
       method: method,
-      domain: window.AppData.domain,
-      playedCount: window.AppData.playedCount
+      domain: window.AppData.domain
     }
   });
 }

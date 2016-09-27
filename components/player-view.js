@@ -29,8 +29,7 @@ module.exports = React.createClass({
 
     if (currentTime >= window.AppData.duration) {
       window.AppData = Object.assign(window.AppData, {
-        playing: false,
-        playedCount: (window.AppData.playedCount + 1)
+        playing: false
       });
 
       sendMetricsEvent('player_view', 'video_ended');

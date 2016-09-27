@@ -14,7 +14,6 @@ const defaultData = {
   duration: 0,
   progress: 0.001, // force progress element to start out empty
   playing: false,
-  playedCount: 0,
   volume: '0.5'
 };
 
