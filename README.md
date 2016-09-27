@@ -4,7 +4,7 @@
   </a>
 </p>
 
-[![Build Status](https://travis-ci.org/meandavejustice/min-vid.svg?branch=master)](https://travis-ci.org/meandavejustice/min-vid)
+[![Build Status](https://travis-ci.org/meandavejustice/min-vid.svg?branch=master)](https://travis-ci.org/meandavejustice/min-vid) [![Available on Test Pilot](https://img.shields.io/badge/available_on-Test_Pilot-0996F8.svg)](https://testpilot.firefox.com/experiments/)
 
 Min Vid is a Firefox add-on that gives you **complete control** over the videos in your browser.
 You can pop out, sticky, resize, and drag videos anywhere within the browser - it even stays visible when you switch tabs, so you can keep watching while you browse.
