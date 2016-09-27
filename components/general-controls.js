@@ -11,6 +11,7 @@ module.exports = React.createClass({
   close: function() {
     sendMetricsEvent(this.getView(), 'close');
     sendToAddon({action: 'close'});
+    window.AppData.minimized = false;
   },
   minimize: function() {
     sendMetricsEvent(this.getView(), 'minimize');
