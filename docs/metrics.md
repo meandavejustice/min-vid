@@ -90,10 +90,10 @@ to the number of seconds since Firefox app startup, and wraps the payload under 
     "domain": "youtube.com",         // Domain from a whitelist of video hosting sites
     "played_count": 2,               // count of full video playback
 
-    "video_x": 1200,                 // Distance in pixels from top of browser window
-                                     // to top of Min Vid panel
-    "video_y": 1150,                 // Distance in pixels from left side of browser
+    "video_x": 1150,                 // Distance in pixels from left side of browser
                                      // window to left side of Min Vid panel
+    "video_y": 1200,                 // Distance in pixels from top of browser window
+                                     // to top of Min Vid panel
     "video_width": 300,              // Width of Min Vid player, in pixels
     "video_height": 110,             // Height of Min Vid panel, in pixels
     "timestamp": 1470                // Timestamp in seconds since Firefox started (note:
