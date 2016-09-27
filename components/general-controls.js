@@ -3,6 +3,12 @@ const cn = require('classnames');
 const sendToAddon = require('../client-lib/send-to-addon');
 const sendMetricsEvent = require('../client-lib/send-metrics-event');
 
+function resetPlayer() {
+  window.AppData = Object.assign(window.AppData, {
+    error: false
+  });
+}
+
 module.exports = React.createClass({
   getView: function() {
     if (this.props.error) return 'error_view';
@@ -11,6 +17,7 @@ module.exports = React.createClass({
   close: function() {
     sendMetricsEvent(this.getView(), 'close');
     sendToAddon({action: 'close'});
+    resetPlayer();
   },
   minimize: function() {
     sendMetricsEvent(this.getView(), 'minimize');
@@ -36,6 +43,7 @@ module.exports = React.createClass({
       domain: this.props.domain,
       time: currentTime
     });
+    resetPlayer();
   },
   render: function() {
     return (

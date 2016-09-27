@@ -209,7 +209,12 @@ module.exports = React.createClass({
   },
   close: function() {
     sendMetricsEvent('player_view', 'close');
+
     sendToAddon({action: 'close'});
+    // reset error view
+    window.AppData = Object.assign(window.AppData, {
+      error: false
+    });
   },
   enterControls: function() {
     this.setState({showVolume: true});
