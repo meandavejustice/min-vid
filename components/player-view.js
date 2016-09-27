@@ -39,6 +39,7 @@ module.exports = React.createClass({
     if (window.AppData.playing) requestAnimationFrame(this.step);
   },
   onLoaded: function() {
+    clearTimeout(this.loadingTimeout);
     sendMetricsEvent('player_view', 'video_loaded');
     const duration = this.isYt ? ytCtrl.getDuration() : this.refs.video.duration;
 
@@ -84,6 +85,11 @@ module.exports = React.createClass({
   },
   attachVideoListeners: function() {
     if (!this.props.src) return;
+
+    this.loadingTimeout = setTimeout(function() {
+      window.AppData.error = true;
+    }, 30000); // 30 second timeout
+
     if (this.isYt) {
       const PLAYING = window.YT.PlayerState.PLAYING;
       const PAUSED = window.YT.PlayerState.PAUSED;
