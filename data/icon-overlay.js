@@ -146,7 +146,7 @@ function vimeoEmbedChecks() {
   }
 
   // VIMEO DETAIL PAGE
-  const vimeoDetailContainer = document.querySelector('.video-wrapper');
+  const vimeoDetailContainer = document.querySelector('.player_container');
   if (vimeoDetailContainer) {
     if (vimeoDetailContainer.classList.contains('minvid__overlay__wrapper')) return;
     vimeoDetailContainer.classList.add('minvid__overlay__wrapper');
