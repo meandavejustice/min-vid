@@ -190,16 +190,21 @@ module.exports = React.createClass({
     ev.stopPropagation();
     const x = ev.pageX - ev.target.offsetLeft;
     const clickedValue = x * ev.target.max / ev.target.offsetWidth;
+    const currentTime = window.AppData.duration * clickedValue;
 
     if (this.isYt) {
-      ytCtrl.setTime(window.AppData.duration * clickedValue);
-      if (!this.props.playing) ytCtrl.forceUpdateTime();
+      ytCtrl.setTime(currentTime);
     } else {
-      this.refs.video.currentTime = window.AppData.duration * clickedValue;
+      this.refs.video.currentTime = currentTime;
     }
 
     // if we are paused force the ui to update
-    if (!this.props.playing) this.step();
+    if (!this.props.playing) {
+      window.AppData = Object.assign(window.AppData, {
+        currentTime: `${formatTime(currentTime)} / ${formatTime(window.AppData.duration)}`,
+        progress: currentTime / window.AppData.duration
+      });
+    }
   },
   replay: function() {
     sendMetricsEvent('player_view', 'replay');
