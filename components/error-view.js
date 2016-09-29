@@ -30,17 +30,18 @@ module.exports = React.createClass({
   },
   render: function() {
     return (
-        <div className={'error'} onMouseEnter={this.enterView} onMouseLeave={this.leaveView}>
+        <div className='error' onMouseEnter={this.enterView} onMouseLeave={this.leaveView}>
           <ReactTooltip place='bottom' effect='solid' />
           <div className={cn('controls', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
             <div className='left' />
             <GeneralControls {...this.props} />
           </div>
           <div className='error-message-container'>
-            <p className='error-message'>{"Something's gone wrong with this video, Try again later."}
+            <p className='error-message'>
+              Something's gone wrong with this video, Try again later.
               <br/>
               <br/>
-              <span className='error-link' onClick={this.sendToTab}>{"Open in new tab"}</span>
+              <span className='error-link' onClick={this.sendToTab}>Open in new tab</span>
             </p>
           </div>
         </div>

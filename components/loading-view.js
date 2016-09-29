@@ -22,8 +22,8 @@ module.exports = React.createClass({
             <GeneralControls {...this.props} />
           </div>
 
-          <img src={'img/loading-bars.svg'} alt={'loading animation'}
-               width={64} height={64}></img>
+          <img src='img/loading-bars.svg' alt='loading animation'
+              width={64} height={64} />
           <p>Loading video from {this.props.domain}</p>
         </div>
     );

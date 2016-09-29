@@ -1,4 +1,5 @@
 const React = require('react');
+const cn = require('classnames');
 
 const PlayerView = require('./player-view');
 const LoadingView = require('./loading-view');
@@ -7,12 +8,12 @@ const ErrorView = require('./error-view');
 module.exports = React.createClass({
   render: function() {
     return (
-        <div className={'app'}>
+        <div className='app'>
           {/* Show Error View, ELSE Show Loading View ELSE no view */}
           {this.props.error ? <ErrorView {...this.props}/> :
             (!this.props.loaded) ? <LoadingView {...this.props}/> : null}
 
-          <div className={this.props.loaded ? 'player-wrap' : 'player-wrap hidden'}>
+          <div className={cn('player-wrap', {hidden: !this.props.loaded})}>
             <PlayerView {...this.props} />
           </div>
         </div>

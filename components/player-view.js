@@ -254,11 +254,11 @@ module.exports = React.createClass({
   render: function() {
     const noop = () => false;
     const videoEl = this.isYt ?
-          (<iframe id={'video'} ref={'video'} src={this.props.src} onContextMenu={noop} />) :
-          (<video id={'video'} ref={'video'} src={this.props.src} autoplay={false} onContextMenu={noop}/>);
+          (<iframe id='video' ref='video' src={this.props.src} onContextMenu={noop} />) :
+          (<video id='video' ref='video' src={this.props.src} autoplay={false} onContextMenu={noop}/>);
 
     return (
-        <div className={'video-wrapper'} onMouseEnter={this.enterPlayer}
+        <div className='video-wrapper' onMouseEnter={this.enterPlayer}
              onMouseLeave={this.leavePlayer} onClick={this.handleVideoClick}>
           <div className={cn('controls', {hidden: !this.state.hovered, minimized: this.props.minimized})}
                onMouseEnter={this.enterControls} onMouseLeave={this.leaveControls}>
@@ -289,9 +289,9 @@ module.exports = React.createClass({
           </div>
 
           <div className={cn('progress', {hidden: !this.state.hovered || this.props.minimized})}>
-            <span className={'domain'}>{this.props.domain}</span>
-            <div className={'time'}>{this.props.currentTime}</div>
-            <progress className={'video-progress'} onClick={this.setTime}
+            <span className='domain'>{this.props.domain}</span>
+            <div className='time'>{this.props.currentTime}</div>
+            <progress className='video-progress' onClick={this.setTime}
                       value={this.props.progress + ''}  />
           </div>
 
