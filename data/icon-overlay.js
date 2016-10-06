@@ -66,17 +66,22 @@ function ytEmbedChecks() {
 function ytHomePageHandler(el) {
   if (el.classList.contains('minvid__overlay__wrapper')) return;
 
+  const urlEl = el.querySelector('.yt-uix-sessionlink');
+
+  if (!urlEl || !urlEl.getAttribute('href')) return;
+
+  const url = urlEl.getAttribute('href');
+
+  if (!url.startsWith('/watch')) return;
+
   el.classList.add('minvid__overlay__wrapper');
   const tmp = getTemplate();
   tmp.addEventListener('click', function(ev) {
     evNoop(ev);
-    const urlEl = el.querySelector('.yt-uix-sessionlink');
-    if (urlEl && urlEl.getAttribute('href')) {
-      self.port.emit('launch', {
-        url: 'https://youtube.com' + urlEl.getAttribute('href'),
-        domain: 'youtube.com'
-      });
-    } else console.error('Error parsing url from YT home page', el); // eslint-disable-line no-console
+    self.port.emit('launch', {
+      url: 'https://youtube.com' + url,
+      domain: 'youtube.com'
+    });
   });
   el.appendChild(tmp);
 }
