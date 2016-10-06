@@ -29,6 +29,7 @@ module.exports = React.createClass({
     });
   },
   render: function() {
+    sendMetricsEvent('error_view', 'render');
     return (
         <div className='error' onMouseEnter={this.enterView} onMouseLeave={this.leaveView}>
           <ReactTooltip place='bottom' effect='solid' />

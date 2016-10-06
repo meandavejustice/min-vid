@@ -53,7 +53,7 @@ exports.main = function() {
           launchVideo(opts);
         }
       });
-      worker.port.on('metrics', sendMetricsData);
+      worker.port.on('metric', sendMetricsData);
     }
   });
 

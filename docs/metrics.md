@@ -45,13 +45,9 @@ otherwise noted.
     * Sent when the error view is displayed (a video failed to load).
 
 * Object: `loading_view`
-  * method: `render`
-    * Sent when the loading view is displayed.
   * method: `close`
 
 * Object: `player_view`
-  * method: `render`
-    * Sent when the player view is displayed.
   * method: `video_loaded`
     * Sent when the video has loaded in the player view.
   * method: `video_ended`
