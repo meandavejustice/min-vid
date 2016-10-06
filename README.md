@@ -51,6 +51,7 @@ Contributions welcome. To get started,
 
 4. `npm run dev` to watch for file changes while developing.
 
+For further information on contributing, see [contributing.md](./contributing.md)
 
 ## LICENSE
 [Mozilla Public License 2.0](LICENSE)
