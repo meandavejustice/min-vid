@@ -90,6 +90,7 @@ function ytWatchElementHandler(el) {
     evNoop(ev);
     const videoEl = document.querySelector('video');
     videoEl.pause();
+    closeFullscreen();
     self.port.emit('launch', {
       url: window.location.href,
       domain: 'youtube.com',
@@ -186,4 +187,10 @@ function sendMetric(method) {
 function evNoop(ev) {
   ev.preventDefault();
   ev.stopImmediatePropagation();
+}
+
+function closeFullscreen() {
+  if (document.mozFullScreenEnabled) {
+    document.mozCancelFullScreen();
+  }
 }
