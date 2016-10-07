@@ -11,23 +11,11 @@ const getVimeoUrl = require('./lib/get-vimeo-url');
 const launchVideo = require('./lib/launch-video');
 const sendMetricsData = require('./lib/send-metrics-data');
 const contextMenuHandlers = require('./lib/context-menu-handlers');
-const panelUtils = require('./lib/panel-utils');
+const windowUtils = require('./lib/window-utils');
 
-let browserResizeMod, launchIconsMod;
+let launchIconsMod;
 
 exports.main = function() {
-  // handle browser resizing
-  browserResizeMod = pageMod.PageMod({
-    include: '*',
-    contentScriptFile: './resize-listener.js?cachebust=' + Date.now(),
-    onAttach: function(worker) {
-      worker.port.on('resized', function() {
-        const panel = panelUtils.getPanel();
-        if (panel && panel.isShowing) panelUtils.redraw();
-      });
-    }
-  });
-
   // add launch icon to video embeds
   launchIconsMod = pageMod.PageMod({
     include: '*',
@@ -57,11 +45,10 @@ exports.main = function() {
     }
   });
 
-  contextMenuHandlers.init(panelUtils.getPanel());
+  contextMenuHandlers.init(windowUtils.getWindow());
 };
 exports.onUnload = function(reason) {
-  panelUtils.destroy();
+  windowUtils.destroy(true);
   contextMenuHandlers.destroy();
-  browserResizeMod.destroy();
   launchIconsMod.destroy();
 };

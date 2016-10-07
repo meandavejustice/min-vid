@@ -20,11 +20,24 @@ const defaultData = {
 
 window.AppData = new Proxy(defaultData, {
   set: function(obj, prop, value) {
-    obj[prop] = value;
+    if (prop === 'strings') {
+      try {
+        obj[prop] = JSON.parse(value);
+      } catch (ex) {
+        window.console.error('Unable to parse l10n strings: ', ex);
+      }
+    } else obj[prop] = value;
     renderApp();
     return true;
   }
 });
+
+window.pendingCommands = [];
+
+window.resetCommands = function() {
+  // setting this from the addon seems to create an obj, not an array
+  window.pendingCommands = [];
+};
 
 function renderApp() {
   ReactDOM.render(React.createElement(AppView, window.AppData),

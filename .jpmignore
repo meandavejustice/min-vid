@@ -1,5 +1,6 @@
 .*
 *
+!/chrome.manifest
 !/data/**
 !/docs/images/dark-logo.png
 !/lib/**

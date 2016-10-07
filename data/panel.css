@@ -10,6 +10,10 @@ body,
     border: none;
     margin: 0;
     padding: 0;
+    font-family: -apple-system, "Segoe UI", Oxygen, Ubuntu, Cantarell,
+                 "Helvetica Neue", "Lucida Grande", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
 }
 
 html,
@@ -131,6 +135,7 @@ video#video {
 .controls {
     background: linear-gradient(rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .33) 70%, transparent 100%);
     box-sizing: border-box;
+    cursor: grab;
     display: flex;
     height: 40px;
     justify-content: space-between;
@@ -151,6 +156,10 @@ video#video {
 
 .controls a:hover {
     opacity: 1;
+}
+
+.controls:active {
+    cursor: grabbing;
 }
 
 .controls.minimized {

@@ -51,7 +51,7 @@ module.exports = React.createClass({
   },
   render: function() {
     return (
-      <div className='right'>
+      <div className={cn('right', 'drag')} >
         <a onClick={this.sendToTab} data-tip data-for='sendToTab' className='tab'/>
         <ReactTooltip id='sendToTab' effect='solid' place={!this.props.minimized ? 'bottom': 'left'}>
           {this.props.strings.ttSendToTab}
