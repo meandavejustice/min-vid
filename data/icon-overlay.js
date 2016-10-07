@@ -94,7 +94,9 @@ function ytWatchElementHandler(el) {
     self.port.emit('launch', {
       url: window.location.href,
       domain: 'youtube.com',
-      time: videoEl.currentTime
+      time: videoEl.currentTime,
+      volume: videoEl.volume,
+      muted: videoEl.muted
     });
   });
   el.appendChild(tmp);
@@ -151,13 +153,17 @@ function vimeoEmbedChecks() {
   if (vimeoDetailContainer) {
     if (vimeoDetailContainer.classList.contains('minvid__overlay__wrapper')) return;
     vimeoDetailContainer.classList.add('minvid__overlay__wrapper');
+    const videoEl = vimeoDetailContainer.querySelector('video');
     const tmp = getTemplate();
     tmp.addEventListener('mouseup', evNoop);
     tmp.addEventListener('click', function(ev) {
       evNoop(ev);
+      videoEl.pause();
       self.port.emit('launch', {
         url: window.location.href,
-        domain: 'vimeo.com'
+        domain: 'vimeo.com',
+        volume: videoEl.volume,
+        muted: videoEl.muted
       });
     }, true);
     vimeoDetailContainer.appendChild(tmp);
