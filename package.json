@@ -28,7 +28,7 @@
     "package": "npm run build-script && jpm xpi && npm run mv-xpi",
     "mv-xpi": "mv min-vid.xpi dist/addon.xpi",
     "postpackage": "addons-linter dist/addon.xpi -o text",
-    "prepackage": "npm run lint",
+    "prepackage": "npm run lint && svgo data/img",
     "prepush": "npm run package",
     "dev": "npm run watch-script & npm run watch & http-server -c-1",
     "deploy": "npm run package && ./bin/sign"
@@ -52,6 +52,7 @@
     "react": "15.1.0",
     "react-dom": "15.1.0",
     "react-tooltip": "3.0.13",
+    "svgo": "0.7.1",
     "watchify": "3.7.0"
   }
 }
