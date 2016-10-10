@@ -21,8 +21,8 @@
   },
   "scripts": {
     "lint": "eslint . bin/*",
-    "build-script": "browserify app.js -o data/bundle.js -t [ babelify --presets [ react ] ]",
-    "watch-script": "watchify app.js -o data/bundle.js -t [ babelify --presets [ react ] ]",
+    "build-script": "NODE_ENV=production browserify app.js -t [ babelify --presets [ react ] ] | uglifyjs -c > data/bundle.js",
+    "watch-script": "NODE_ENV=development watchify app.js -o data/bundle.js -t [ babelify --presets [ react ] ]",
     "start": "npm run watch",
     "watch": "jpm watchpost --post-url http://localhost:8888",
     "package": "npm run build-script && jpm xpi && npm run mv-xpi",
@@ -53,6 +53,7 @@
     "react-dom": "15.1.0",
     "react-tooltip": "3.0.13",
     "svgo": "0.7.1",
+    "uglify-js": "git://github.com/mishoo/UglifyJS2#harmony",
     "watchify": "3.7.0"
   }
 }
