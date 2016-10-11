@@ -31,6 +31,10 @@
 
 .minvid__overlay__wrapper:hover .minvid__overlay__container {
     background-color: rgba(0, 0, 0, .8);
+    animation-name: fade;
+    animation-duration: 4s;
+    animation-iteration-count: initial;
+    animation-fill-mode: forwards;
 }
 
 .minvid__overlay__wrapper:hover .minvid__overlay__icon {
@@ -41,6 +45,8 @@
     opacity: 1;
 }
 
-
-
-
+@keyframes fade {
+  0%   {opacity: 0}
+  5%, 80% {opacity: 1}
+  100% {opacity: 0}
+}
