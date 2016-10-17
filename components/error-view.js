@@ -24,7 +24,8 @@ module.exports = React.createClass({
       action: 'send-to-tab',
       id: this.props.id,
       domain: this.props.domain,
-      time: 0
+      time: 0,
+      tabId: this.props.tabId
     });
   },
   render: function() {
