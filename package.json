@@ -14,7 +14,8 @@
     "firefox": ">=38.0a1"
   },
   "permissions": {
-    "multiprocess": true
+    "multiprocess": true,
+    "unsafe-content-script": true
   },
   "bugs": {
     "url": "https://github.com/meandavejustice/min-vid/issues"
@@ -44,6 +45,7 @@
     "babelify": "7.3.0",
     "browserify": "13.0.1",
     "classnames": "2.2.5",
+    "deep-assign": "2.0.0",
     "eslint": "3.6.1",
     "eslint-plugin-react": "6.3.0",
     "http-server": "0.9.0",

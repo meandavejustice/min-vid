@@ -1,10 +1,12 @@
 const React = require('react');
 const cn = require('classnames');
+const deepAssign = require('deep-assign');
 const sendToAddon = require('../client-lib/send-to-addon');
 const sendMetricsEvent = require('../client-lib/send-metrics-event');
+const ReactTooltip = require('react-tooltip');
 
 function resetPlayer() {
-  window.AppData = Object.assign(window.AppData, {
+  window.AppData = deepAssign(window.AppData, {
     error: false
   });
 }
@@ -48,12 +50,21 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div className='right'>
-        <a onClick={this.sendToTab} data-tip='Send to tab' className='tab' />
+        <a onClick={this.sendToTab} data-tip data-for='sendToTab' className='tab'/>
+        <ReactTooltip id='sendToTab' effect='solid' place={!this.props.minimized ? 'bottom': 'left'}>
+          {this.props.strings.ttSendToTab}
+        </ReactTooltip>
+
         <a className={cn('minimize', {hidden: this.props.minimized})}
-          onClick={this.minimize} data-tip='Minimize' />
-        <a onClick={this.maximize} data-tip='Maximize'
-          className={cn('maximize', {hidden: !this.props.minimized})} />
-        <a className='close' onClick={this.close} data-tip='Close' />
+           onClick={this.minimize} data-tip data-for='minimize' />
+        <ReactTooltip id='minimize' effect='solid' place='left'>{this.props.strings.ttMinimize}</ReactTooltip>
+
+        <a className={cn('maximize', {hidden: !this.props.minimized})}
+           onClick={this.maximize} data-tip data-for='maximize' />
+        <ReactTooltip id='maximize' effect='solid' place='left'>{this.props.strings.ttMaximize}</ReactTooltip>
+
+        <a className='close' onClick={this.close} data-tip data-for='close' />
+        <ReactTooltip id='close' effect='solid' place='left'>{this.props.strings.ttClose}</ReactTooltip>
       </div>
     );
   }

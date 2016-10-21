@@ -1,6 +1,5 @@
 const React = require('react');
 const cn = require('classnames');
-const ReactTooltip = require('react-tooltip');
 const sendToAddon = require('../client-lib/send-to-addon');
 const sendMetricsEvent = require('../client-lib/send-metrics-event');
 const GeneralControls = require('./general-controls');
@@ -32,17 +31,16 @@ module.exports = React.createClass({
     sendMetricsEvent('error_view', 'render');
     return (
         <div className='error' onMouseEnter={this.enterView} onMouseLeave={this.leaveView}>
-          <ReactTooltip place='bottom' effect='solid' />
           <div className={cn('controls', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
             <div className='left' />
             <GeneralControls {...this.props} />
           </div>
           <div className='error-message-container'>
             <p className='error-message'>
-              Something's gone wrong with this video, Try again later.
+              {this.props.strings.errorMsg}
               <br/>
               <br/>
-              <span className='error-link' onClick={this.sendToTab}>Open in new tab</span>
+              <span className='error-link' onClick={this.sendToTab}>{this.props.strings.errorLink}</span>
             </p>
           </div>
         </div>

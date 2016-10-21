@@ -1,6 +1,8 @@
 const React = require('react');
-const ReactTooltip = require('react-tooltip');
 const cn = require('classnames');
+const deepAssign = require('deep-assign');
+
+const ReactTooltip = require('react-tooltip');
 
 const ytCtrl = require('../client-lib/yt-ctrl');
 const sendMetricsEvent = require('../client-lib/send-metrics-event');
@@ -25,13 +27,13 @@ module.exports = React.createClass({
   step: function() {
     const currentTime = this.isYt ? ytCtrl.getTime() : this.refs.video.currentTime;
 
-    window.AppData = Object.assign(window.AppData, {
+    window.AppData = deepAssign(window.AppData, {
       currentTime: `${formatTime(currentTime)} / ${formatTime(window.AppData.duration)}`,
       progress: currentTime / window.AppData.duration
     });
 
     if (currentTime >= window.AppData.duration) {
-      window.AppData = Object.assign(window.AppData, {
+      window.AppData = deepAssign(window.AppData, {
         playing: false
       });
 
@@ -48,7 +50,7 @@ module.exports = React.createClass({
     // for YouTube we need to detect if the duration is 0 to see
     // if there was a problem loading.
     if (this.isYt && duration === 0) {
-      window.AppData = Object.assign(window.AppData, {error: true});
+      window.AppData = deepAssign(window.AppData, {error: true});
     }
 
     // here we store the muted prop before it gets set in the
@@ -70,7 +72,7 @@ module.exports = React.createClass({
     }
 
 
-    window.AppData = Object.assign(window.AppData, {
+    window.AppData = deepAssign(window.AppData, {
       loaded: true,
       duration: duration
     });
@@ -148,7 +150,7 @@ module.exports = React.createClass({
       this.refs.video.muted = true;
     }
 
-    window.AppData = Object.assign(window.AppData, {muted: true});
+    window.AppData = deepAssign(window.AppData, {muted: true});
   },
   clickedUnmute: function() {
     let volumeEvt = {target: {value: '0.5'}};
@@ -172,7 +174,7 @@ module.exports = React.createClass({
       this.refs.video.muted = false;
     }
 
-    window.AppData = Object.assign(window.AppData, {muted: false});
+    window.AppData = deepAssign(window.AppData, {muted: false});
   },
   setVolume: function(ev) {
     const value = parseFloat(ev.target.value);
@@ -184,7 +186,7 @@ module.exports = React.createClass({
       this.refs.video.volume = value;
     }
 
-    window.AppData = Object.assign(window.AppData, {
+    window.AppData = deepAssign(window.AppData, {
       volume: value
     });
 
@@ -208,7 +210,7 @@ module.exports = React.createClass({
 
     // if we are paused force the ui to update
     if (!this.props.playing) {
-      window.AppData = Object.assign(window.AppData, {
+      window.AppData = deepAssign(window.AppData, {
         currentTime: `${formatTime(currentTime)} / ${formatTime(window.AppData.duration)}`,
         progress: currentTime / window.AppData.duration
       });
@@ -225,7 +227,7 @@ module.exports = React.createClass({
 
     sendToAddon({action: 'close'});
     // reset error view
-    window.AppData = Object.assign(window.AppData, {
+    window.AppData = deepAssign(window.AppData, {
       error: false
     });
   },
@@ -263,19 +265,30 @@ module.exports = React.createClass({
     return (
         <div className='video-wrapper' onMouseEnter={this.enterPlayer}
              onMouseLeave={this.leavePlayer} onClick={this.handleVideoClick}>
+
           <div className={cn('controls', {hidden: !this.state.hovered, minimized: this.props.minimized})}
                onMouseEnter={this.enterControls} onMouseLeave={this.leaveControls}>
             <div className='left'>
-              <ReactTooltip place='bottom' effect='solid' />
-
-              <a onClick={this.play} data-tip='Play'
+              <a onClick={this.play} data-tip data-for='play'
                  className={cn('play', {hidden: this.props.playing})} />
-              <a onClick={this.pause} data-tip='Pause'
+              <ReactTooltip id='play' effect='solid' place='right'>{this.props.strings.ttPlay}</ReactTooltip>
+
+              <a onClick={this.pause} data-tip data-for='pause'
                  className={cn('pause', {hidden: !this.props.playing})} />
-              <a onClick={this.mute} data-tip='Mute'
+              <ReactTooltip id='pause' effect='solid' place='right'>{this.props.strings.ttPause}</ReactTooltip>
+
+              <a onClick={this.mute} data-tip data-for='mute'
                  className={cn('mute', {hidden: this.props.muted})} />
-              <a onClick={this.clickedUnmute} data-tip='Unmute'
+              <ReactTooltip id='mute' effect='solid' place={!this.props.minimized ? 'bottom': 'right'}>
+                {this.props.strings.ttMute}
+              </ReactTooltip>
+
+              <a onClick={this.clickedUnmute} data-tip data-for='unmute'
                  className={cn('unmute', {hidden: !this.props.muted})} />
+              <ReactTooltip id='unmute' effect='solid' place={!this.props.minimized ? 'bottom': 'right'}>
+                {this.props.strings.ttUnmute}
+              </ReactTooltip>
+
               <input type='range' className={cn('volume', {hidden: !this.state.showVolume})}
                      min='0' max='1' step='.01' value={this.props.muted ? 0 : this.props.volume}
                      onChange={this.setVolume}/>

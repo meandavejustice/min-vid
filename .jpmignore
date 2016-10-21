@@ -3,6 +3,7 @@
 !/data/**
 !/docs/images/dark-logo.png
 !/lib/**
+!/locale/**
 !/index.js
 !/install.rdf
 !/bootstrap.js
