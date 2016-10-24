@@ -5,6 +5,7 @@ const AppView = require('./components/app-view');
 const defaultData = {
   id: '',
   src: '',
+  url: '', // only used for <audio> and <video> tags
   domain: '',
   minimized: false,
   loaded: false,

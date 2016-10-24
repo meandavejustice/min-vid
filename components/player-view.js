@@ -113,6 +113,13 @@ module.exports = React.createClass({
     }
     this.refs.video.addEventListener('canplay', this.onLoaded);
     this.refs.video.addEventListener('durationchange', this.onLoaded);
+    this.refs.video.addEventListener('error', this.onError);
+  },
+  onError: function(err) {
+    if (!this.props.src) return;
+    const url = this.props.url;
+    window.AppData.error = `There was an error loading your video from ${url}`;
+    console.error('Error: player-view: ', err, this.props); // eslint-disable-line no-console
   },
   play: function() {
     if (this.hasExited() && !this.isYt) {

@@ -1,16 +1,8 @@
 const React = require('react');
 const cn = require('classnames');
-const deepAssign = require('deep-assign');
-
 const sendToAddon = require('../client-lib/send-to-addon');
 const sendMetricsEvent = require('../client-lib/send-metrics-event');
 const ReactTooltip = require('react-tooltip');
-
-function resetPlayer() {
-  window.AppData = deepAssign(window.AppData, {
-    error: false
-  });
-}
 
 module.exports = React.createClass({
   getView: function() {
@@ -20,7 +12,7 @@ module.exports = React.createClass({
   close: function() {
     sendMetricsEvent(this.getView(), 'close');
     sendToAddon({action: 'close'});
-    resetPlayer();
+    window.AppData.error = false;
   },
   minimize: function() {
     sendMetricsEvent(this.getView(), 'minimize');
@@ -45,9 +37,10 @@ module.exports = React.createClass({
       id: this.props.id,
       domain: this.props.domain,
       time: currentTime,
-      tabId: this.props.tabId
+      tabId: this.props.tabId,
+      url: this.props.url
     });
-    resetPlayer();
+    window.AppData.error = false;
   },
   render: function() {
     return (
