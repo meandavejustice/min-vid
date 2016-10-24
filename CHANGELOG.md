@@ -1,3 +1,17 @@
+## 0.3.2 (2016-10-24)
+
+* [[`4341c32e7e`](https://github.com/meandave/min-vid/commit/4341c32e7e)] - add L10N support (#458) (Dave Justice)
+* [[`cfbf60c7d8`](https://github.com/meandave/min-vid/commit/cfbf60c7d8)] - Optimize app bundle (#413) (Dave Justice)
+* [[`548c80d8a2`](https://github.com/meandave/min-vid/commit/548c80d8a2)] - Remove case causing too much recursion in metrics pings (#460) (Dave Justice)
+* [[`595fe1dcc8`](https://github.com/meandave/min-vid/commit/595fe1dcc8)] - reduce size of static gif (#414) (Dave Justice)
+* [[`19f8cf4073`](https://github.com/meandave/min-vid/commit/19f8cf4073)] - Optimize svgs and add svgo to build script (#415) (Dave Justice)
+* [[`eab5f44e74`](https://github.com/meandave/min-vid/commit/eab5f44e74)] - Bump get-video-id dependency to 1.1.0 for attribution_link support (#440) (Vicky Chijwani)
+* [[`8fef13a2f3`](https://github.com/meandave/min-vid/commit/8fef13a2f3)] - Increase minimized height on Linux (#435) (Vicky Chijwani)
+* [[`42945ff71a`](https://github.com/meandave/min-vid/commit/42945ff71a)] - fix icon overlay (#420) (ASCIIbreakdown)
+* [[`0b94ede55e`](https://github.com/meandave/min-vid/commit/0b94ede55e)] - Pass video volume and muted state to video player to keep audio settings (#404) (danrr)
+* [[`aaec5c5914`](https://github.com/meandave/min-vid/commit/aaec5c5914)] - Check Youtube thumbnails link to videos before adding overlay (#402) (danrr)
+* [[`ab1e3dad14`](https://github.com/meandave/min-vid/commit/ab1e3dad14)] - Release 0.3.1 (#401) (Dave Justice)
+
 ## 0.3.1 (2016-10-06)
 
 * [[`99eca4edae`](https://github.com/meandavejustice/min-vid/commit/99eca4edae)] - Fix missing metrics pings and update metrics docs (#400) (Dave Justice) 
