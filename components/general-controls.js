@@ -1,6 +1,7 @@
 const React = require('react');
 const cn = require('classnames');
 const deepAssign = require('deep-assign');
+
 const sendToAddon = require('../client-lib/send-to-addon');
 const sendMetricsEvent = require('../client-lib/send-metrics-event');
 const ReactTooltip = require('react-tooltip');

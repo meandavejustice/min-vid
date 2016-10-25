@@ -1,7 +1,7 @@
 {
   "title": "Min Vid",
   "name": "min-vid",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": true,
   "icon": "resource://min-vid/docs/images/dark-logo.png",
   "description": "Minimize a web video into a small always-on-top panel in Firefox.",
@@ -55,7 +55,7 @@
     "react-dom": "15.1.0",
     "react-tooltip": "3.0.13",
     "svgo": "0.7.1",
-    "uglify-js": "git://github.com/mishoo/UglifyJS2#harmony",
+    "uglify-js": "git://github.com/mishoo/UglifyJS2#b7bb7061503c247393bd0aa8ae9dd80167028a98",
     "watchify": "3.7.0"
   }
 }
