@@ -1,12 +1,11 @@
 const React = require('react');
 const cn = require('classnames');
-
 const PlayerView = require('./player-view');
 const LoadingView = require('./loading-view');
 const ErrorView = require('./error-view');
 
-module.exports = React.createClass({
-  render: function() {
+module.exports = class AppView extends React.Component {
+  render() {
     return (
         <div className='app'>
           {/* Show Error View, ELSE Show Loading View ELSE no view */}
@@ -19,4 +18,4 @@ module.exports = React.createClass({
         </div>
     );
   }
-});
+}

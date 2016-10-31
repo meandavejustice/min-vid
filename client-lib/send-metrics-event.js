@@ -1,4 +1,5 @@
 const sendToAddon = require('./send-to-addon');
+const appData = require('./app-data');
 
 module.exports = sendMetricsEvent;
 
@@ -8,7 +9,7 @@ function sendMetricsEvent(object, method) {
     payload: {
       object: object,
       method: method,
-      domain: window.AppData.domain
+      domain: appData.domain
     }
   });
 }

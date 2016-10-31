@@ -20,13 +20,16 @@
   "bugs": {
     "url": "https://github.com/meandavejustice/min-vid/issues"
   },
+  "config": {
+    "SOUNDCLOUD_CLIENT_ID": "c23df04aed9a788cd31fd5b100f22a7a"
+  },
   "scripts": {
     "lint": "eslint . bin/*",
     "build-script": "cross-env NODE_ENV=production browserify app.js -t [ babelify --presets [ react ] ] | uglifyjs -c > data/bundle.js",
     "watch-script": "cross-env NODE_ENV=development watchify app.js -o data/bundle.js -t [ babelify --presets [ react ] ]",
     "start": "npm run dev",
     "watch": "jpm watchpost --post-url http://localhost:8888",
-    "dev": "npm run locales && npm run watch-script & npm run watch & http-server -c-1",
+    "dev": "npm run locales && npm run watch-script & npm run watch & http-server -c-1 --cors",
     "prepackage": "npm run locales && npm run lint",
     "package": "npm run build-script && jpm xpi && npm run mv-xpi",
     "postpackage": "addons-linter addon.xpi -o text",
@@ -37,10 +40,13 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "get-video-id": "1.1.0"
+    "get-video-id": "1.1.0",
+    "lodash.debounce": "4.0.8"
   },
   "devDependencies": {
     "addons-linter": "0.15.3",
+    "audio-fft": "0.1.3",
+    "audiosource": "2.0.5",
     "babel": "6.5.2",
     "babel-preset-react": "6.11.1",
     "babelify": "7.3.0",

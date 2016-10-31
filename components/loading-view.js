@@ -2,20 +2,24 @@ const React = require('react');
 const cn = require('classnames');
 const GeneralControls = require('./general-controls');
 
-module.exports = React.createClass({
-  getInitialState: function() {
-    return {hovered: false};
-  },
-  enterView: function() {
+module.exports = class LoadingView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {hovered: false};
+  }
+
+  enterView() {
     this.setState({hovered: true});
-  },
-  leaveView: function() {
+  }
+
+  leaveView() {
     this.setState({hovered: false});
-  },
-  render: function() {
+  }
+
+  render() {
     return (
-        <div className='loading' onMouseEnter={this.enterView} onMouseLeave={this.leaveView}>
-          <div className={cn('controls', 'drag', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
+        <div className='loading' onMouseEnter={this.enterView.bind(this)} onMouseLeave={this.leaveView.bind(this)}>
+          <div className={cn('controls drag', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
             <div className='left' />
             <GeneralControls {...this.props} />
           </div>
@@ -25,4 +29,4 @@ module.exports = React.createClass({
         </div>
     );
   }
-});
+}

@@ -30,3 +30,4 @@ rules:
   quotes: [2, single, {avoidEscape: true, allowTemplateLiterals: true}]
   space-before-blocks: 2
   keyword-spacing: 2
+  no-extra-boolean-cast: 0

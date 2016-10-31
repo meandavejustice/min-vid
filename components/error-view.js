@@ -4,17 +4,21 @@ const sendToAddon = require('../client-lib/send-to-addon');
 const sendMetricsEvent = require('../client-lib/send-metrics-event');
 const GeneralControls = require('./general-controls');
 
-module.exports = React.createClass({
-  getInitialState: function() {
-    return {hovered: false};
-  },
-  enterView: function() {
+module.exports = class ErrorView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {hovered: false};
+  }
+
+  enterView() {
     this.setState({hovered: true});
-  },
-  leaveView: function() {
+  }
+
+  leaveView() {
     this.setState({hovered: false});
-  },
-  sendToTab: function(ev) {
+  }
+
+  sendToTab(ev) {
     ev.preventDefault();
     ev.stopPropagation();
 
@@ -27,14 +31,16 @@ module.exports = React.createClass({
       time: 0,
       tabId: this.props.tabId
     });
-  },
-  componentWillMount: function() {
+  }
+
+  componentWillMount() {
     sendMetricsEvent('error_view', 'render');
-  },
-  render: function() {
+  }
+
+  render() {
     return (
-        <div className='error' onMouseEnter={this.enterView} onMouseLeave={this.leaveView}>
-          <div className={cn('controls', 'drag', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
+        <div className='error' onMouseEnter={this.enterView.bind(this)} onMouseLeave={this.leaveView.bind(this)}>
+          <div className={cn('controls drag', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
             <div className='left' />
             <GeneralControls {...this.props} />
           </div>
@@ -43,10 +49,10 @@ module.exports = React.createClass({
               {this.props.strings.errorMsg}
               <br/>
               <br/>
-              <span className='error-link' onClick={this.sendToTab}>{this.props.strings.errorLink}</span>
+            <span className='error-link' onClick={this.sendToTab.bind(this)}>{this.props.strings.errorLink}</span>
             </p>
           </div>
         </div>
     );
   }
-});
+}
