@@ -6,3 +6,4 @@ npm-debug.log
 dist/*.xpi
 dist/*.rdf
 data/bundle.js
+locale/*.properties

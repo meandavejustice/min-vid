@@ -29,10 +29,11 @@
     "package": "npm run build-script && jpm xpi && npm run mv-xpi",
     "mv-xpi": "mv min-vid.xpi dist/addon.xpi",
     "postpackage": "addons-linter dist/addon.xpi -o text",
-    "prepackage": "npm run lint && svgo data/img",
+    "prepackage": "npm run locales && npm run lint && svgo data/img",
     "prepush": "npm run package",
-    "dev": "npm run watch-script & npm run watch & http-server -c-1",
-    "deploy": "npm run package && ./bin/sign"
+    "dev": "npm run locales && npm run watch-script & npm run watch & http-server -c-1",
+    "deploy": "npm run package && ./bin/sign",
+    "locales": "./bin/locales"
   },
   "license": "MPL-2.0",
   "dependencies": {
@@ -48,6 +49,7 @@
     "deep-assign": "2.0.0",
     "eslint": "3.6.1",
     "eslint-plugin-react": "6.3.0",
+    "glob": "7.1.1",
     "http-server": "0.9.0",
     "husky": "0.11.7",
     "jpm": "1.1.4",
