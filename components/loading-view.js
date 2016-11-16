@@ -15,7 +15,7 @@ module.exports = React.createClass({
   render: function() {
     return (
         <div className='loading' onMouseEnter={this.enterView} onMouseLeave={this.leaveView}>
-          <div className={cn('controls', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
+          <div className={cn('controls', 'drag', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
             <div className='left' />
             <GeneralControls {...this.props} />
           </div>

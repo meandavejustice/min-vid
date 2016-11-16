@@ -32,7 +32,7 @@ module.exports = React.createClass({
     sendMetricsEvent('error_view', 'render');
     return (
         <div className='error' onMouseEnter={this.enterView} onMouseLeave={this.leaveView}>
-          <div className={cn('controls', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
+          <div className={cn('controls', 'drag', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
             <div className='left' />
             <GeneralControls {...this.props} />
           </div>
