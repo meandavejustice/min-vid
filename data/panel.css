@@ -76,6 +76,8 @@ video#video {
     color: white;
     font-size: 17px;
     text-align: center;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 .error-link {
