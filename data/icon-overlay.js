@@ -1,4 +1,6 @@
 const host = window.location.host;
+let availableMetricSent = false;
+checkForEmbeds();
 const overlayCheckInterval = setInterval(checkForEmbeds, 3000);
 
 self.port.on('detach', function() {
@@ -30,7 +32,6 @@ function ytEmbedChecks() {
 
   const ytSearchContainers = Array.from(document.querySelectorAll('#results .yt-lockup-thumbnail'));
   if (ytSearchContainers.length) {
-    sendMetric('available');
     ytSearchContainers.forEach(ytHomePageHandler);
   }
 
@@ -44,7 +45,6 @@ function ytEmbedChecks() {
   // YouTube Watch Page related videos
   const ytRelatedContainers = Array.from(document.querySelectorAll('.watch-sidebar-section .thumb-wrapper'));
   if (ytRelatedContainers.length) {
-    sendMetric('available');
     ytRelatedContainers.forEach(ytHomePageHandler);
   }
 
@@ -189,6 +189,8 @@ function getTemplate() {
 }
 
 function sendMetric(method) {
+  if (availableMetricSent) return;
+  if (method === 'available') availableMetricSent = true;
   self.port.emit('metric', {
     object: 'overlay_icon',
     method: method
