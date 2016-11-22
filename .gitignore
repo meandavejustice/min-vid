@@ -3,7 +3,7 @@ bootstrap.js
 node_modules
 npm-debug.log
 *.sw[po]
-dist/*.xpi
-dist/*.rdf
+*.xpi
+*.rdf
 data/bundle.js
 locale/*.properties
