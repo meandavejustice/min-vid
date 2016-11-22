@@ -28,8 +28,10 @@ module.exports = React.createClass({
       tabId: this.props.tabId
     });
   },
-  render: function() {
+  componentWillMount: function() {
     sendMetricsEvent('error_view', 'render');
+  },
+  render: function() {
     return (
         <div className='error' onMouseEnter={this.enterView} onMouseLeave={this.leaveView}>
           <div className={cn('controls', 'drag', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
