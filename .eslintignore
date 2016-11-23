@@ -1,3 +1,4 @@
+bin/build-addon.sh
 bootstrap.js
 data/bundle.js
 data/controls.js
