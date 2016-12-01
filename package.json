@@ -48,7 +48,7 @@
     "classnames": "2.2.5",
     "cross-env": "3.1.3",
     "deep-assign": "2.0.0",
-    "deploy-txp": "1.0.5",
+    "deploy-txp": "1.0.6",
     "eslint": "3.6.1",
     "eslint-plugin-react": "6.3.0",
     "glob": "7.1.1",
