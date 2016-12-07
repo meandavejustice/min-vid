@@ -9,7 +9,7 @@
   "repository": "meandavejustice/min-vid",
   "main": "index.js",
   "author": "meandave",
-  "updateURL": "https://testpilot.firefox.com/files/min-vid/updates.json",
+  "updateURL": "https://testpilot.firefox.com/files/@min-vid/updates.json",
   "engines": {
     "firefox": ">=38.0a1"
   },
