@@ -94,6 +94,7 @@ function ytWatchElementHandler(el) {
   tmp.addEventListener('click', function(ev) {
     evNoop(ev);
     const videoEl = document.querySelector('video');
+    const cc = !!(document.querySelector('.ytp-subtitles-button').getAttribute('aria-pressed') !== 'false');
     videoEl.pause();
     closeFullscreen();
     self.port.emit('launch', {
@@ -101,7 +102,8 @@ function ytWatchElementHandler(el) {
       domain: 'youtube.com',
       time: videoEl.currentTime,
       volume: videoEl.volume,
-      muted: videoEl.muted
+      muted: videoEl.muted,
+      cc: cc
     });
   });
   el.appendChild(tmp);
