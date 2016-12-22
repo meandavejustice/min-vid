@@ -2,7 +2,7 @@ const React = require('react');
 const cn = require('classnames');
 const GeneralControls = require('./general-controls');
 
-module.exports = class LoadingView extends React.Component {
+class LoadingView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {hovered: false};
@@ -30,3 +30,10 @@ module.exports = class LoadingView extends React.Component {
     );
   }
 }
+
+LoadingView.propTypes = {
+  strings: React.PropTypes.object,
+  minimized: React.PropTypes.bool
+};
+
+module.exports = LoadingView;

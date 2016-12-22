@@ -5,6 +5,7 @@ env:
 
 extends:
   - eslint:recommended
+  - plugin:react/recommended
 
 globals:
   unsafeWindow: false
@@ -19,8 +20,6 @@ plugins:
 root: true
 
 rules:
-  react/jsx-uses-react: 1
-  react/jsx-uses-vars: 1
 
   eqeqeq: 2
   indent: [2, 2]

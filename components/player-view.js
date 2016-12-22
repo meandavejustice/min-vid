@@ -4,7 +4,7 @@ const PlayerControls = require('../components/player-controls');
 const ReplayView = require('../components/replay-view');
 const Progress = require('../components/progress');
 
-module.exports = class Player extends React.Component {
+class Player extends React.Component {
   constructor(props) {
     super(props);
     this.state = {hovered: false};
@@ -108,13 +108,13 @@ module.exports = class Player extends React.Component {
     const noop = () => false;
 
     const audioEl = this.props.player === 'audio' ?
-          (<canvas id='audio-vis' ref='audio-vis' onContextMenu={noop} width={this.props.width} height={this.props.height}
+          (<canvas id='audio-vis' ref='audio-vis' onContextMenu={noop}
                    onClick={this.handleVideoClick.bind(this)}/>) : null;
 
     const visualEl = audioEl ? audioEl :
           (this.props.player === 'youtube') ?
           (<iframe id='video-yt' ref='video' src={this.props.src} onContextMenu={noop} />) :
-          (<video id='video' ref='video' src={this.props.src} autoplay={false}
+          (<video id='video' ref='video' src={this.props.src} autoPlay={false}
                   onContextMenu={noop} muted={this.props.muted} volume={this.props.volume}
                   currentTime={this.props.currentTime} />);
 
@@ -134,3 +134,15 @@ module.exports = class Player extends React.Component {
     );
   }
 }
+
+Player.propTypes = {
+  src: React.PropTypes.string,
+  muted: React.PropTypes.bool,
+  exited: React.PropTypes.bool,
+  playing: React.PropTypes.bool,
+  volume: React.PropTypes.number,
+  player: React.PropTypes.string,
+  currentTime: React.PropTypes.number
+};
+
+module.exports = Player;

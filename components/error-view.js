@@ -4,7 +4,7 @@ const sendToAddon = require('../client-lib/send-to-addon');
 const sendMetricsEvent = require('../client-lib/send-metrics-event');
 const GeneralControls = require('./general-controls');
 
-module.exports = class ErrorView extends React.Component {
+class ErrorView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {hovered: false};
@@ -56,3 +56,13 @@ module.exports = class ErrorView extends React.Component {
     );
   }
 }
+
+ErrorView.propTypes = {
+  id: React.PropTypes.string,
+  tabId: React.PropTypes.number,
+  domain: React.PropTypes.string,
+  strings: React.PropTypes.object,
+  minimized: React.PropTypes.bool
+};
+
+module.exports = ErrorView;

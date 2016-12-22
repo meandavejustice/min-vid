@@ -3,7 +3,7 @@ const cn = require('classnames');
 const ReactTooltip = require('react-tooltip');
 const emitter = require('../client-lib/emitter');
 
-module.exports = class GeneralControls extends React.Component {
+class GeneralControls extends React.Component {
   close() {
     emitter.emit('close');
   }
@@ -42,3 +42,10 @@ module.exports = class GeneralControls extends React.Component {
     );
   }
 }
+
+GeneralControls.propTypes = {
+  strings: React.PropTypes.object,
+  minimized: React.PropTypes.bool
+};
+
+module.exports = GeneralControls;

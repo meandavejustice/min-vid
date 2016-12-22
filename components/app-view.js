@@ -4,7 +4,7 @@ const PlayerView = require('./player-view');
 const LoadingView = require('./loading-view');
 const ErrorView = require('./error-view');
 
-module.exports = class AppView extends React.Component {
+class AppView extends React.Component {
   render() {
     return (
         <div className='app'>
@@ -19,3 +19,10 @@ module.exports = class AppView extends React.Component {
     );
   }
 }
+
+AppView.propTypes = {
+  error: React.PropTypes.bool,
+  loaded: React.PropTypes.bool
+};
+
+module.exports = AppView;

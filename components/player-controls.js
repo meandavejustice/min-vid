@@ -6,7 +6,7 @@ const appData = require('../client-lib/app-data');
 
 const GeneralControls = require('./general-controls');
 
-module.exports = class PlayerControls extends React.Component {
+class PlayerControls extends React.Component {
   constructor(props) {
     super(props);
     this.state = {showVolume: false};
@@ -111,3 +111,15 @@ module.exports = class PlayerControls extends React.Component {
     );
   }
 }
+
+PlayerControls.propTypes = {
+  muted: React.PropTypes.bool,
+  exited: React.PropTypes.bool,
+  volume: React.PropTypes.number,
+  playing: React.PropTypes.bool,
+  hovered: React.PropTypes.bool,
+  strings: React.PropTypes.object,
+  minimized: React.PropTypes.bool,
+};
+
+module.exports = PlayerControls;

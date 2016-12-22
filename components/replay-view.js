@@ -2,7 +2,7 @@ const React = require('react');
 const cn = require('classnames');
 const emitter = require('../client-lib/emitter');
 
-module.exports = class ReplayView extends React.Component {
+class ReplayView extends React.Component {
   replay() {
     emitter.emit('replay');
   }
@@ -22,3 +22,10 @@ module.exports = class ReplayView extends React.Component {
     );
   }
 }
+
+ReplayView.propTypes = {
+  exited: React.PropTypes.bool,
+  minimized: React.PropTypes.bool
+}
+
+module.exports = ReplayView;

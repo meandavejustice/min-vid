@@ -3,7 +3,7 @@ const ReactTooltip = require('react-tooltip');
 const cn = require('classnames');
 const emitter = require('../client-lib/emitter');
 
-module.exports = class ProgressView extends React.Component {
+class ProgressView extends React.Component {
   setTime(ev) {
     ev.stopPropagation();
     const x = ev.pageX - ev.target.offsetLeft;
@@ -34,3 +34,16 @@ module.exports = class ProgressView extends React.Component {
     );
   }
 }
+
+
+ProgressView.propTypes = {
+  time: React.PropTypes.string,
+  domain: React.PropTypes.string,
+  player: React.PropTypes.string,
+  strings: React.PropTypes.object,
+  hovered: React.PropTypes.bool,
+  progress: React.PropTypes.number,
+  minimized: React.PropTypes.bool
+};
+
+module.exports = ProgressView;
