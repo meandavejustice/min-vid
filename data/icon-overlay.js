@@ -78,6 +78,7 @@ function ytHomePageHandler(el) {
   const tmp = getTemplate();
   tmp.addEventListener('click', function(ev) {
     evNoop(ev);
+
     self.port.emit('launch', {
       url: 'https://youtube.com' + url,
       domain: 'youtube.com'
@@ -94,8 +95,8 @@ function ytWatchElementHandler(el) {
   tmp.addEventListener('click', function(ev) {
     evNoop(ev);
     const videoEl = document.querySelector('video');
-    videoEl.pause();
     closeFullscreen();
+    //videoEl.pause(); // no need to pause the video, since it continues playing in the new window.
     self.port.emit('launch', {
       url: window.location.href,
       domain: 'youtube.com',
