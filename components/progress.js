@@ -20,6 +20,9 @@ class ProgressView extends React.Component {
   }
 
   render() {
+    const tooltip = this.props.player !== 'audio' ? null :
+                    <ReactTooltip id='switch-vis' effect='solid' place='right'>{this.props.strings.ttSwitchVis}</ReactTooltip>;
+
     return (
         <div className={cn('progress', {hidden: this.props.minimized, peek: !this.props.hovered})}>
           <span className={cn('domain', {hidden: !this.props.hovered})}>{this.props.domain}</span>
@@ -27,7 +30,7 @@ class ProgressView extends React.Component {
                                       hidden: !this.props.hovered})}
                onClick={this.timeClicked.bind(this)} data-tip
                data-for='switch-vis'>{this.props.time}</div>
-          <ReactTooltip id='switch-vis' effect='solid' place='right'>{this.props.strings.ttSwitchVis}</ReactTooltip>
+          {tooltip}
           <progress className='video-progress' onClick={this.setTime.bind(this)}
                     value={this.props.progress + ''}  />
         </div>
