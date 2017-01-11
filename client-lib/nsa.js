@@ -88,14 +88,14 @@ emitter.on('play', (opts) => {
     playerMap[appData.player].play(0.001);
   } else playerMap[appData.player].play();
 
-  appData.playing = true;
+  appData.set({playing: true});
   currentStep = requestAnimationFrame(step);
 });
 
 emitter.on('pause', (opts) => {
   sendMetricsEvent('player_view', 'pause');
   playerMap[appData.player].pause();
-  appData.playing = false;
+  appData.set({playing: false});
 });
 
 emitter.on('mute', (opts) => {
