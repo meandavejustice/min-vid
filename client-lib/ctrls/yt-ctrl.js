@@ -1,3 +1,5 @@
+const appData = require('../app-data');
+
 module.exports = class YouTubeCtrl {
   constructor(options) {
     if (!window.YT) return options.onError('window.YT not yet initialized');
@@ -12,7 +14,7 @@ module.exports = class YouTubeCtrl {
   }
 
   get volume() {
-    return window.YTPlayer.getVolume();
+    return window.YTPlayer.getVolume() / 100;
   }
 
   set volume(v) {
@@ -54,6 +56,10 @@ module.exports = class YouTubeCtrl {
 
   unmute() {
     window.YTPlayer.unMute();
+
+    appData.set({
+      volume: this.volume
+    });
   }
 
   remove() {

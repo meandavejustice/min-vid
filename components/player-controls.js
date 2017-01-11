@@ -33,19 +33,6 @@ class PlayerControls extends React.Component {
     emitter.emit('mute');
   }
 
-  clickedUnmute() {
-    let volumeEvt = {target: {value: 0.5}};
-    // bump volume up to 50% if less than 5% since it is likely
-    // if the volume is < 5%, that the user dragged the volume
-    // slider down to 0% in order to mute.
-    if (parseInt(appData.volume, 10) > 0.05) {
-      volumeEvt = {target: {value: appData.volume}};
-    }
-
-    this.setVolume(volumeEvt);
-    this.unmute();
-  }
-
   unmute() {
     emitter.emit('unmute');
   }
@@ -95,7 +82,7 @@ class PlayerControls extends React.Component {
                 {this.props.strings.ttMute}
               </ReactTooltip>
 
-              <a onClick={this.clickedUnmute.bind(this)} data-tip data-for='unmute'
+              <a onClick={this.unmute.bind(this)} data-tip data-for='unmute'
                  className={cn('unmute', {hidden: !this.props.muted})} />
               <ReactTooltip id='unmute' effect='solid' place={!this.props.minimized ? 'bottom': 'right'}>
                 {this.props.strings.ttUnmute}

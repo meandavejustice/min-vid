@@ -77,11 +77,16 @@ module.exports = class AudioCtrl {
     if (this.prevVolume !== 0) {
       this.prevVolume = this.volume;
     }
-    this.volume = 0;
+
+    appData.set({
+      volume: this.volume = 0
+    });
   }
 
   unmute() {
-    this.volume = this.prevVolume;
+    appData.set({
+      volume: this.volume = this.prevVolume !== 0 ? this.prevVolume : 0.5
+    });
   }
 
   remove() {
