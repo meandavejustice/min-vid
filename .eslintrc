@@ -30,3 +30,4 @@ rules:
   space-before-blocks: 2
   keyword-spacing: 2
   no-extra-boolean-cast: 0
+  react/prop-types: 0

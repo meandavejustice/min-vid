@@ -38,6 +38,9 @@ class ErrorView extends React.Component {
   }
 
   render() {
+    const errorMsg = this.props.strings[this.props.error] ?
+          this.props.strings[this.props.error] : this.props.strings.errorMsg;
+
     return (
         <div className='error' onMouseEnter={this.enterView.bind(this)} onMouseLeave={this.leaveView.bind(this)}>
           <div className={cn('controls drag', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
@@ -46,7 +49,7 @@ class ErrorView extends React.Component {
           </div>
           <div className='error-message-container'>
             <p className='error-message'>
-              {this.props.strings.errorMsg}
+              {errorMsg}
               <br/>
               <br/>
             <span className='error-link' onClick={this.sendToTab.bind(this)}>{this.props.strings.errorLink}</span>

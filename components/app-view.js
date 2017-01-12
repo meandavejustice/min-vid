@@ -21,7 +21,6 @@ class AppView extends React.Component {
 }
 
 AppView.propTypes = {
-  error: React.PropTypes.bool,
   loaded: React.PropTypes.bool
 };
 
