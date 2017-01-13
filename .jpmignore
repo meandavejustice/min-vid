@@ -11,3 +11,5 @@
 !/package.json
 !/node_modules/get-video-id/package.json
 !/node_modules/get-video-id/index.js
+!/node_modules/get-src/package.json
+!/node_modules/get-src/index.js

@@ -115,8 +115,7 @@ class Player extends React.Component {
           (this.props.player === 'youtube') ?
           (<iframe id='video-yt' ref='video' src={this.props.src} onContextMenu={noop} />) :
           (<video id='video' ref='video' src={this.props.src} autoPlay={false}
-                  onContextMenu={noop} muted={this.props.muted} volume={this.props.volume}
-                  currentTime={this.props.currentTime} />);
+           onContextMenu={noop} muted={this.props.muted} />);
 
     return (
         <div className='video-wrapper'
