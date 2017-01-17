@@ -18,6 +18,7 @@ function removeOverlay(el) {
 function checkForEmbeds() {
   ytEmbedChecks();
   vimeoEmbedChecks();
+  soundcloudEmbedChecks();
 }
 
 function ytEmbedChecks() {
@@ -108,6 +109,48 @@ function ytWatchElementHandler(el) {
   });
   el.appendChild(tmp);
 }
+
+function soundcloudEmbedChecks() {
+  if (!(host.indexOf('soundcloud.com') > -1)) return;
+
+  // soundcloud.com/stream
+  const soundcloudStreamCovers = Array.from(document.querySelectorAll('.sound__coverArt'));
+  if (soundcloudStreamCovers.length) {
+    soundcloudStreamCovers.forEach(el => {
+      if (el.classList.contains('minvid__overlay__wrapper')) return;
+
+      el.classList.add('minvid__overlay__wrapper');
+      const tmp = getTemplate();
+      tmp.addEventListener('click', function(ev) {
+        evNoop(ev);
+        self.port.emit('launch', {
+          url: 'https://soundcloud.com' + el.getAttribute('href'),
+          domain: 'soundcloud.com'
+        });
+      });
+      el.appendChild(tmp);
+    });
+    sendMetric('available');
+  }
+
+  // souncloud.com/artist/track
+  const soundcloudTrackCover = document.querySelector('.fullHero__artwork');
+  if (soundcloudTrackCover) {
+    if (soundcloudTrackCover.classList.contains('minvid__overlay__wrapper')) return;
+    soundcloudTrackCover.classList.add('minvid__overlay__wrapper');
+    const tmp = getTemplate();
+    tmp.addEventListener('click', function(ev) {
+      evNoop(ev);
+      self.port.emit('launch', {
+        url: window.location.href,
+        domain: 'soundcloud.com'
+      });
+    }, true);
+    soundcloudTrackCover.appendChild(tmp);
+    sendMetric('available');
+  }
+}
+
 
 function vimeoEmbedChecks() {
   if (!(host.indexOf('vimeo.com') > -1)) return;
