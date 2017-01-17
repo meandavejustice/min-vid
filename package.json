@@ -44,7 +44,7 @@
     "lodash.debounce": "4.0.8"
   },
   "devDependencies": {
-    "addons-linter": "0.15.14",
+    "addons-linter": "0.15.15",
     "audio-fft": "0.1.3",
     "audiosource": "2.0.6",
     "babel": "6.5.2",
