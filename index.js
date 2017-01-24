@@ -5,6 +5,13 @@
  */
 
 const pageMod = require('sdk/page-mod');
+const store = require('sdk/simple-storage').storage;
+
+// set our unique identifier for metrics
+// (needs to be set before send-metrics-data is loaded)
+if (!store.clientUUID) {
+  store.clientUUID = require('sdk/util/uuid').uuid().toString().slice(1, -1);
+}
 
 const getYouTubeUrl = require('./lib/get-youtube-url');
 const getVimeoUrl = require('./lib/get-vimeo-url');
