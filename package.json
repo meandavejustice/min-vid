@@ -65,6 +65,6 @@
     "react-dom": "15.4.2",
     "react-tooltip": "3.2.2",
     "uglify-js": "git://github.com/mishoo/UglifyJS2#b7bb7061503c247393bd0aa8ae9dd80167028a98",
-    "watchify": "3.8.0"
+    "watchify": "3.9.0"
   }
 }
