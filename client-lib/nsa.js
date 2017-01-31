@@ -150,9 +150,16 @@ emitter.on('set-time', (opts) => {
 
 emitter.on('update-visual', (opts) => {
   if (appData.player !== 'audio') return;
-  if (playerMap[appData.player].fft.type === 'time') {
-    playerMap[appData.player].fft.type = 'frequency';
-  } else playerMap[appData.player].fft.type = 'time';
+
+  if (appData.visual === 'time') {
+    appData.set({
+      visual: playerMap[appData.player].visual = 'frequency'
+    });
+  } else {
+    appData.set({
+      visual: playerMap[appData.player].visual = 'time'
+    });
+  }
 });
 
 emitter.on('resize', (opts) => {

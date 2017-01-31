@@ -49,6 +49,7 @@ class Player extends React.Component {
         if (canvas) emitter.emit('init', {
           src: this.props.src,
           canvas: canvas,
+          visual: this.props.visual,
           onLoaded: this.onLoaded.bind(this),
           onError: this.onError.bind(this)
         });
@@ -141,6 +142,7 @@ Player.propTypes = {
   playing: React.PropTypes.bool,
   volume: React.PropTypes.number,
   player: React.PropTypes.string,
+  visual: React.PropTypes.string,
   currentTime: React.PropTypes.number
 };
 

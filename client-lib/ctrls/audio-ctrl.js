@@ -16,7 +16,7 @@ module.exports = class AudioCtrl {
       fillStyle: '#fff',
       strokeStyle: '#fff',
       canvas: options.canvas,
-      type: 'time',
+      type: options.visual,
       width: spacing,
       spacing: spacing
     });
@@ -60,6 +60,14 @@ module.exports = class AudioCtrl {
     // fetching duration
     if (!this.audio.buffer) return 0;
     return this.audio.time().total;
+  }
+
+  get visual() {
+    return this.fft.type;
+  }
+
+  set visual(v) {
+    this.fft.type = v;
   }
 
   play(t) {

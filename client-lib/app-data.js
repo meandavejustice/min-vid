@@ -22,6 +22,7 @@ module.exports = window.AppData = new Proxy({
   volume: 0.5,
   strings: {},
   player: '',
+  visual: 'time',
   set: (newValues) => {
     window.AppData = deepAssign(window.AppData, newValues);
   }
