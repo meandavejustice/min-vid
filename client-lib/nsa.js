@@ -59,6 +59,9 @@ emitter.on('reset', () => {
 emitter.on('init', (opts) => {
   sendMetricsEvent('player_view', 'init');
 
+  // remove existing player before initializing
+  if (playerMap[appData.player]) playerMap[appData.player].remove();
+
   if (appData.player === 'audio') {
     playerMap['audio'] = new AudioCtrl(opts);
   } else if (appData.player === 'youtube') {
@@ -74,7 +77,6 @@ emitter.on('init', (opts) => {
       },
       onError: (err) => emitter.emit('error')
     });
-
   } else {
     playerMap['video'] = new VideoCtrl(opts);
   }
