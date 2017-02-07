@@ -75,7 +75,15 @@ emitter.on('init', (opts) => {
         if (ev.data === PLAYING && !appData.playing) emitter.emit('play')
         else if (ev.data === PAUSED && appData.playing) emitter.emit('pause')
       },
-      onError: (err) => emitter.emit('error')
+      onError: (err) => {
+        let msg = true;
+        if (err.data === 150 || err.data === 101) msg = 'errorYTNotAllowed';
+        else if (err.data === 100) msg = 'errorYTNotFound';
+
+        emitter.emit('error', {
+          msg: msg
+        });
+      }
     });
   } else {
     playerMap['video'] = new VideoCtrl(opts);
@@ -212,7 +220,8 @@ emitter.on('send-to-tab', () => {
 });
 
 emitter.on('error', (opts) => {
-  appData.set({error: true});
+  const msg = opts.msg ? opts.msg : true;
+  appData.set({error: msg});
 });
 
 function getView() {
