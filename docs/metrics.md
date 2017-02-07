@@ -62,12 +62,41 @@ otherwise noted.
   * method: `maximize`
   * method: `close`
 
+* Object: `replay_view`
+  * method: `close`
+  * method: `play-from-history`
+
+* Object: `confirm_view`
+  * method: `cancel`
+  * method: `playlist`
+  * method: `video`
+
+* Object: `queue_view`
+  * method: `clear:queue`
+  * method: `clear:history`
+
 * Object: `overlay_icon`
   * method: `available`
     * Sent when a video is available on a page.
 * Object: `overlay_icon`
   * method: `launch`
     * Sent when a video is launched from the overlay icon.
+
+* Object: `playlist`
+  * method: `launch:${action}`
+    * Sent when playlist launched from overlay or context menu.
+    * 'action' is either going to be 'send-to-queue' or 'play'
+  * method: `launch:video:${action}`
+    * Sent when playlist launched from overlay or context menu.
+    * 'video' segment of method refers to individual videos launched, which are part of a playlist.
+    * 'action' is either going to be 'send-to-queue' or 'play'
+
+* Object: `queue`
+  * method: `track-added-from-history`
+  * method: `track-expedited`
+    * track pushed to top of queue
+   * method: `track-reordered`
+    * drag n drop reordering event
 
 Here's an example of a complete Test Pilot telemetry ping. Note that Min Vid only sends the
 `payload` portion to the Test Pilot add-on. The Test Pilot add-on appends the `test` and `agent`

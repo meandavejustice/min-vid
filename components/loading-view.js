@@ -24,8 +24,10 @@ class LoadingView extends React.Component {
             <GeneralControls {...this.props} />
           </div>
 
-          <img src='img/loading-bars.svg' alt='loading animation' width={64} height={64} />
-          <p>{this.props.strings.loadingMsg}</p>
+          <div className="loading-wrapper">
+            <img src='img/loading-bars.svg' alt='loading animation' width={64} height={64} />
+            <p>{this.props.strings.loadingMsg}</p>
+          </div>
         </div>
     );
   }

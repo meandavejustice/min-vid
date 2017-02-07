@@ -81,7 +81,8 @@ function ytHomePageHandler(el) {
     evNoop(ev);
     self.port.emit('launch', {
       url: 'https://youtube.com' + url,
-      domain: 'youtube.com'
+      domain: 'youtube.com',
+      action: getAction(ev)
     });
   });
   el.appendChild(tmp);
@@ -104,6 +105,7 @@ function ytWatchElementHandler(el) {
       time: videoEl.currentTime,
       volume: videoEl.volume,
       muted: videoEl.muted,
+      action: getAction(ev),
       cc: cc
     });
   });
@@ -125,7 +127,8 @@ function soundcloudEmbedChecks() {
         evNoop(ev);
         self.port.emit('launch', {
           url: 'https://soundcloud.com' + el.getAttribute('href'),
-          domain: 'soundcloud.com'
+          domain: 'soundcloud.com',
+          action: getAction(ev)
         });
       });
       el.appendChild(tmp);
@@ -143,7 +146,8 @@ function soundcloudEmbedChecks() {
       evNoop(ev);
       self.port.emit('launch', {
         url: window.location.href,
-        domain: 'soundcloud.com'
+        domain: 'soundcloud.com',
+        action: getAction(ev)
       });
     }, true);
     soundcloudTrackCover.appendChild(tmp);
@@ -167,7 +171,8 @@ function vimeoEmbedChecks() {
         evNoop(ev);
         self.port.emit('launch', {
           url: 'https://vimeo.com' + el.getAttribute('href'),
-          domain: 'vimeo.com'
+          domain: 'vimeo.com',
+          action: getAction(ev)
         });
       });
       el.appendChild(tmp);
@@ -189,7 +194,8 @@ function vimeoEmbedChecks() {
         if (fauxEl) {
           self.port.emit('launch', {
             url: 'https://vimeo.com/' + fauxEl.getAttribute('data-clip-id'),
-            domain: 'vimeo.com'
+            domain: 'vimeo.com',
+            action: getAction(ev)
           });
         } else console.error('Error: failed to locate vimeo url'); // eslint-disable-line no-console
       });
@@ -213,7 +219,8 @@ function vimeoEmbedChecks() {
         url: window.location.href,
         domain: 'vimeo.com',
         volume: videoEl.volume,
-        muted: videoEl.muted
+        muted: videoEl.muted,
+        action: getAction(ev)
       });
     }, true);
     vimeoDetailContainer.appendChild(tmp);
@@ -221,15 +228,24 @@ function vimeoEmbedChecks() {
   }
 }
 
+function getAction(ev) {
+  return (ev.target.className === 'minvid__overlay__icon') ? 'play' : 'add-to-queue';
+}
+
 // General Helpers
 function getTemplate() {
   const containerEl = document.createElement('div');
-  const iconEl = document.createElement('div');
+  const playIconEl = document.createElement('div');
+  const addIconEl = document.createElement('div');
 
   containerEl.className = 'minvid__overlay__container';
-  iconEl.className = 'minvid__overlay__icon';
+  playIconEl.className = 'minvid__overlay__icon';
+  playIconEl.title = 'Play Now';
+  addIconEl.className = 'minvid__overlay__icon__add';
+  addIconEl.title = 'Add to queue';
 
-  containerEl.appendChild(iconEl);
+  containerEl.appendChild(playIconEl);
+  containerEl.appendChild(addIconEl);
   return containerEl;
 }
 

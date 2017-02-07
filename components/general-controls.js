@@ -1,51 +1,29 @@
 const React = require('react');
 const cn = require('classnames');
 const ReactTooltip = require('react-tooltip');
-const emitter = require('../client-lib/emitter');
+const Close = require('./close-control');
+const SendToTab = require('./send-to-tab')
+const SizeControl = require('./size-control');
 
-class GeneralControls extends React.Component {
-  close() {
-    emitter.emit('close');
-  }
-
-  minimize() {
-    emitter.emit('minimize');
-  }
-
-  maximize() {
-    emitter.emit('maximize');
-  }
-
-  sendToTab() {
-    emitter.emit('send-to-tab');
-  }
-
+module.exports = class GeneralControls extends React.Component {
   render() {
     return (
-      <div className='right drag'>
-        <a onClick={this.sendToTab.bind(this)} data-tip data-for='sendToTab' className='tab'/>
-        <ReactTooltip id='sendToTab' effect='solid' place={!this.props.minimized ? 'bottom': 'left'}>
-          {this.props.strings.ttSendToTab}
-        </ReactTooltip>
+        <div className={cn('controls drag', {minimized: this.props.minimized, hidden: !this.props.hovered})}>
+          <div className='left'>
+            <Close {...this.props} />
+          </div>
 
-        <a className={cn('minimize', {hidden: this.props.minimized})}
-           onClick={this.minimize.bind(this)} data-tip data-for='minimize' />
-        <ReactTooltip id='minimize' effect='solid' place='left'>{this.props.strings.ttMinimize}</ReactTooltip>
+          <div className='right'>
+            <SendToTab {...this.props} />
+            <SizeControl {...this.props} />
 
-        <a className={cn('maximize', {hidden: !this.props.minimized})}
-           onClick={this.maximize.bind(this)} data-tip data-for='maximize' />
-        <ReactTooltip id='maximize' effect='solid' place='left'>{this.props.strings.ttMaximize}</ReactTooltip>
-
-        <a className='close' onClick={this.close.bind(this)} data-tip data-for='close' />
-        <ReactTooltip id='close' effect='solid' place='left'>{this.props.strings.ttClose}</ReactTooltip>
+            <div>
+              <a className={cn('open-queue', {hidden: this.props.minimized})}
+                 onClick={this.props.openQueueMenu} data-tip data-for='open-queue-menu' />
+              <ReactTooltip id='open-queue-menu' effect='solid' place='left'>{this.props.strings.ttOpenQueue}</ReactTooltip>
+            </div>
+          </div>
       </div>
     );
   }
 }
-
-GeneralControls.propTypes = {
-  strings: React.PropTypes.object,
-  minimized: React.PropTypes.bool
-};
-
-module.exports = GeneralControls;

@@ -15,3 +15,5 @@
 !/node_modules/get-src/index.js
 !/node_modules/testpilot-metrics/package.json
 !/node_modules/testpilot-metrics/testpilot-metrics.js
+!/node_modules/iso8601-duration/package.json
+!/node_modules/iso8601-duration/lib/index.js

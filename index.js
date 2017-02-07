@@ -10,10 +10,14 @@ const store = require('sdk/simple-storage').storage;
 // set our unique identifier for metrics
 // (needs to be set before send-metrics-data is loaded)
 if (!store.clientUUID) {
-  store.clientUUID = require('sdk/util/uuid').uuid().toString().slice(1, -1);
+  store.clientUUID = require('./lib/get-random-id')();
 }
 
-const getYouTubeUrl = require('./lib/get-youtube-url');
+if (!store.queue) store.queue = [];
+if (!store.history) store.history = [];
+
+
+const youtubeHelpers = require('./lib/youtube-helpers');
 const getVimeoUrl = require('./lib/get-vimeo-url');
 const getSoundcloudUrl = require('./lib/get-soundcloud-url');
 const launchVideo = require('./lib/launch-video');
@@ -32,7 +36,7 @@ exports.main = function() {
     onAttach: function(worker) {
       worker.port.on('launch', function(opts) {
         if (opts.domain.indexOf('youtube.com') > -1) {
-          opts.getUrlFn = getYouTubeUrl;
+          opts.getUrlFn = youtubeHelpers.getVideo;
         } else if (opts.domain.indexOf('vimeo.com')  > -1) {
           opts.getUrlFn = getVimeoUrl;
         } else if (opts.domain.indexOf('soundcloud.com')  > -1) {
@@ -44,6 +48,8 @@ exports.main = function() {
           method: 'launch',
           domain: opts.domain
         });
+
+
         launchVideo(opts);
       });
       worker.port.on('metric', sendMetricsData);
@@ -52,6 +58,7 @@ exports.main = function() {
 
   contextMenuHandlers.init(windowUtils.getWindow());
 };
+
 exports.onUnload = function(reason) {
   windowUtils.destroy(true);
   contextMenuHandlers.destroy();

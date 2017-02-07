@@ -1,21 +1,10 @@
 const React = require('react');
-const cn = require('classnames');
 const sendToAddon = require('../client-lib/send-to-addon');
 const sendMetricsEvent = require('../client-lib/send-metrics-event');
-const GeneralControls = require('./general-controls');
 
 class ErrorView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {hovered: false};
-  }
-
-  enterView() {
-    this.setState({hovered: true});
-  }
-
-  leaveView() {
-    this.setState({hovered: false});
+  componentWillMount() {
+    sendMetricsEvent('error_view', 'render');
   }
 
   sendToTab(ev) {
@@ -23,37 +12,31 @@ class ErrorView extends React.Component {
     ev.stopPropagation();
 
     sendMetricsEvent('error_view', 'send_to_tab');
-
     sendToAddon({
       action: 'send-to-tab',
-      id: this.props.id,
-      domain: this.props.domain,
+      id: this.props.queue[0].videoId,
+      domain: this.props.queue[0].domain ,
       time: 0,
       tabId: this.props.tabId,
-      url: this.props.url
+      url: this.props.queue[0].url
     });
-  }
-
-  componentWillMount() {
-    sendMetricsEvent('error_view', 'render');
   }
 
   render() {
     const errorMsg = this.props.strings[this.props.error] ?
           this.props.strings[this.props.error] : this.props.strings.errorMsg;
 
+    const countdownMsg = (this.props.countdown > 0 && this.props.queue.length > 1) ?
+          (<p>Playing {this.props.queue[1].title} in {this.props.countdown} seconds</p>) : <p></p>;
+
     return (
-        <div className='error' onMouseEnter={this.enterView.bind(this)} onMouseLeave={this.leaveView.bind(this)}>
-          <div className={cn('controls drag', {hidden: !this.state.hovered, minimized: this.props.minimized})}>
-            <div className='left' />
-            <GeneralControls {...this.props} />
-          </div>
+        <div className='error'>
           <div className='error-message-container'>
             <p className='error-message'>
-              {errorMsg}
-              <br/>
-              <br/>
-            <span className='error-link' onClick={this.sendToTab.bind(this)}>{this.props.strings.errorLink}</span>
+               {errorMsg}
+               {countdownMsg}
+              <span className='error-link'
+                    onClick={this.sendToTab.bind(this)}>{this.props.strings.errorLink}</span>
             </p>
           </div>
         </div>
@@ -62,11 +45,9 @@ class ErrorView extends React.Component {
 }
 
 ErrorView.propTypes = {
-  id: React.PropTypes.string,
   tabId: React.PropTypes.number,
-  domain: React.PropTypes.string,
-  strings: React.PropTypes.object,
-  minimized: React.PropTypes.bool
+  queue: React.PropTypes.object,
+  strings: React.PropTypes.object
 };
 
 module.exports = ErrorView;

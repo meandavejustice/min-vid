@@ -2,18 +2,20 @@ const React = require('react');
 const cn = require('classnames');
 const PlayerView = require('./player-view');
 const LoadingView = require('./loading-view');
-const ErrorView = require('./error-view');
+const ConfirmView = require('./confirm-view');
 
 class AppView extends React.Component {
   render() {
+    const confirmView = this.props.confirm ? (<ConfirmView {...this.props}/>) : null;
+    const hideLoadingView = (this.props.queue.length && this.props.queue[0].error);
+
     return (
         <div className='app'>
-          {/* Show Error View, ELSE Show Loading View ELSE no view */}
-          {this.props.error ? <ErrorView {...this.props}/> :
-            (!this.props.loaded) ? <LoadingView {...this.props}/> : null}
+          {confirmView}
+          {(!this.props.loaded && !hideLoadingView) ? <LoadingView {...this.props} /> : null}
 
-          <div className={cn('player-wrap', {hidden: !this.props.loaded})}>
-            <PlayerView {...this.props} />
+          <div className={cn('player-wrap', {hidden: !this.props.loaded && !hideLoadingView})}>
+            {this.props.queue.length ? (<PlayerView {...this.props} />) : null}
           </div>
         </div>
     );
