@@ -48,7 +48,7 @@
   "devDependencies": {
     "addons-linter": "0.15.15",
     "audio-fft": "0.1.4",
-    "audiosource": "2.0.7",
+    "audiosource": "3.0.0",
     "babel": "6.5.2",
     "babel-preset-react": "6.23.0",
     "babelify": "7.3.0",
