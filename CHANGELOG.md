@@ -1,3 +1,16 @@
+## 0.3.4 (2017-3-13)
+
+* [[`5014ab742c`](https://github.com/meandave/min-vid/commit/5014ab742c)] - Better youtube error messaging (#602) (Dave Justice)
+* [[`38e7828a3e`](https://github.com/meandave/min-vid/commit/38e7828a3e)] - Fix replay view issue on audio tracks (#601) (Dave Justice)
+* [[`80418a10ab`](https://github.com/meandave/min-vid/commit/80418a10ab)] - Make visual setting persist between tracks within session (#593) (Dave Justice)
+* [[`0e733b45c1`](https://github.com/meandave/min-vid/commit/0e733b45c1)] - Ensure we remove existing player objects on initialization (#595) (Dave Justice)
+* [[`a88c1d3fa1`](https://github.com/meandave/min-vid/commit/a88c1d3fa1)] - Add Code of Conduct (#594) (Dave Justice)
+* [[`bcbf6b3ede`](https://github.com/meandave/min-vid/commit/bcbf6b3ede)] - Integrate testpilot-metrics package (#588) (Dave Justice)
+* [[`436c343706`](https://github.com/meandave/min-vid/commit/436c343706)] - update browserify and babel react (#587) (Dave Justice)
+* [[`c6ca1b16ff`](https://github.com/meandave/min-vid/commit/c6ca1b16ff)] - chore(package): update husky to version 0.13.1 (#586) (Dave Justice)
+* [[`18fbf36a20`](https://github.com/meandave/min-vid/commit/18fbf36a20)] - chore(package): update eslint to version 3.14.1 (#585) (Dave Justice)
+* [[`0232ff1645`](https://github.com/meandave/min-vid/commit/0232ff1645)] - Remove uglify to avoid failure in ansible builds (Dave Justice)
+* [[`fa2c2775a1`](https://github.com/meandave/min-vid/commit/fa2c2775a1)] - Release 0.3.4 (#584) (Dave Justice)
 
 ## 0.3.4 (2017-1-23)
 
