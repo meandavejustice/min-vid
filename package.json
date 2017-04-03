@@ -41,7 +41,7 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "get-video-id": "2.1.3",
+    "get-video-id": "2.1.4",
     "lodash.debounce": "4.0.8",
     "testpilot-metrics": "2.1.3"
   },
