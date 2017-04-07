@@ -46,7 +46,7 @@
     "testpilot-metrics": "2.1.3"
   },
   "devDependencies": {
-    "addons-linter": "0.15.15",
+    "addons-linter": "0.18.0",
     "audio-fft": "0.1.4",
     "audiosource": "2.0.7",
     "babel": "6.5.2",
