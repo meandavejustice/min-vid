@@ -33,9 +33,4 @@ class LoadingView extends React.Component {
   }
 }
 
-LoadingView.propTypes = {
-  strings: React.PropTypes.object,
-  minimized: React.PropTypes.bool
-};
-
 module.exports = LoadingView;

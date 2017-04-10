@@ -22,8 +22,4 @@ class AppView extends React.Component {
   }
 }
 
-AppView.propTypes = {
-  loaded: React.PropTypes.bool
-};
-
 module.exports = AppView;
