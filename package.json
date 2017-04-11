@@ -100,7 +100,7 @@
     "just-extend": "1.1.22",
     "keyboardjs": "2.3.3",
     "react": "15.5.3",
-    "react-dom": "15.5.3",
+    "react-dom": "15.5.4",
     "react-player": "0.14.3",
     "react-tabs": "0.8.2",
     "react-tooltip": "3.2.10",
