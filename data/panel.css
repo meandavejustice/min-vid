@@ -255,7 +255,8 @@ video#video {
     background-size: 50%;
 }
 
-.controls a:hover {
+.controls a:hover,
+.player-controls a:hover {
     opacity: 1;
 }
 
@@ -767,6 +768,11 @@ canvas {
     background-position: 50%;
 }
 
+.next-wrapper a:hover,
+.prev-wrapper a:hover {
+    opacity: 1
+}
+
 .clear {
     padding: 10px;
     border-top: 1px solid #363636;
@@ -795,12 +801,12 @@ canvas {
     border-radius: 4px;
     padding: 5px;
 
-    font-size: 2vw;
+    font-size: 12px;
     opacity: 0;
 }
 
 .fade-in-out {
-    animation: fade-in-out-animation 6s;
+    animation: fade-in-out-animation 3s;
 }
 
 @keyframes fade-in-out-animation {

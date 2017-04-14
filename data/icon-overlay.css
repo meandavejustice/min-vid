@@ -1,6 +1,7 @@
 .minvid__overlay__container {
     align-items: center;
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0,0,0,0.8);
+    opacity: 0;
     border-radius: 0 0 4px 4px;
     height: 100%;
     justify-content: center;
@@ -20,45 +21,35 @@
 
 .minvid__overlay__icon {
     display: block;
+    cursor: pointer;
+    height: 40%;
+    opacity: 0.7;
+    width: 100%;
+}
+#minvid__overlay__icon__play {
     background: url('img/overlay-player-icon.svg') no-repeat;
     background-position: center bottom;
     background-size: 32px auto;
-    cursor: pointer;
-    height: 40%;
-    opacity: 0;
-    width: 100%;
 }
 
-.minvid__overlay__icon__add {
-    display: block;
+#minvid__overlay__icon__add {
     background: url('img/add.svg') no-repeat;
-    background-position-x: 0%;
-    background-position-y: 0%;
-    background-size: auto auto;
     background-position: center bottom;
     background-size: 25px auto;
-    cursor: pointer;
-    height: 40%;
-    opacity: 0;
-    width: 100%;
     margin-top: 5px;
 }
 
 .minvid__overlay__wrapper:hover .minvid__overlay__container {
-    background-color: rgba(0, 0, 0, .8);
-    animation-name: fade;
+    opacity: 1;
+    /*background-color: rgba(0, 0, 0, .8);*/
+    /*animation-name: fade;
     animation-duration: 4s;
     animation-iteration-count: initial;
-    animation-fill-mode: forwards;
+    animation-fill-mode: forwards;*/
 }
 
-.minvid__overlay__wrapper:hover .minvid__overlay__icon,
-.minvid__overlay__wrapper:hover .minvid__overlay__icon__add {
-    opacity: .8;
-}
-
-.minvid__overlay__container:hover .minvid__overlay__icon,
-.minvid__overlay__container:hover .minvid__overlay__icon__add {
+#minvid__overlay__icon__play:hover,
+#minvid__overlay__icon__add:hover {
     opacity: 1;
 }
 
