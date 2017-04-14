@@ -101,7 +101,7 @@
     "keyboardjs": "2.3.3",
     "react": "15.5.3",
     "react-dom": "15.5.3",
-    "react-player": "0.14.3",
+    "react-player": "0.15.0",
     "react-tabs": "0.8.2",
     "react-tooltip": "3.2.10",
     "sortablejs": "1.5.1",
