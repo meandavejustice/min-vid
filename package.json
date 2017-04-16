@@ -109,6 +109,6 @@
     "svgify": "0.0.0",
     "svgo-loader": "1.2.1",
     "watchify": "3.9.0",
-    "webworkify-webpack": "2.0.4"
+    "webworkify-webpack": "2.0.5"
   }
 }
