@@ -370,7 +370,7 @@ input[type=range]::-moz-focus-outer {
 }
 
 .minimized .volume {
-    width: 75px;
+    width: 85px;
     height: 20px;
     position: absolute;
     bottom: 10px;
