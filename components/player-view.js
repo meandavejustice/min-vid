@@ -254,7 +254,7 @@ module.exports = class Player extends React.Component {
     if (notification) this.cancelTrackAddedNotification();
 
     const queuePanel = this.state.showQueue ? (<Queues className={cn({hidden: !this.state.showQueue})}
-                                               {...this.props} replay={this.replay.bind(this)}
+                                               {...this.props} replay={this.replay.bind(this)} audio={this.audio}
                                                closeQueueMenu={this.closeQueueMenu.bind(this)}/>)
                                             : null;
 

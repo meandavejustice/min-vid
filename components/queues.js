@@ -69,7 +69,7 @@ class QueuesView extends React.Component {
         <TabPanel className='panel-wrapper'>
             <div className='clear'><a onClick={this.clearQueue.bind(this)}>Clear</a></div>
             <ul ref={this.sortableContainersDecorator.bind(this)}>
-            {this.props.queue.map((item, i) => <Item {...item} shouldDrag={true} index={i}
+            {this.props.queue.map((item, i) => <Item {...item} shouldDrag={true} index={i} audio={this.props.audio}
                                   replay={this.props.replay} key={this.state.keyPrefix + i} />)}
             </ul>
           </TabPanel>
