@@ -242,7 +242,7 @@ module.exports = class Player extends React.Component {
                         onProgress={this.onProgress.bind(this)}
                         onReady={this.onLoaded.bind(this)}
                         onDuration={(d) => window.AppData.set({duration: d})}
-                        youtubeConfig={{'playerVars':{'cc_load_policy': this.props.queue[0].cc}}}
+                        youtubeConfig={{'playerVars':{'cc_load_policy': this.props.queue[0].cc, disablekb: 1}}}
                         progressFrequency={100}
                         onError={this.onError.bind(this)}
                         onEnded={this.onEnded.bind(this)}
