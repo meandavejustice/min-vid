@@ -59,15 +59,15 @@ class QueuesView extends React.Component {
               className='queues'>
           <header>
             <TabList className='queue-headers'>
-              <Tab className={cn({active:(this.state.activeTabIndex === 0)})}><h3>Play Queue</h3></Tab>
-              <Tab className={cn({active:(this.state.activeTabIndex === 1)})}><h3>History</h3></Tab>
+              <Tab className={cn({active:(this.state.activeTabIndex === 0)})}><h3>{this.props.strings.playQueue}</h3></Tab>
+              <Tab className={cn({active:(this.state.activeTabIndex === 1)})}><h3>{this.props.strings.history}</h3></Tab>
             </TabList>
             <a className='collapse-queue' onClick={this.props.closeQueueMenu.bind(this)} data-tip data-for='collapse-queue-menu'></a>
             <ReactTooltip id='collapse-queue-menu' effect='solid' place='left'>{this.props.strings.ttCloseQueue}</ReactTooltip>
           </header>
 
-        <TabPanel className='panel-wrapper'>
-            <div className='clear'><a onClick={this.clearQueue.bind(this)}>Clear</a></div>
+          <TabPanel className='panel-wrapper'>
+            <div className='clear'><a onClick={this.clearQueue.bind(this)}>{this.props.strings.clear}</a></div>
             <ul ref={this.sortableContainersDecorator.bind(this)}>
             {this.props.queue.map((item, i) => <Item {...item} shouldDrag={true} index={i}
                                   replay={this.props.replay} key={this.state.keyPrefix + i} />)}
@@ -75,7 +75,7 @@ class QueuesView extends React.Component {
           </TabPanel>
 
           <TabPanel className='panel-wrapper'>
-            <div className='clear'><a onClick={this.clearHistory.bind(this)}>Clear</a></div>
+          <div className='clear'><a onClick={this.clearHistory.bind(this)}>{this.props.strings.clear}</a></div>
             <ul ref={this.sortableContainersDecorator}>
             {this.props.history.map((item, i) => <Item {...item} key={this.state.keyPrefix + i} index={i} replay={this.props.replay} isHistory={true} />)}
             </ul>
