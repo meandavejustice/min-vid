@@ -1,7 +1,12 @@
 const host = window.location.host;
 let availableMetricSent = false;
-checkForEmbeds();
-const overlayCheckInterval = setInterval(checkForEmbeds, 3000);
+let overlayCheckInterval;
+
+self.port.on('receive-strings', function(strings) {
+  window.strings = strings;
+  checkForEmbeds();
+  overlayCheckInterval = setInterval(checkForEmbeds, 3000);
+});
 
 self.port.on('detach', function() {
   clearInterval(overlayCheckInterval);
@@ -245,7 +250,6 @@ function getTemplate() {
   addIconEl.className = 'minvid__overlay__icon';
   addIconEl.id = 'minvid__overlay__icon__add';
   addIconEl.title = window.strings.add;
-
   containerEl.appendChild(playIconEl);
   containerEl.appendChild(addIconEl);
 

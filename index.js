@@ -4,6 +4,7 @@
  * http://mozilla.org/MPL/2.0/.
  */
 
+const _ = require('sdk/l10n').get;
 const pageMod = require('sdk/page-mod');
 const store = require('sdk/simple-storage').storage;
 
@@ -34,6 +35,11 @@ exports.main = function() {
     contentStyleFile: './icon-overlay.css?cachebust=' + Date.now(),
     contentScriptFile: './icon-overlay.js?cachebust=' + Date.now(),
     onAttach: function(worker) {
+      worker.port.emit('receive-strings', {
+        add: _('add_to_queue'),
+        playNow: _('play_now')
+      });
+
       worker.port.on('launch', function(opts) {
         if (opts.domain.indexOf('youtube.com') > -1) {
           opts.getUrlFn = youtubeHelpers.getVideo;

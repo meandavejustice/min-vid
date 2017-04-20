@@ -45,6 +45,9 @@ module.exports = class Item extends React.Component {
     // If track 0 in the queue is playing or has been played
     // (currentTime > 0), we should move track 0 into the history
     // array, and then move newTrack to the top of the queue
+
+    if (this.props.audio) this.props.audio.pause();
+
     sendToAddon({
       action: 'track-expedited',
       moveIndexZero: Boolean(window.AppData.currentTime),
