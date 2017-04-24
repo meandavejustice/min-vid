@@ -72,7 +72,7 @@
   },
   "license": "MPL-2.0",
   "dependencies": {
-    "get-video-id": "2.1.3",
+    "get-video-id": "2.1.4",
     "iso8601-duration": "1.0.6",
     "lodash.debounce": "4.0.8",
     "testpilot-metrics": "2.1.3"
@@ -99,16 +99,16 @@
     "jpm": "1.3.1",
     "just-extend": "1.1.22",
     "keyboardjs": "2.3.3",
-    "react": "15.5.3",
-    "react-dom": "15.5.3",
-    "react-player": "0.14.3",
-    "react-tabs": "0.8.2",
-    "react-tooltip": "3.2.10",
+    "react": "15.5.4",
+    "react-dom": "15.5.4",
+    "react-player": "0.15.0",
+    "react-tabs": "0.8.3",
+    "react-tooltip": "3.3.0",
     "sortablejs": "1.5.1",
     "storybook-host": "1.0.14",
     "svgify": "0.0.0",
     "svgo-loader": "1.2.1",
     "watchify": "3.9.0",
-    "webworkify-webpack": "2.0.4"
+    "webworkify-webpack": "2.0.5"
   }
 }
