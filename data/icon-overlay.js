@@ -104,15 +104,18 @@ function ytWatchElementHandler(el) {
     const cc = !!(document.querySelector('.ytp-subtitles-button').getAttribute('aria-pressed') !== 'false');
     videoEl.pause();
     closeFullscreen();
-    self.port.emit('launch', {
+    const options = {
       url: window.location.href,
       domain: 'youtube.com',
       time: videoEl.currentTime,
-      volume: videoEl.volume,
-      muted: videoEl.muted,
       action: getAction(ev),
       cc: cc
-    });
+    };
+    if (options.action !== 'add-to-queue') {
+      options.volume = videoEl.volume;
+      options.muted = videoEl.muted;
+    }
+    self.port.emit('launch', options);
   });
   el.appendChild(tmp);
 }
@@ -220,13 +223,17 @@ function vimeoEmbedChecks() {
     tmp.addEventListener('click', function(ev) {
       evNoop(ev);
       videoEl.pause();
-      self.port.emit('launch', {
+      const options = {
         url: window.location.href,
         domain: 'vimeo.com',
-        volume: videoEl.volume,
-        muted: videoEl.muted,
         action: getAction(ev)
-      });
+      };
+
+      if (options.action !== 'add-to-queue') {
+        options.volume = videoEl.volume;
+        options.muted = videoEl.muted;
+      }
+      self.port.emit('launch', options);
     }, true);
     vimeoDetailContainer.appendChild(tmp);
     sendMetric('available');
