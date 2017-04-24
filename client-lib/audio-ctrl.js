@@ -32,6 +32,7 @@ module.exports = class AudioCtrl {
 
         this._loop();
 
+        if (options.muted) this.audio.volume = 0;
         if (options.playing) this.audio.play();
       }
     });

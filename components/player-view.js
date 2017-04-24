@@ -52,6 +52,7 @@ module.exports = class Player extends React.Component {
     if (this.audio) this.audio.remove();
 
     this.audio = new AudioCtrl(Object.assign({}, this.props, {
+      muted: this.props.muted,
       playing: this.props.playing,
       url: this.props.queue[0].url,
       time: this.props.queue[0].currentTime,
