@@ -29,15 +29,15 @@
   "preferences": [
     {
       "name": "height",
-      "title": "Default window height",
-      "description": "window height",
+      "title": "Window height",
+      "description": "Default window height (260)",
       "type": "integer",
       "value": 260
     },
     {
       "name": "width",
-      "title": "Default window width",
-      "description": "window width",
+      "title": "Window width",
+      "description": "Default window width (400)",
       "type": "integer",
       "value": 400
     },
