@@ -66,7 +66,7 @@ class QueuesView extends React.Component {
             <ReactTooltip id='collapse-queue-menu' effect='solid' place='left'>{this.props.strings.ttCloseQueue}</ReactTooltip>
           </header>
 
-          <TabPanel className='panel-wrapper'>
+          <TabPanel className='panel-wrapper panel-queue'>
             <div className='clear'><a onClick={this.clearQueue.bind(this)}>{this.props.strings.clear}</a></div>
             <ul ref={this.sortableContainersDecorator.bind(this)}>
             {this.props.queue.map((item, i) => <Item {...item} shouldDrag={true} index={i} audio={this.props.audio}
@@ -74,7 +74,7 @@ class QueuesView extends React.Component {
             </ul>
           </TabPanel>
 
-          <TabPanel className='panel-wrapper'>
+          <TabPanel className='panel-wrapper panel-history'>
           <div className='clear'><a onClick={this.clearHistory.bind(this)}>{this.props.strings.clear}</a></div>
             <ul ref={this.sortableContainersDecorator}>
             {this.props.history.map((item, i) => <Item {...item} key={this.state.keyPrefix + i} index={i} replay={this.props.replay} isHistory={true} />)}

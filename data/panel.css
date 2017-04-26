@@ -534,12 +534,16 @@ canvas {
     width: 100%;
 }
 
-.queues .panel-wrapper li:first-child {
+.queues .panel-wrapper.panel-queue li:first-child {
     background: #363636;
 }
 
 .queues .panel-wrapper li:hover {
     background: #4a4a4a;
+}
+
+.queues .panel-wrapper.panel-history li:hover .add-from-history{
+    opacity: .7;
 }
 
 .queues .panel-wrapper li h5 {
@@ -789,6 +793,11 @@ canvas {
 
 .add-from-history {
     cursor: pointer;
+    opacity: .2;
+}
+
+.add-from-history:hover {
+    opacity: 1 !important;
 }
 
 .notification {
