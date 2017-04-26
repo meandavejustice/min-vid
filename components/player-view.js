@@ -277,7 +277,7 @@ module.exports = class Player extends React.Component {
                             <ReactTooltip id='next' effect='solid' place='right'>{this.props.strings.ttNext}</ReactTooltip>
                           </div>);
 
-    const exited = this.props.exited ? (<ReplayView {...this.props} exited={this.props.exited}
+    const exited = this.props.exited ? (<ReplayView {...this.props} nextTrack={this.nextTrack.bind(this)} exited={this.props.exited}
                                                     replay={this.replay.bind(this)} />) : null;
     const controls = !this.props.minimized ? (<div>
                                               <GeneralControls {...this.props} hovered={this.state.hovered}

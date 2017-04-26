@@ -238,6 +238,7 @@ video#video {
     height: 40px;
     justify-content: space-between;
     position: absolute;
+    top: 0;
     transition: opacity 250ms;
     width: 100%;
 }

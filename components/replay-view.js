@@ -14,7 +14,22 @@ module.exports = class ReplayView extends React.Component {
     sendToAddon({action: 'play-from-history'});
   }
 
+  startQueueCheck() {
+    const interval = () => {
+      if (this.props.exited && this.props.queue.length > 1) {
+        window.AppData.set({exited: false});
+        this.props.nextTrack();
+        window.AppData.set({playing: true});
+      } else setTimeout(interval, 200);
+    };
+
+    if (!this.props.exited) return;
+    interval();
+  }
+
   render() {
+    if (this.props.exited) this.startQueueCheck();
+
     const fromHistoryLink = this.props.history.length ? (<a className='play-from-history'
                                                          onClick={this.playFromHistory.bind(this)}>
                                                          Play from History?</a>) : null;
