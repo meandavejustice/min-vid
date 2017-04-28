@@ -105,7 +105,7 @@ module.exports = class Player extends React.Component {
 
   onEnded() {
     if (this.props.queue.length === 1) {
-      window.AppData.set({exited: true});
+      window.AppData.set({exited: true, playing: false});
     } else sendToAddon({action: 'track-ended'});
   }
 
@@ -284,9 +284,9 @@ module.exports = class Player extends React.Component {
                                               openQueueMenu={this.openQueueMenu.bind(this)} />
                                               <PlayerControls {...this.props} hovered={this.state.hovered} progress={this.state.progress}
                                               audio={this.audio} time={this.state.time} setTime={this.setTime.bind(this)}
-                                              closeQueueMenu={this.closeQueueMenu.bind(this)} />
+                                              replay={this.replay.bind(this)} closeQueueMenu={this.closeQueueMenu.bind(this)} />
                                               </div>) : (<MinimizedControls {...this.props} progress={this.state.progress}
-                                                         time={this.state.time} setTime={this.setTime.bind(this)} />);
+                                                         replay={this.replay.bind(this)} time={this.state.time} setTime={this.setTime.bind(this)} />);
 
     return (<div className='video-wrapper'
                  onMouseEnter={this.enterPlayer.bind(this)}
