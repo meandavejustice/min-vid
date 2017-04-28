@@ -74,7 +74,7 @@ module.exports = class SoundControl extends React.Component {
              className={cn('unmute', {hidden: !this.props.muted})} />
           {unmuteTooltip}
 
-          <div className={cn('volume', {hidden: !this.state.showVolume})}>
+          <div className={cn('volume', {hidden: !this.state.showVolume && !this.props.minimized})}>
             <input type='range' orient={this.props.minimized ? '' : 'vertical'} min='0' max='1' step='.01'
                    value={this.props.muted ? 0 : this.props.volume}
                    onChange={this.setVolume.bind(this)}/>

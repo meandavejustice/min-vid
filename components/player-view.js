@@ -2,7 +2,6 @@ const React = require('react');
 const cn = require('classnames');
 const keyboardJS = require('keyboardjs');
 const ReactPlayer = require('react-player');
-const ReactTooltip = require('react-tooltip');
 
 const AudioCtrl = require('../client-lib/audio-ctrl');
 const formatTime = require('../client-lib/format-time');
@@ -12,6 +11,8 @@ const sendMetricsEvent = require('../client-lib/send-metrics-event');
 const Queues = require('./queues');
 const ErrorView = require('./error-view');
 const ReplayView = require('./replay-view');
+const PrevTrackBtn = require('./prev-button');
+const NextTrackBtn = require('./next-button');
 const PlayerControls = require('./player-controls');
 const GeneralControls = require('./general-controls');
 const MinimizedControls = require('./minimized-controls');
@@ -144,40 +145,6 @@ module.exports = class Player extends React.Component {
     if (this.refs['player']) this.refs['player'].seekTo(clickedValue);
   }
 
-  openQueueMenu() {
-    this.setState({showQueue: true});
-  }
-
-  closeQueueMenu() {
-    this.setState({showQueue: false});
-  }
-
-  prevTrack () {
-    let index;
-    // if clicked more than once within
-    // 5 seconds increment the index so
-    // the user can get to further back
-    // in history. Resets when timeout wears out.
-    if (this.searchingHistory) {
-      if (this.props.history.length > this.state.historyIndex + 1) {
-        this.setState({historyIndex: this.state.historyIndex + 1});
-      }
-      index = this.state.historyIndex;
-    } else {
-      index = 0;
-      this.searchingHistory = true;
-      setTimeout(() => {
-        this.searchingHistory = false;
-        this.setState({historyIndex: 0});
-      }, 5000);
-    }
-
-    sendToAddon({
-      action: 'track-added-from-history',
-      index: index
-    });
-  }
-
   nextTrack () {
     if (this.props.queue.length < 2) return;
     this.replay();
@@ -187,6 +154,18 @@ module.exports = class Player extends React.Component {
       index: 1,
       moveIndexZero: true
     });
+  }
+
+  openQueueMenu() {
+    if (this.props.minimized) {
+      sendToAddon({action: 'maximize'});
+      window.AppData.set({minimized: false});
+    }
+    this.setState({showQueue: true});
+  }
+
+  closeQueueMenu() {
+    this.setState({showQueue: false});
   }
 
   handleSpace() {
@@ -266,17 +245,6 @@ module.exports = class Player extends React.Component {
                                                closeQueueMenu={this.closeQueueMenu.bind(this)}/>)
                                             : null;
 
-    const prevTrackBtn = (<div className={cn('prev-wrapper', {hidden: !this.state.hovered || this.props.confirm || this.props.minimized || !this.props.history.length})}>
-                            <a onClick={this.prevTrack.bind(this)}
-                               className='prev' data-tip data-for='prev' />
-                            <ReactTooltip id='prev' effect='solid' place='right'>{this.props.strings.ttPrev}</ReactTooltip>
-                          </div>);
-    const nextTrackBtn = (<div className={cn('next-wrapper', {hidden: !this.state.hovered || (this.props.queue.length < 2) || this.props.confirm || this.props.minimized})}>
-                            <a onClick={this.nextTrack.bind(this)}
-                               className='next' data-tip data-for='next' />
-                            <ReactTooltip id='next' effect='solid' place='right'>{this.props.strings.ttNext}</ReactTooltip>
-                          </div>);
-
     const exited = this.props.exited ? (<ReplayView {...this.props} nextTrack={this.nextTrack.bind(this)} exited={this.props.exited}
                                                     replay={this.replay.bind(this)} />) : null;
     const controls = !this.props.minimized ? (<div>
@@ -285,16 +253,16 @@ module.exports = class Player extends React.Component {
                                               <PlayerControls {...this.props} hovered={this.state.hovered} progress={this.state.progress}
                                               audio={this.audio} time={this.state.time} setTime={this.setTime.bind(this)}
                                               replay={this.replay.bind(this)} closeQueueMenu={this.closeQueueMenu.bind(this)} />
-                                              </div>) : (<MinimizedControls {...this.props} progress={this.state.progress}
-                                                         replay={this.replay.bind(this)} time={this.state.time} setTime={this.setTime.bind(this)} />);
+                                              </div>) : (<MinimizedControls {...this.props} progress={this.state.progress} nextTrack={this.nextTrack.bind(this)} openQueueMenu={this.openQueueMenu.bind(this)}
+                                                                            time={this.state.time} setTime={this.setTime.bind(this)} hovered={this.state.hovered}/>);
 
     return (<div className='video-wrapper'
                  onMouseEnter={this.enterPlayer.bind(this)}
                  onMouseLeave={this.leavePlayer.bind(this)}
                  onClick={this.handleVideoClick.bind(this)}>
               {exited}
-              {prevTrackBtn}
-              {nextTrackBtn}
+              <PrevTrackBtn {...this.props} hovered={this.state.hovered} />
+              <NextTrackBtn {...this.props} nextTrack={this.nextTrack.bind(this)} hovered={this.state.hovered} />
               {controls}
               {notification}
               {queuePanel}
@@ -323,9 +291,6 @@ module.exports = class Player extends React.Component {
 
     // next track
     keyboardJS.bind('>', () => this.nextTrack());
-
-    // previous track
-    keyboardJS.bind('<', () => this.prevTrack());
 
     // play/pause toggle
     keyboardJS.bind('space', ev => {

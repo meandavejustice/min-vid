@@ -233,7 +233,6 @@ video#video {
 .controls {
     background: linear-gradient(rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .33) 70%, transparent 100%);
     box-sizing: border-box;
-    cursor: grab;
     display: flex;
     height: 40px;
     justify-content: space-between;
@@ -265,10 +264,27 @@ video#video {
     cursor: grabbing;
 }
 
-.controls.minimized {
+.controls.drag {
+    cursor: grab;
+}
+
+.controls.minimized.drag {
     background: #000 !important;
     display: flex !important;
     opacity: .9;
+}
+
+.minimized .playback-button {
+    margin: 0 35px;
+}
+
+.bottom-controls {
+    top: 40px;
+    position: absolute;
+    display: flex;
+    width: 100%;
+    background: #222222;
+    opacity: 1;
 }
 
 .left,
@@ -403,6 +419,7 @@ input[type=range]::-moz-focus-outer {
     height: 50px;
     padding-top: 6px;
     width: 100%;
+    cursor: pointer;
 }
 
 .progress.peek {
@@ -416,7 +433,7 @@ input[type=range]::-moz-focus-outer {
 }
 
 .minimized .progress.peek {
-    z-index: 0;
+    z-index: 101;
     bottom: 2px;
 }
 
@@ -692,6 +709,10 @@ canvas {
     position: relative;
 }
 
+.minimized .sound-control {
+    margin-right: 75px;
+}
+
 .collapse-queue {
     position: absolute;
     top: 15px;
@@ -745,8 +766,12 @@ canvas {
     left: 0;
 }
 
-.next-wrapper {
+.video-wrapper > .next-wrapper {
     right: 0;
+}
+
+.minimized .next-wrapper {
+    left: 70px;
 }
 
 .prev-wrapper a {
