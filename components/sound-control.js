@@ -19,6 +19,24 @@ module.exports = class SoundControl extends React.Component {
       if (window.AppData.muted) this.unmute();
       else this.mute();
     });
+
+    keyboardJS.bind('up', ev => {
+      if (window.AppData.muted) this.unmute();
+      this.setVolume({
+        target: {
+          value: window.AppData.volume + .05
+        }
+      });
+    });
+
+    keyboardJS.bind('down', ev => {
+      if (window.AppData.muted) return;
+      else this.setVolume({
+        target: {
+          value: window.AppData.volume - .05
+        }
+      });
+    });
   }
 
   enterSound() {
