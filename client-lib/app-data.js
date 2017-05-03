@@ -33,7 +33,6 @@ module.exports = window.AppData = new Proxy({
         window.console.error('Unable to parse l10n strings: ', ex, prop, value);
       }
     } else obj[prop] = value;
-
     renderApp();
     return true;
   }

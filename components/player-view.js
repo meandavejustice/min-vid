@@ -107,7 +107,26 @@ module.exports = class Player extends React.Component {
   onEnded() {
     if (this.props.queue.length === 1) {
       window.AppData.set({exited: true, playing: false});
-    } else sendToAddon({action: 'track-ended'});
+    } else {
+      // Force a render before we get the update response from
+      // 'track-ended' event. This is to prevent a bug where
+      // duplicates in the playlist get into a paused state. Bug #766
+      const queue = window.AppData.queue.concat();
+      queue.unshift({
+        cc: false,
+        videoId: '',
+        url: '',
+        domain: 'youtube.com',
+        currentTime: 0,
+        error: false,
+        title: '',
+        duration: 0,
+        preview: `https://img.youtube.com/vi/blah/0.jpg`,
+        live: false
+      });
+      window.AppData.set({queue: JSON.stringify(queue)});
+      sendToAddon({action: 'track-ended'});
+    }
   }
 
   onLoaded(duration) {
