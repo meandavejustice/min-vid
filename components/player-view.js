@@ -1,6 +1,7 @@
 const React = require('react');
 const cn = require('classnames');
 const keyboardJS = require('keyboardjs');
+const debounce = require('lodash.debounce');
 const ReactPlayer = require('react-player');
 
 const AudioCtrl = require('../client-lib/audio-ctrl');
@@ -241,7 +242,7 @@ module.exports = class Player extends React.Component {
 
     const visualEl = this.props.queue[0].error ? (<ErrorView {...this.props} countdown={this.state.errorCount} />) :
           this.props.queue[0].player === 'audio' ?
-          (<div id='audio-container' ref='audio-container' onClick={this.handleVideoClick.bind(this)}/>) :
+          (<div id='audio-container' ref='audio-container' onClick={debounce(this.handleVideoClick.bind(this), 100)}/>) :
           (<ReactPlayer {...this.props} url={this.props.queue[0].url} ref='player'
                         onPlay={this.onPlay.bind(this)}
                         onPause={this.onPause.bind(this)}
@@ -278,7 +279,7 @@ module.exports = class Player extends React.Component {
     return (<div className='video-wrapper'
                  onMouseEnter={this.enterPlayer.bind(this)}
                  onMouseLeave={this.leavePlayer.bind(this)}
-                 onClick={this.handleVideoClick.bind(this)}>
+                 onClick={debounce(this.handleVideoClick.bind(this), 100)}>
               {exited}
               <PrevTrackBtn {...this.props} hovered={this.state.hovered} />
               <NextTrackBtn {...this.props} nextTrack={this.nextTrack.bind(this)} hovered={this.state.hovered} />
