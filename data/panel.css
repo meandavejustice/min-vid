@@ -234,10 +234,10 @@ video#video {
     background: linear-gradient(rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .33) 70%, transparent 100%);
     box-sizing: border-box;
     display: flex;
-    height: 40px;
+    height: 50px;
     justify-content: space-between;
     position: absolute;
-    top: 0;
+    padding-top: 5px;
     transition: opacity 250ms;
     width: 100%;
 }
@@ -275,14 +275,24 @@ video#video {
 }
 
 .minimized .playback-button {
-    margin: 0 35px;
+    margin: -3px 35px 0 37px;
 }
 
+.minimized .prev-wrapper.hidden ~ .playback-button {
+	margin-left: 0px;
+}
+
+.minimized .prev-wrapper.hidden ~ .next-wrapper {
+    left: 45px;
+}
+
+
 .bottom-controls {
-    top: 40px;
+    top: 50px;
     position: absolute;
     display: flex;
     width: 100%;
+    height: 50px;
     background: #222222;
     opacity: 1;
 }
@@ -290,6 +300,7 @@ video#video {
 .left,
 .right {
     display: flex;
+    margin: 0 5px;
 }
 
 .play {
@@ -335,19 +346,19 @@ video#video {
 .volume {
     background: #222;
     opacity: .9;
-    border-radius: 2px;
-    width: 20px;
-    height: 75px;
+    border-radius: 4px;
+    width: 22px;
+    height: 81px;
     position: absolute;
     bottom: 30px;
     left: 10px;
 }
 
 .volume input {
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     height: 65px;
-    margin-top: 4px;
+    margin-top: 8px;
     width: 6px;
 }
 
@@ -384,14 +395,14 @@ input[type=range]::-moz-focus-outer {
 
 /* Volume control minimized */
 .minimized .sound-control a {
-    margin-top: 0;
+    margin-top: -3px;
 }
 
 .minimized .volume {
     width: 85px;
     height: 20px;
     position: absolute;
-    bottom: 10px;
+    bottom: 20px;
     left: 35px;
 }
 
@@ -415,11 +426,15 @@ input[type=range]::-moz-focus-outer {
 
 .progress {
     box-sizing: border-box;
-
     height: 50px;
     padding-top: 6px;
     width: 100%;
     cursor: pointer;
+}
+
+.minimized .progress {
+	height: 6px;
+	top: -2px;
 }
 
 .progress.peek {
@@ -443,6 +458,7 @@ input[type=range]::-moz-focus-outer {
     border-radius: 5px;
     height: 10px;
     margin-top: 6px;
+    margin-bottom: 14px;
     overflow: hidden;
     width: 95%;
 }
@@ -548,7 +564,7 @@ canvas {
     display: flex;
     flex-direction: row;
     padding: 1px 2px;
-
+    background-color: #212121;
     width: 100%;
 }
 
@@ -684,10 +700,9 @@ canvas {
 .player-controls {
     width: 100%;
     height: 50px;
-    padding-top: 6px;
+    padding: 6px 0px 5px 0px;
     position: absolute;
     bottom: 0;
-
     display: flex;
     flex-direction: row;
 }
@@ -702,21 +717,22 @@ canvas {
 .player-controls a {
     align-items: center;
     display: flex;
-    margin-top: 12px;
+    margin: 12px 5px 0 5px;
 }
 
 .sound-control {
     position: relative;
+    margin-right: 10px;
 }
 
 .minimized .sound-control {
-    margin-right: 75px;
+    margin-right: 79px;
 }
 
 .collapse-queue {
     position: absolute;
     top: 15px;
-    right: 10px;
+    right: 15px;
 
 
     display: block;
@@ -763,15 +779,20 @@ canvas {
 }
 
 .prev-wrapper {
-    left: 0;
+    left: 7px;
 }
 
 .video-wrapper > .next-wrapper {
-    right: 0;
+    right: 7px;
 }
 
 .minimized .next-wrapper {
-    left: 70px;
+    left: 82px;
+    margin-top: -8px;
+}
+
+.minimized .prev-wrapper {
+ 	margin-top: -8px;   
 }
 
 .prev-wrapper a {
@@ -788,10 +809,10 @@ canvas {
     background-position: center center;
     background-repeat: no-repeat;
     cursor: pointer;
-    height: 40px;
+    height: 33.6px;
     opacity: .7;
     text-decoration: none;
-    width: 40px;
+    width: 36px;
     background-size: 50%;
 
     background-repeat: no-repeat;
