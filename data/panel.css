@@ -279,7 +279,7 @@ video#video {
 }
 
 .minimized .prev-wrapper.hidden ~ .playback-button {
-	margin-left: 0px;
+    margin-left: 0px;
 }
 
 .minimized .prev-wrapper.hidden ~ .next-wrapper {
@@ -433,8 +433,8 @@ input[type=range]::-moz-focus-outer {
 }
 
 .minimized .progress {
-	height: 6px;
-	top: -2px;
+    height: 6px;
+    top: -2px;
 }
 
 .progress.peek {
