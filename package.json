@@ -102,7 +102,7 @@
     "react": "15.5.4",
     "react-dom": "15.5.4",
     "react-player": "0.15.0",
-    "react-tabs": "0.8.3",
+    "react-tabs": "1.0.0",
     "react-tooltip": "3.3.0",
     "sortablejs": "1.5.1",
     "storybook-host": "1.0.14",
