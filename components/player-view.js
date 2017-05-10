@@ -189,6 +189,7 @@ module.exports = class Player extends React.Component {
   }
 
   handleSpace() {
+    if (this.props.exited) return this.replay();
     window.AppData.set({playing: !window.AppData.playing});
     if (this.audio) {
       if (this.audio.playing) this.audio.pause();
@@ -313,12 +314,6 @@ module.exports = class Player extends React.Component {
     keyboardJS.bind('>', () => this.nextTrack());
 
     // play/pause toggle
-    keyboardJS.bind('space', ev => {
-      if (this.audio) {
-        if (window.AppData.playing) this.audio.pause();
-        else this.audio.play();
-      }
-      window.AppData.set({playing: !window.AppData.playing});
-    });
+    keyboardJS.bind('space', () => this.handleSpace());
   }
 }
