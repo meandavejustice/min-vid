@@ -107,7 +107,7 @@ module.exports = class Player extends React.Component {
 
   onEnded() {
     if (this.props.queue.length === 1) {
-      window.AppData.set({exited: true, playing: false});
+      window.AppData.set({exited: true});
     } else {
       // Force a render before we get the update response from
       // 'track-ended' event. This is to prevent a bug where
