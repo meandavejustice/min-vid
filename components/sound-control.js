@@ -78,19 +78,15 @@ module.exports = class SoundControl extends React.Component {
   }
 
   render() {
-    const muteTooltip = !this.props.minimized ? (<ReactTooltip id='mute' effect='solid' place='bottom'>
-                                                 {this.props.strings.ttMute}</ReactTooltip>) : null;
-    const unmuteTooltip = !this.props.minimized ? (<ReactTooltip id='unmute' effect='solid' place='bottom'>
-                                                   {this.props.strings.ttUnmute}</ReactTooltip>) : null;
     return (
         <div className={cn('sound-control', {hidden: !this.props.hovered && !this.props.minimized})}
              onMouseEnter={this.enterSound.bind(this)} onMouseLeave={this.leaveSound.bind(this)}>
           <a onClick={this.mute.bind(this)} data-tip data-for='mute'
              className={cn('mute', {hidden: this.props.muted})} />
-          {muteTooltip}
+          <ReactTooltip id='mute' effect='solid' place='left'>{this.props.strings.ttMute}</ReactTooltip>
           <a onClick={this.unmute.bind(this)} data-tip data-for='unmute'
              className={cn('unmute', {hidden: !this.props.muted})} />
-          {unmuteTooltip}
+          <ReactTooltip id='unmute' effect='solid' place='left'>{this.props.strings.ttUnmute}</ReactTooltip>
 
           <div className={cn('volume', {hidden: !this.state.showVolume && !this.props.minimized})}>
             <input type='range' orient={this.props.minimized ? '' : 'vertical'} min='0' max='1' step='.01'
