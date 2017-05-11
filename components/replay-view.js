@@ -18,7 +18,10 @@ module.exports = class ReplayView extends React.Component {
     const interval = () => {
       if (this.props.exited && this.props.queue.length > 1) {
         window.AppData.set({exited: false});
-        this.props.nextTrack();
+        // only forward the track if 'add-to-queue' was selected,
+        // if 'Play Now' was selected we want to play the first track
+        // in queue. We detect this by checking the playing prop.
+        if (!this.props.playing) this.props.nextTrack();
         window.AppData.set({playing: true});
       } else setTimeout(interval, 200);
     };

@@ -165,7 +165,7 @@ module.exports = class Player extends React.Component {
     if (this.refs['player']) this.refs['player'].seekTo(clickedValue);
   }
 
-  nextTrack () {
+  nextTrack() {
     if (this.props.queue.length < 2) return;
     this.replay();
     if (this.audio) this.audio.pause();
