@@ -268,13 +268,20 @@ module.exports = class Player extends React.Component {
     const exited = this.props.exited ? (<ReplayView {...this.props} nextTrack={this.nextTrack.bind(this)} exited={this.props.exited}
                                                     replay={this.replay.bind(this)} />) : null;
     const controls = !this.props.minimized ? (<div>
-                                              <GeneralControls {...this.props} hovered={this.state.hovered}
-                                              openQueueMenu={this.openQueueMenu.bind(this)} />
-                                              <PlayerControls {...this.props} hovered={this.state.hovered} progress={this.state.progress}
-                                              audio={this.audio} time={this.state.time} setTime={this.setTime.bind(this)}
-                                              replay={this.replay.bind(this)} closeQueueMenu={this.closeQueueMenu.bind(this)} />
-                                              </div>) : (<MinimizedControls {...this.props} progress={this.state.progress} nextTrack={this.nextTrack.bind(this)} openQueueMenu={this.openQueueMenu.bind(this)}
-                                                                            time={this.state.time} setTime={this.setTime.bind(this)} hovered={this.state.hovered}/>);
+                                                <GeneralControls {...this.props} hovered={this.state.hovered}
+                                                                 openQueueMenu={this.openQueueMenu.bind(this)} />
+                                                <PlayerControls {...this.props} hovered={this.state.hovered}
+                                                                progress={this.state.progress}
+                                                                audio={this.audio} time={this.state.time}
+                                                                setTime={this.setTime.bind(this)}
+                                                                replay={this.replay.bind(this)}
+                                                                closeQueueMenu={this.closeQueueMenu.bind(this)} />
+                                              </div>) : (<MinimizedControls {...this.props} progress={this.state.progress}
+                                                                            nextTrack={this.nextTrack.bind(this)}
+                                                                            openQueueMenu={this.openQueueMenu.bind(this)}
+                                                                            time={this.state.time} audio={this.audio}
+                                                                            setTime={this.setTime.bind(this)}
+                                                                            hovered={this.state.hovered} />);
 
     return (<div className='video-wrapper'
                  onMouseEnter={this.enterPlayer.bind(this)}
