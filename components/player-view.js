@@ -66,7 +66,7 @@ module.exports = class Player extends React.Component {
       onEnded: this.onEnded.bind(this),
       onLoaded: this.onLoaded.bind(this),
       onProgress: this.onProgress.bind(this),
-      container: this.refs['audio-container']
+      container: this.audioContainer
     }));
   }
 
@@ -162,7 +162,7 @@ module.exports = class Player extends React.Component {
 
     if (this.audio) this.audio.time = nextTime;
     window.AppData.set({currentTime: nextTime});
-    if (this.refs['player']) this.refs['player'].seekTo(clickedValue);
+    if (this.player) this.player.seekTo(clickedValue);
   }
 
   nextTrack() {
@@ -243,8 +243,8 @@ module.exports = class Player extends React.Component {
 
     const visualEl = this.props.queue[0].error ? (<ErrorView {...this.props} countdown={this.state.errorCount} />) :
           this.props.queue[0].player === 'audio' ?
-          (<div id='audio-container' ref='audio-container' onClick={debounce(this.handleVideoClick.bind(this), 100)}/>) :
-          (<ReactPlayer {...this.props} url={this.props.queue[0].url} ref='player'
+          (<div id='audio-container' ref={(c) => {this.audioContainer = c;}} onClick={debounce(this.handleVideoClick.bind(this), 100)}/>) :
+          (<ReactPlayer {...this.props} url={this.props.queue[0].url} ref={(c) => { this.player = c; }}
                         onPlay={this.onPlay.bind(this)}
                         onPause={this.onPause.bind(this)}
                         onProgress={this.onProgress.bind(this)}
@@ -303,7 +303,7 @@ module.exports = class Player extends React.Component {
     keyboardJS.bind('right', ev => {
       if (this.props.queue[0].domain === 'youtube.com') return;
       if (this.props.queue[0].live) return;
-      if (this.refs['player']) this.refs['player'].seekTo(((window.AppData.duration * this.state.progress) + 5) / window.AppData.duration);
+      if (this.player) this.player.seekTo(((window.AppData.duration * this.state.progress) + 5) / window.AppData.duration);
       if (this.audio) this.audio.time = this.audio.time + 5;
       window.AppData.set({currentTime: (window.AppData.duration * this.state.progress) + 5});
     });
@@ -312,7 +312,7 @@ module.exports = class Player extends React.Component {
     keyboardJS.bind('left', ev => {
       if (this.props.queue[0].domain === 'youtube.com') return;
       if (this.props.queue[0].live) return;
-      if (this.refs['player']) this.refs['player'].seekTo(((window.AppData.duration * this.state.progress) - 5) / window.AppData.duration);
+      if (this.player) this.player.seekTo(((window.AppData.duration * this.state.progress) - 5) / window.AppData.duration);
       if (this.audio) this.audio.time = this.audio.time - 5;
       window.AppData.set({currentTime: (window.AppData.duration * this.state.progress) - 5});
     });
