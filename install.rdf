@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>@min-vid</em:id>
+    <em:bootstrap>true</em:bootstrap>
+    <em:hasEmbeddedWebExtension>true</em:hasEmbeddedWebExtension>
+    <em:type>2</em:type>
+    <em:unpack>false</em:unpack>
+    <em:version>1.0.10</em:version>
+    <em:name>Min Vid</em:name>
+    <em:creator>Dave Justice</em:creator>
+    <em:developer>Jared Hirsch</em:developer>
+    <em:contributor>Noitidart</em:contributor>
+    <em:contributor>Peter Dehaan</em:contributor>
+    <em:contributor>Jen Kagan</em:contributor>
+    <em:contributor>youwenliang</em:contributor>
+    <em:contributor>NearTox</em:contributor>
+    <em:contributor>Chuck Harmston</em:contributor>
+    <em:contributor>contra</em:contributor>
+    <em:description>Minimize a web video or audio track into a small always-on-top panel in Firefox.</em:description>
+    <em:homepageURL>https://testpilot.firefox.com/experiments/min-vid</em:homepageURL>
+    <!-- <em:optionsURL>chrome://universalsearch/content/preferences.xul</em:optionsURL> -->
+    <em:iconURL>chrome://minvid-skin/content/icon.png</em:iconURL>
+    <em:optionsType>2</em:optionsType>
+    <em:updateURL>https://testpilot.firefox.com/files/@min-vid/updates.json</em:updateURL>
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>45.0</em:minVersion>
+        <em:maxVersion>*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <em:multiprocessCompatible>true</em:multiprocessCompatible>
+  </Description>
+</RDF>

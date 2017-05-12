@@ -1,0 +1,62 @@
+{
+  "root": true,
+  "env" : {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:mozilla/recommended"
+  ],
+  "plugins": [
+    "react",
+    "mozilla"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "globals": {
+    "browser": true
+  },
+  "rules": {
+    "semi": 2,
+    "import/prefer-default-export": 0,
+    "react/prop-types": 0,
+    "react/no-danger": 2,
+    "react/no-danger-with-children": 2,
+    "arrow-body-style": 0,
+    "camelcase": 0,
+    "prefer-template": 0,
+    "object-shorthand": 0,
+    "comma-dangle": 2,
+    "max-len": 0,
+    "no-console": 1,
+    "no-multi-spaces": 0,
+    "no-param-reassign": 0,
+    "no-return-assign": 0,
+    "no-unused-expressions": 0,
+    "no-use-before-define": [2, "nofunc"],
+    "yoda": 0,
+    "linebreak-style": 0,
+    "mozilla/use-ownerGlobal": 1,
+    "consistent-return": 1,
+    "eqeqeq": 1,
+    "indent": ["error", 2],
+    "keyword-spacing": 2,
+    "no-extra-boolean-cast": 0,
+    "no-unused-vars": ["error", {"vars": "all", "args": "none"}],
+    "no-var": 1,
+    "prefer-const": 2,
+    "quotes": ["error", "single", {"avoidEscape": true, "allowTemplateLiterals": true}],
+    "react/prop-types": 0,
+    "react/jsx-uses-react": 1,
+    "space-before-blocks": 2
+  }
+}

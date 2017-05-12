@@ -3,113 +3,59 @@
   "name": "min-vid",
   "version": "0.3.9",
   "private": true,
-  "icon": "resource://min-vid/docs/images/dark-logo.png",
-  "description": "Minimize a web video or audio track into a small always-on-top panel in Firefox.",
-  "homepage": "https://github.com/meandavejustice/min-vid",
   "repository": "meandavejustice/min-vid",
-  "main": "index.js",
   "author": "meandave",
   "updateURL": "https://testpilot.firefox.com/files/@min-vid/updates.json",
   "engines": {
     "firefox": ">=38.0a1"
   },
-  "permissions": {
-    "multiprocess": true,
-    "private-browsing": true,
-    "unsafe-content-script": true
-  },
   "bugs": {
     "url": "https://github.com/meandavejustice/min-vid/issues"
   },
-  "config": {
-    "SOUNDCLOUD_CLIENT_ID": "c23df04aed9a788cd31fd5b100f22a7a",
-    "GA_TRACKING_ID": "UA-46704490-3",
-    "YOUTUBE_DATA_API_KEY": "AIzaSyCfy3cdlDMB9cEVwuHiGACnUjbc9G0gXTc"
-  },
-  "preferences": [
-    {
-      "name": "height",
-      "title": "Window height",
-      "description": "Default window height (260)",
-      "type": "integer",
-      "value": 260
-    },
-    {
-      "name": "width",
-      "title": "Window width",
-      "description": "Default window width (400)",
-      "type": "integer",
-      "value": 400
-    },
-    {
-      "description": "Keyboard shortcuts enabled",
-      "type": "bool",
-      "name": "keyShortcutsEnabled",
-      "value": true,
-      "title": "Keyboard shortcuts enabled"
-    }
-  ],
-  "browserify-css": {
-    "autoInject": true,
-    "minify": true,
-    "rootDir": "."
-  },
   "scripts": {
-    "lint": "eslint . bin/*",
-    "build-script": "cross-env NODE_ENV=production browserify app.js -t [ babelify --presets [ react es2015 ] svgify ] > data/bundle.js",
-    "watch-script": "cross-env NODE_ENV=development watchify app.js -o data/bundle.js -t [ babelify --presets [ react es2015 ] svgify ]",
-    "storybook": "start-storybook -p 9001 -c .storybook",
+    "lint": "eslint -c .eslintrc.json .",
     "start": "npm run dev",
-    "watch": "jpm watchpost --post-url http://localhost:8888",
-    "dev": "npm run locales && npm run watch-script & npm run watch & http-server -c-1 --cors",
-    "prepackage": "npm run locales && npm run lint",
-    "package": "npm run build-script && jpm xpi && npm run mv-xpi",
-    "postpackage": "addons-linter addon.xpi -o text",
-    "locales": "node ./bin/locales",
-    "mv-xpi": "mv min-vid.xpi addon.xpi",
+    "watch-script": "onchange '**/*.js' -w -e 'dist/**/*.js' -e 'webextension/dist/**/*.js' -- npm run package",
+    "copy:locales": "node ./bin/locales",
+    "dev": "npm run copy:locales && npm run watch-script",
+    "package": "webpack && make",
+    "prepackage": "npm run copy:locales && npm run lint",
+    "postpackage": "addons-linter dist/addon.xpi -o text",
     "prepush": "npm run package",
     "deploy": "deploy-txp"
   },
   "license": "MPL-2.0",
-  "dependencies": {
-    "get-video-id": "2.1.4",
-    "iso8601-duration": "1.0.6",
-    "lodash.debounce": "4.0.8",
-    "testpilot-metrics": "2.1.3"
-  },
   "devDependencies": {
-    "@kadira/storybook": "2.35.3",
     "addons-linter": "0.20.0",
     "audiosource": "3.0.3",
     "babel": "6.23.0",
+    "babel-core": "6.25.0",
+    "babel-eslint": "7.2.3",
+    "babel-loader": "7.1.1",
     "babel-preset-es2015": "6.24.1",
     "babel-preset-react": "6.24.1",
-    "babelify": "7.3.0",
-    "browserify": "14.4.0",
     "classnames": "2.2.5",
-    "cross-env": "5.0.2",
+    "cross-spawn": "5.1.0",
     "deep-assign": "2.0.0",
     "deploy-txp": "1.0.7",
     "eslint": "3.19.0",
     "eslint-plugin-mozilla": "0.3.2",
     "eslint-plugin-react": "7.0.1",
-    "gl-waveform": "2.4.3",
-    "glob": "7.1.2",
-    "http-server": "0.10.0",
+    "get-video-id": "2.1.5",
     "husky": "0.13.4",
-    "jpm": "1.3.1",
-    "just-extend": "1.1.22",
+    "iso8601-duration": "1.0.6",
     "keyboardjs": "2.3.3",
-    "react": "15.5.4",
-    "react-dom": "15.5.4",
-    "react-player": "0.18.0",
+    "lodash.debounce": "4.0.8",
+    "onchange": "3.2.1",
+    "pontoon-to-webext": "1.0.2",
+    "react": "15.6.1",
+    "react-dom": "15.6.1",
+    "react-player": "0.19.1",
     "react-tabs": "0.8.3",
     "react-tooltip": "3.3.0",
     "sortablejs": "1.6.0",
-    "storybook-host": "2.0.0-alpha.1",
-    "svgify": "0.0.0",
-    "svgo-loader": "1.2.1",
-    "watchify": "3.9.0",
-    "webworkify-webpack": "2.0.5"
+    "testpilot-ga": "0.3.0",
+    "uuid": "3.1.0",
+    "webpack": "3.3.0"
   }
 }

@@ -32,7 +32,6 @@ sending to the player from the context menu.
 * set `xpinstall.signatures.required` in `about:config`
 * install xpi by dragging onto the `about:addons` page
 
-
 **note**
 The `xpinstall.signatures.required` option in `about:config` needs to
 be set in order to install unsigned add-ons.
@@ -40,15 +39,13 @@ be set in order to install unsigned add-ons.
 ## Development
 Contributions welcome. To get started,
 
-1.  Clone the repo:
-
-   `https://github.com/meandavejustice/min-vid.git`  
+1.  Clone the repo: `https://github.com/meandavejustice/min-vid.git`
 
 2.  Install packages:  `npm install`
 
-3. Install [autoinstaller add-on](https://addons.mozilla.org/en-US/firefox/addon/autoinstaller/)
-
-4. `npm run dev` to watch for file changes while developing.
+3. `npm run dev` to watch for file changes while developing. (jpm watchpost has been disabled for this
+release, we are working on a way to add it back, in the meantime, you will need to manually dragndrop
+the xpi onto the `about:addons` page)
 
 For further information on contributing, see [contributing.md](./contributing.md)
 

@@ -1,0 +1,28 @@
+{
+  "name": "Min Vid",
+  "version": "1.0.10",
+  "manifest_version": 2,
+  "default_locale": "en_US",
+  "permissions": ["storage", "alarms", "tabs", "<all_urls>"],
+  "background": {
+    "scripts": ["dist/background.bundle.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-scripts/icon-overlay.js"],
+      "css": ["content-scripts/icon-overlay.css"]
+    }
+  ],
+  "options_ui": {
+    "page": "options/options.html",
+    "browser_style": true
+  },
+  "config": {
+    "DEFAULT_WIDTH": "400",
+    "DEFAULT_HEIGHT": "260",
+    "GA_TRACKING_ID": "UA-46704490-3",
+    "SOUNDCLOUD_CLIENT_ID": "c23df04aed9a788cd31fd5b100f22a7a",
+    "YOUTUBE_DATA_API_KEY": "AIzaSyCfy3cdlDMB9cEVwuHiGACnUjbc9G0gXTc"
+  }
+}

@@ -4,20 +4,34 @@
  * version 2.0 (the 'License'). You can obtain a copy of the License at
  * http://mozilla.org/MPL/2.0/.
  */
+const https = require('https');
+const spawn = require('cross-spawn');
+const url = 'https://l10n.mozilla-community.org/webstatus/api/?product=testpilot-min-vid&json&type=complete';
 
-/* eslint-disable no-console */
+if (process.env.NODE_ENV === 'production') {
+  fetchLocales(conversion);
+} else conversion('*');
 
-const fs = require('fs');
-const glob = require('glob');
-
-glob('locales/*/*.properties', function(err, files) {
-  if (err) return console.error('Error finding files', err);
-  files.forEach(function(path) {
-    fs.createReadStream(path).pipe(fs.createWriteStream(`locale/${parseLang(path)}.properties`));
+function conversion(locales) {
+  const result = spawn.sync('pontoon-to-webext', ['--dest=webextension/_locales'], {
+    stdio: 'inherit',
+    env: Object.assign(
+      {},
+      process.env,
+      { SUPPORTED_LOCALES: locales }
+    )
   });
-});
 
-function parseLang(path) {
-  const segments = path.split('/');
-  return segments[segments.length - 2];
+  if (result.error) {
+    console.error(result.error); // eslint-disable-line no-console
+    process.exit(1);
+  }
+}
+
+function fetchLocales(cb) {
+  return https.get(url, function(res) {
+    let body = '';
+    res.on('data', d => body += d);
+    res.on('end', () => cb(JSON.parse(body).toString()));
+  });
 }
