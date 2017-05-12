@@ -18,7 +18,8 @@ class ErrorView extends React.Component {
       domain: this.props.queue[0].domain ,
       time: 0,
       tabId: this.props.tabId,
-      url: this.props.queue[0].url
+      url: this.props.queue[0].url,
+      launchUrl: this.props.queue[0].launchUrl
     });
   }
 
