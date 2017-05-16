@@ -15,7 +15,7 @@ module.exports = class PrevButton extends React.Component {
     keyboardJS.bind('<', () => this.prevTrack());
   }
 
-  prevTrack () {
+  prevTrack() {
     let index;
     // if clicked more than once within
     // 5 seconds increment the index so
@@ -37,7 +37,7 @@ module.exports = class PrevButton extends React.Component {
 
     sendToAddon({
       action: 'track-added-from-history',
-      index: index
+      index
     });
   }
 

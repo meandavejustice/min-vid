@@ -7,7 +7,7 @@ const sendMetricsEvent = require('../client-lib/send-metrics-event');
 module.exports = class SoundControl extends React.Component {
   constructor(props) {
     super(props);
-    this.state ={
+    this.state = {
       showVolume: false,
       prevVolume: 0.5
     };
@@ -31,7 +31,7 @@ module.exports = class SoundControl extends React.Component {
 
     keyboardJS.bind('down', ev => {
       if (window.AppData.muted) return;
-      else this.setVolume({
+      this.setVolume({
         target: {
           value: window.AppData.volume - .05
         }

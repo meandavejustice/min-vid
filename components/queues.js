@@ -38,7 +38,7 @@ class QueuesView extends React.Component {
     if (componentBackingInstance) {
       Sortable.create(componentBackingInstance, {
         handle: '.drag-handle',
-        onEnd: onEnd
+        onEnd
       });
     }
   }
@@ -59,8 +59,8 @@ class QueuesView extends React.Component {
               className='queues'>
           <header>
             <TabList className='queue-headers'>
-              <Tab className={cn({active:(this.state.activeTabIndex === 0)})}><h3>{this.props.strings.playQueue}</h3></Tab>
-              <Tab className={cn({active:(this.state.activeTabIndex === 1)})}><h3>{this.props.strings.history}</h3></Tab>
+              <Tab className={cn({active: (this.state.activeTabIndex === 0)})}><h3>{this.props.strings.playQueue}</h3></Tab>
+              <Tab className={cn({active: (this.state.activeTabIndex === 1)})}><h3>{this.props.strings.history}</h3></Tab>
             </TabList>
             <a className='collapse-queue' onClick={this.props.closeQueueMenu.bind(this)} data-tip data-for='collapse-queue-menu'></a>
             <ReactTooltip id='collapse-queue-menu' effect='solid' place='left'>{this.props.strings.ttCloseQueue}</ReactTooltip>

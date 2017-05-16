@@ -135,7 +135,7 @@ module.exports = class Player extends React.Component {
     window.AppData.set({loaded: true, exited: false});
     if (this.props.queue[0].live) this.setState({time: 'LIVE'});
     if (duration) {
-      window.AppData.set({duration: duration});
+      window.AppData.set({duration});
       this.onProgress({played: 0});
     }
   }
@@ -207,8 +207,7 @@ module.exports = class Player extends React.Component {
     if (this.audio) {
       this.audio.currentTime = 0;
       this.audio.play();
-    }
-    else this.setTime(null, 0);
+    } else this.setTime(null, 0);
   }
 
   startErrorTimeout() {
@@ -218,7 +217,7 @@ module.exports = class Player extends React.Component {
     const countdown = (count) => {
       this.setState({errorCount: count});
       if (count > 0) {
-        setTimeout(()=> {countdown(count - 1)}, 1000);
+        setTimeout(() => { countdown(count - 1) }, 1000);
       } else if (this.props.queue[0].error) this.nextTrack();
     };
 
@@ -230,7 +229,7 @@ module.exports = class Player extends React.Component {
     const countdown = (count) => {
       this.setState({notificationCount: count});
       if (count > 0) {
-        setTimeout(()=> {countdown(count - 1)}, 1000);
+        setTimeout(() => { countdown(count - 1) }, 1000);
       } else window.AppData.set({trackAdded: false});
     };
 
@@ -238,26 +237,33 @@ module.exports = class Player extends React.Component {
     countdown(6);
   }
 
-  render () {
+  render() {
     if (this.props.queue[0].error && this.props.queue.length > 1) this.startErrorTimeout();
 
-    const visualEl = this.props.queue[0].error ? (<ErrorView {...this.props} countdown={this.state.errorCount} />) :
-          this.props.queue[0].player === 'audio' ?
-          (<div id='audio-container' ref={(c) => {this.audioContainer = c;}} onClick={debounce(this.handleVideoClick.bind(this), 100)}/>) :
-          (<ReactPlayer {...this.props} url={this.props.queue[0].url} ref={(c) => { this.player = c; }}
+    let visualEl;
+
+    if (this.props.queue[0].error) {
+      visualEl = <ErrorView {...this.props} countdown={this.state.errorCount} />;
+    } else if (this.props.queue[0].player === 'audio') {
+      visualEl = <div id='audio-container' ref={(c) => { this.audioContainer = c; }} onClick={debounce(this.handleVideoClick.bind(this), 100)}/>;
+    } else {
+      visualEl = <ReactPlayer {...this.props} url={this.props.queue[0].url} ref={(c) => { this.player = c; }}
                         onPlay={this.onPlay.bind(this)}
                         onPause={this.onPause.bind(this)}
                         onProgress={this.onProgress.bind(this)}
                         onReady={this.onLoaded.bind(this)}
                         onDuration={(d) => window.AppData.set({duration: d})}
-                        youtubeConfig={{'playerVars':{'cc_load_policy': this.props.queue[0].cc, disablekb: 1}}}
+                        youtubeConfig={{'playerVars': {'cc_load_policy': this.props.queue[0].cc, disablekb: 1}}}
                         progressFrequency={100}
                         onError={this.onError.bind(this)}
-                        onEnded={this.onEnded.bind(this)}
-           />);
+                        onEnded={this.onEnded.bind(this)} />;
+    }
 
-    const notification = this.state.showQueue ? null :
-          this.props.trackAdded ? (<div className="notification fade-in-out">{this.props.strings.itemAddedNotification}</div>) : null;
+    let notification = null;
+
+    if (!this.state.showQueue && this.props.trackAdded) {
+      notification = <div className="notification fade-in-out">{this.props.strings.itemAddedNotification}</div>;
+    }
 
     if (notification) this.startNotificationTimeout();
 

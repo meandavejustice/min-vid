@@ -69,8 +69,15 @@ module.exports = class Item extends React.Component {
       filter: (this.state.hovered) ? 'opacity(60%) grayscale(20%)' : ''
     };
 
-    const columnOneContent = this.props.isHistory ? <a className='add-from-history' onClick={this.add.bind(this)}><img src={addIcon} /></a> :
-        this.props.index ? (<p>{this.props.index +1}</p>) : (<img src={playIcon} />);
+    let columnOneContent;
+
+    if (this.props.isHistory) {
+      columnOneContent = <a className='add-from-history' onClick={this.add.bind(this)}><img src={addIcon} /></a>;
+    } else if (this.props.index) {
+      columnOneContent = <p>{this.props.index + 1}</p>;
+    } else {
+      columnOneContent = <img src={playIcon} />;
+    }
 
     const dragHandle = (this.props.shouldDrag && this.props.index) ?
                        (<div className={cn('drag-handle', {hidden: !this.state.hovered})}></div>)

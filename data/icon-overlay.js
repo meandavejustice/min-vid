@@ -109,7 +109,7 @@ function ytWatchElementHandler(el) {
       domain: 'youtube.com',
       time: videoEl.currentTime,
       action: getAction(ev),
-      cc: cc
+      cc
     };
     if (options.action !== 'add-to-queue') {
       options.volume = videoEl.volume;
@@ -268,7 +268,7 @@ function sendMetric(method) {
   if (method === 'available') availableMetricSent = true;
   self.port.emit('metric', {
     object: 'overlay_icon',
-    method: method
+    method
   });
 }
 

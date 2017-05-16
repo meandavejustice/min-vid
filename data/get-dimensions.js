@@ -16,7 +16,7 @@ function getDimensions() {
   }
 
   return {
-    width: width,
-    height: height
+    width,
+    height
   };
 }

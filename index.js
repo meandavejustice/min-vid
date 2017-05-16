@@ -43,7 +43,7 @@ exports.main = function() {
     include: '*',
     contentStyleFile: './icon-overlay.css?cachebust=' + Date.now(),
     contentScriptFile: './icon-overlay.js?cachebust=' + Date.now(),
-    onAttach: function(worker) {
+    onAttach(worker) {
       worker.port.emit('receive-strings', {
         add: _('add_to_queue'),
         playNow: _('play_now')
@@ -52,9 +52,9 @@ exports.main = function() {
       worker.port.on('launch', function(opts) {
         if (opts.domain.indexOf('youtube.com') > -1) {
           opts.getUrlFn = youtubeHelpers.getVideo;
-        } else if (opts.domain.indexOf('vimeo.com')  > -1) {
+        } else if (opts.domain.indexOf('vimeo.com') > -1) {
           opts.getUrlFn = getVimeoUrl;
-        } else if (opts.domain.indexOf('soundcloud.com')  > -1) {
+        } else if (opts.domain.indexOf('soundcloud.com') > -1) {
           opts.getUrlFn = getSoundcloudUrl;
         }
 
@@ -74,7 +74,7 @@ exports.main = function() {
   pageDimensionMod = pageMod.PageMod({
     include: '*',
     contentScriptFile: './get-dimensions.js?cachebust=' + Date.now(),
-    onAttach: function(worker) {
+    onAttach(worker) {
       worker.port.on('dimensions', opts => dimensions = opts);
     }
   });

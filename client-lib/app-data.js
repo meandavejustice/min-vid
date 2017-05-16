@@ -23,9 +23,9 @@ module.exports = window.AppData = new Proxy({
   set: (newValues) => {
     window.AppData = deepAssign(window.AppData, newValues);
   },
-  reset: () => { /* reset here */  }
+  reset: () => { /* reset here */ }
 }, {
-  set: function(obj, prop, value) {
+  set(obj, prop, value) {
     if (prop === 'strings' || prop === 'queue' || prop === 'history' || prop === 'confirmContent') {
       try {
         obj[prop] = JSON.parse(value);

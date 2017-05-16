@@ -1,0 +1,37 @@
+env:
+  browser: true
+  es6: true
+  node: true
+
+extends:
+  - eslint:recommended
+  - plugin:mozilla/recommended
+  - plugin:react/recommended
+
+globals:
+  unsafeWindow: false
+
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+
+plugins:
+  - mozilla
+  - react
+
+root: true
+
+rules:
+  mozilla/use-ownerGlobal: warn
+
+  consistent-return: warn
+  eqeqeq: error
+  indent: [error, 2]
+  keyword-spacing: error
+  no-extra-boolean-cast: off
+  no-unused-vars: [error, {vars: all, args: none}]
+  no-var: warn
+  prefer-const: error
+  quotes: [error, single, {avoidEscape: true, allowTemplateLiterals: true}]
+  react/prop-types: off
+  space-before-blocks: error

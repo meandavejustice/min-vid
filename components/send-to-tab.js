@@ -32,7 +32,7 @@ module.exports = class SendToTab extends React.Component {
     return (
         <div>
         <a onClick={this.sendToTab.bind(this)} data-tip data-for='sendToTab' className='tab'/>
-        <ReactTooltip id='sendToTab' effect='solid' place={!this.props.minimized ? 'bottom': 'left'}>
+        <ReactTooltip id='sendToTab' effect='solid' place={!this.props.minimized ? 'bottom' : 'left'}>
         {this.props.strings.ttSendToTab}
       </ReactTooltip>
         </div>

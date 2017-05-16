@@ -15,7 +15,7 @@ class ErrorView extends React.Component {
     sendToAddon({
       action: 'send-to-tab',
       id: this.props.queue[0].videoId,
-      domain: this.props.queue[0].domain ,
+      domain: this.props.queue[0].domain,
       time: 0,
       tabId: this.props.tabId,
       url: this.props.queue[0].url,

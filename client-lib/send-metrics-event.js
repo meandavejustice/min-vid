@@ -7,8 +7,8 @@ function sendMetricsEvent(object, method) {
   sendToAddon({
     action: 'metrics-event',
     payload: {
-      object: object,
-      method: method,
+      object,
+      method,
       domain: appData.domain
     }
   });
