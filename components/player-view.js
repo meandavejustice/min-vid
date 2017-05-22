@@ -79,12 +79,12 @@ module.exports = class Player extends React.Component {
   }
 
   onPlay() {
-    sendMetricsEvent('player_view', 'play');
+    sendMetricsEvent('player_view', 'play', this.props.queue[0].domain);
     window.AppData.set({playing: true});
   }
 
   onPause() {
-    sendMetricsEvent('player_view', 'pause');
+    sendMetricsEvent('player_view', 'pause'), this.props.queue[0].domain;
     window.AppData.set({playing: false});
   }
 
@@ -198,7 +198,7 @@ module.exports = class Player extends React.Component {
   }
 
   replay() {
-    sendMetricsEvent('replay_view', 'replay');
+    sendMetricsEvent('replay_view', 'replay', this.props.queue[0].domain);
     window.AppData.set({
       exited: false,
       playing: true

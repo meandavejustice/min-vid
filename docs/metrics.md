@@ -38,7 +38,7 @@ otherwise noted.
 
 * Object: `contextmenu`
   * method: `activate`
-    * Sent when the user right-clicks a video and sends it to the Min Vid player.
+    * Sent when the user right-clicks a video link and sends it to the Min Vid player.
 
 * Object: `error_view`
   * method: `render`
@@ -65,25 +65,12 @@ otherwise noted.
 * Object: `replay_view`
   * method: `close`
   * method: `play-from-history`
+    * Sent play-from-history link is engaged from replay view. This pulls multiple items
+      from the history array, adds them to the queue, and starts playback.
 
-* Object: `confirm_view`
+* Object: `confirm_view` (_Confirm launching of YouTube playlist or individual video_)
   * method: `cancel`
-  * method: `playlist`
-  * method: `video`
-
-* Object: `queue_view`
-  * method: `clear:queue`
-  * method: `clear:history`
-
-* Object: `overlay_icon`
-  * method: `available`
-    * Sent when a video is available on a page.
-* Object: `overlay_icon`
-  * method: `launch`
-    * Sent when a video is launched from the overlay icon.
-
-* Object: `playlist`
-  * method: `launch:${action}`
+  * method: `launch:playlist:${action}`
     * Sent when playlist launched from overlay or context menu.
     * 'action' is either going to be 'send-to-queue' or 'play'
   * method: `launch:video:${action}`
@@ -91,12 +78,22 @@ otherwise noted.
     * 'video' segment of method refers to individual videos launched, which are part of a playlist.
     * 'action' is either going to be 'send-to-queue' or 'play'
 
-* Object: `queue`
+* Object: `queue_view`
+  * method: `clear:queue`
+  * method: `clear:history`
   * method: `track-added-from-history`
+    * add track to bottom of queue from the history tab
   * method: `track-expedited`
-    * track pushed to top of queue
-   * method: `track-reordered`
+    * track pushed to top of queue from queue tab
+  * method: `track-reordered`
     * drag n drop reordering event
+
+* Object: `overlay_icon`
+  * method: `available`
+    * Sent when a video is available on a page.
+* Object: `overlay_icon`
+  * method: `launch`
+    * Sent when a video is launched from the overlay icon.
 
 Here's an example of a complete Test Pilot telemetry ping. Note that Min Vid only sends the
 `payload` portion to the Test Pilot add-on. The Test Pilot add-on appends the `test` and `agent`

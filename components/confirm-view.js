@@ -15,8 +15,6 @@ class ConfirmView extends React.Component {
     ev.preventDefault();
     ev.stopPropagation();
 
-    sendMetricsEvent('confirm_view', 'video');
-
     sendToAddon(Object.assign(this.props.confirmContent, {
       action: 'confirm',
       choice: 'video',
@@ -28,8 +26,6 @@ class ConfirmView extends React.Component {
   confirmPlaylist(ev) {
     ev.preventDefault();
     ev.stopPropagation();
-
-    sendMetricsEvent('confirm_view', 'playlist');
 
     sendToAddon(Object.assign(this.props.confirmContent, {
       action: 'confirm',

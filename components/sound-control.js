@@ -15,12 +15,12 @@ module.exports = class SoundControl extends React.Component {
   componentDidMount() {
     if (!this.props.keyShortcutsEnabled) return;
     // mute/unmute toggle keyboard shortcut
-    keyboardJS.bind('m', ev => {
+    keyboardJS.bind('m', () => {
       if (window.AppData.muted) this.unmute();
       else this.mute();
     });
 
-    keyboardJS.bind('up', ev => {
+    keyboardJS.bind('up', () => {
       if (window.AppData.muted) this.unmute();
       this.setVolume({
         target: {
@@ -29,7 +29,7 @@ module.exports = class SoundControl extends React.Component {
       });
     });
 
-    keyboardJS.bind('down', ev => {
+    keyboardJS.bind('down', () => {
       if (window.AppData.muted) return;
       this.setVolume({
         target: {
@@ -48,14 +48,16 @@ module.exports = class SoundControl extends React.Component {
   }
 
   mute() {
-    sendMetricsEvent('player_view', 'mute');
+    const domain = this.props.queue.length ? this.props.queue[0].domain : null;
+    sendMetricsEvent('player_view', 'mute', domain);
     this.setState({prevVolume: this.props.volume});
     if (this.props.audio) this.props.audio.mute();
     window.AppData.set({muted: true, volume: 0});
   }
 
   unmute() {
-    sendMetricsEvent('player_view', 'unmute');
+    const domain = this.props.queue.length ? this.props.queue[0].domain : null;
+    sendMetricsEvent('player_view', 'unmute', domain);
     if (this.props.audio) this.props.audio.unmute();
     window.AppData.set({muted: false, volume: this.state.prevVolume});
   }

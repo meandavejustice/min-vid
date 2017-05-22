@@ -14,19 +14,21 @@ module.exports = class SizeControl extends React.Component {
   componentDidMount() {
     if (!this.props.keyShortcutsEnabled) return;
     // minimized/maximize toggle keyboard shortcut
-    keyboardJS.bind('M', ev => {
+    keyboardJS.bind('M', () => {
       if (window.AppData.minimized) this.maximize();
       else this.minimize();
     });
   }
   minimize() {
-    sendMetricsEvent(getView(), 'minimize');
+    const domain = this.props.queue.length ? this.props.queue[0].domain : null;
+    sendMetricsEvent(getView(), 'minimize', domain);
     sendToAddon({action: 'minimize'});
     window.AppData.set({minimized: true});
   }
 
   maximize() {
-    sendMetricsEvent(getView(), 'maximize');
+    const domain = this.props.queue.length ? this.props.queue[0].domain : null;
+    sendMetricsEvent(getView(), 'maximize', domain);
     sendToAddon({action: 'maximize'});
     window.AppData.set({minimized: false});
   }

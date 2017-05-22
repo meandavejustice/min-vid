@@ -10,7 +10,7 @@ function getView() {
 
 module.exports = class SendToTab extends React.Component {
   sendToTab() {
-    sendMetricsEvent(getView(), 'send_to_tab');
+    sendMetricsEvent(getView(), 'send_to_tab', this.props.queue[0].domain);
     let currentTime = 0;
 
     if (getView() === 'player_view') {

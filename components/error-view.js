@@ -4,14 +4,15 @@ const sendMetricsEvent = require('../client-lib/send-metrics-event');
 
 class ErrorView extends React.Component {
   componentWillMount() {
-    sendMetricsEvent('error_view', 'render');
+    const domain = this.props.queue.length ? this.props.queue[0].domain : null;
+    sendMetricsEvent('error_view', 'render', domain);
   }
 
   sendToTab(ev) {
     ev.preventDefault();
     ev.stopPropagation();
 
-    sendMetricsEvent('error_view', 'send_to_tab');
+    sendMetricsEvent('error_view', 'send_to_tab', this.props.queue[0].domain);
     sendToAddon({
       action: 'send-to-tab',
       id: this.props.queue[0].videoId,

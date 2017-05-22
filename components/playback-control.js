@@ -9,14 +9,22 @@ module.exports = class PlaybackControl extends React.Component {
     if (this.props.exited) {
       return this.props.replay();
     }
-    sendMetricsEvent('player_view', 'play');
-    if (this.props.audio) this.props.audio.play();
+    if (this.props.audio) {
+      this.props.audio.play();
+      // only send event here if audio, since the same event is sent
+      // in player_view in the onPlay method for videos.
+      sendMetricsEvent('player_view', 'play', this.props.queue[0].domain);
+    }
     window.AppData.set({playing: true});
   }
 
   pause() {
-    sendMetricsEvent('player_view', 'pause');
-    if (this.props.audio) this.props.audio.pause();
+    if (this.props.audio) {
+      this.props.audio.pause();
+      // only send event here if audio, since the same event is sent
+      // in player_view in the onPause method for videos.
+      sendMetricsEvent('player_view', 'pause', this.props.queue[0].domain);
+    }
     window.AppData.set({playing: false});
   }
 

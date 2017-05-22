@@ -5,12 +5,12 @@ const sendMetricsEvent = require('../client-lib/send-metrics-event');
 
 module.exports = class ReplayView extends React.Component {
   close() {
-    sendMetricsEvent('replay_view', 'close');
+    sendMetricsEvent('replay_view', 'close', this.props.queue[0].domain);
     sendToAddon({action: 'close'});
   }
 
   playFromHistory() {
-    sendMetricsEvent('replay_view', 'play-from-history');
+    sendMetricsEvent('replay_view', 'play-from-history', this.props.queue[0].domain);
     sendToAddon({action: 'play-from-history'});
   }
 
