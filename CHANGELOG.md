@@ -3,6 +3,17 @@ Pontoon changes have been redacted for readability, the true commit
 log can be accessed in the
 [GitHub repo](https://github.com/meandavejustice/min-vid/commits/master).
 
+## 0.3.8 (2017-6-5)
+
+* [[`978cd4a4c8`](https://github.com/meandave/min-vid/commit/978cd4a4c8)] - Metrics audit (#879) (Dave Justice)
+* [[`f6351603d0`](https://github.com/meandave/min-vid/commit/f6351603d0)] - Fix #870 & #872 (#880) (You-Wen Liang (Mark))
+* [[`a3abcd7b7b`](https://github.com/meandave/min-vid/commit/a3abcd7b7b)] - Fix issue with third arg in addObserver call (#878) (Dave Justice)
+* [[`cbe2a12844`](https://github.com/meandave/min-vid/commit/cbe2a12844)] - chore(package): update storybook-host to version 2.0.0-alpha.1 (#876) (greenkeeper[bot])
+* [[`77ad3d15a8`](https://github.com/meandave/min-vid/commit/77ad3d15a8)] - chore(package): update storybook-host to version 1.1.0 (#867) (greenkeeper[bot])
+* [[`b4807d5931`](https://github.com/meandave/min-vid/commit/b4807d5931)] - chore(package): update eslint-plugin-mozilla to version 0.3.1 (#866) (greenkeeper[bot])
+* [[`bd2d991e84`](https://github.com/meandave/min-vid/commit/bd2d991e84)] - Add eslint-plugin-mozilla to eslintrc config (#865) (Peter deHaan)
+* [[`48406417e7`](https://github.com/meandave/min-vid/commit/48406417e7)] - Release 0.3.7 (Dave Justice)
+
 ## 0.3.7 (2017-5-15)
 
 * [[`16b3fe9edb`](https://github.com/meandave/min-vid/commit/16b3fe9edb)] - Fix #832 & #833 (#855) (You-Wen Liang (Mark))
