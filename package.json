@@ -106,7 +106,7 @@
     "react-tabs": "0.8.3",
     "react-tooltip": "3.3.0",
     "sortablejs": "1.6.0",
-    "storybook-host": "2.0.0-alpha.1",
+    "storybook-host": "3.0.0",
     "svgify": "0.0.0",
     "svgo-loader": "1.2.1",
     "watchify": "3.9.0",
