@@ -90,7 +90,7 @@
     "cross-env": "5.0.0",
     "deep-assign": "2.0.0",
     "deploy-txp": "1.0.7",
-    "eslint": "3.19.0",
+    "eslint": "4.1.0",
     "eslint-plugin-mozilla": "0.3.2",
     "eslint-plugin-react": "7.0.1",
     "gl-waveform": "2.4.3",
