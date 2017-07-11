@@ -1,9 +1,6 @@
-install.rdf
-bootstrap.js
 node_modules
 npm-debug.log
 *.sw[po]
 *.xpi
-*.rdf
 data/bundle.js
 locale/*.properties
