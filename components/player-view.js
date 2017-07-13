@@ -29,6 +29,7 @@ module.exports = class Player extends React.Component {
     };
 
     if (this.props.queue[0].player === 'audio') this.loadAudio();
+    else this.unLoadAudio();
   }
 
   componentDidMount() {
@@ -38,11 +39,12 @@ module.exports = class Player extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.queue[0].url !== this.props.queue[0].url) {
       if (this.props.queue[0].player === 'audio') this.loadAudio();
+      else this.unLoadAudio();
     }
   }
 
   componentWillUnmount() {
-    if (this.audio) this.audio.remove();
+    this.unLoadAudio();
   }
 
   loadAudio() {
@@ -68,6 +70,14 @@ module.exports = class Player extends React.Component {
       onProgress: this.onProgress.bind(this),
       container: this.audioContainer
     }));
+  }
+
+  unLoadAudio() {
+    if (this.audio) {
+      this.audio.remove();
+      delete this.audio;
+      delete this.audioContainer;
+    }
   }
 
   enterPlayer() {
@@ -205,7 +215,7 @@ module.exports = class Player extends React.Component {
     });
 
     if (this.audio) {
-      this.audio.currentTime = 0;
+      this.audio.time = 0;
       this.audio.play();
     } else this.setTime(null, 0);
   }
@@ -247,6 +257,7 @@ module.exports = class Player extends React.Component {
     } else if (this.props.queue[0].player === 'audio') {
       visualEl = <div id='audio-container' ref={(c) => { this.audioContainer = c; }} onClick={debounce(this.handleVideoClick.bind(this), 100)}/>;
     } else {
+      this.unLoadAudio();
       visualEl = <ReactPlayer {...this.props} url={this.props.queue[0].url} ref={(c) => { this.player = c; }}
                         onPlay={this.onPlay.bind(this)}
                         onPause={this.onPause.bind(this)}
