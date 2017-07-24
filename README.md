@@ -42,12 +42,11 @@ Contributions welcome. To get started,
 
 1.  Clone the repo:
 
-   `https://github.com/meandavejustice/min-vid.git`
-2.  Install packages:
+   `https://github.com/meandavejustice/min-vid.git`  
 
-   `npm install`
+2.  Install packages:  `npm install`
 
-3. install [autoinstaller addon](https://addons.mozilla.org/en-US/firefox/addon/autoinstaller/)
+3. Install [autoinstaller addon](https://addons.mozilla.org/en-US/firefox/addon/autoinstaller/)
 
 4. `npm run dev` to watch for file changes while developing.
 
