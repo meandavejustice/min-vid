@@ -117,7 +117,7 @@ const onWindowClosed = (evt) => {
   let minvidExists = false;
   while (enumerator.hasMoreElements()) {
     const win = enumerator.getNext();
-    if (win.name === 'minvid') {
+    if (win.name === 'min-vid') {
       minvidExists = true;
       break;
     }
