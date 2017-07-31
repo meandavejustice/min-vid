@@ -3,6 +3,9 @@ Pontoon changes have been redacted for readability, the true commit
 log can be accessed in the
 [GitHub repo](https://github.com/meandavejustice/min-vid/commits/master).
 
+## 0.3.9 (2017-7-31)
+* No changes.  Incrementing the version to upgrade to new signing pipeline
+
 ## 0.3.8 (2017-6-5)
 
 * [[`978cd4a4c8`](https://github.com/meandave/min-vid/commit/978cd4a4c8)] - Metrics audit (#879) (Dave Justice)
