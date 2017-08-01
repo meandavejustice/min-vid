@@ -87,7 +87,7 @@
     "babelify": "7.3.0",
     "browserify": "14.4.0",
     "classnames": "2.2.5",
-    "cross-env": "5.0.0",
+    "cross-env": "5.0.2",
     "deep-assign": "2.0.0",
     "deploy-txp": "1.0.7",
     "eslint": "3.19.0",
