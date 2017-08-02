@@ -25,7 +25,7 @@ module.exports = class Player extends React.Component {
       hovered: false, progress: 0, exited: false,
       showQueue: false, historyIndex: 0,
       time: '0:00 / 0:00', errorCount: 0,
-      notificationCount: 0
+      notificationCount: 0, wasMinimized: false
     };
 
     if (this.props.queue[0].player === 'audio') this.loadAudio();
@@ -180,12 +180,19 @@ module.exports = class Player extends React.Component {
     if (this.props.minimized) {
       sendToAddon({action: 'maximize'});
       window.AppData.set({minimized: false});
+      this.setState({wasMinimized: true});
+    } else {
+      this.setState({wasMinimized: false});
     }
     this.setState({showQueue: true});
   }
 
   closeQueueMenu() {
     this.setState({showQueue: false});
+    if (this.state.wasMinimized) {
+      sendToAddon({action: 'minimize'});
+      window.AppData.set({minimized: true});
+    }
   }
 
   handleSpace() {
