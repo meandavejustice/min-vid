@@ -17,7 +17,7 @@ such as audio or pdfs.
 
 ## Usage
 
-Once the addon is installed you are able to launch Min Vid from the
+Once the add-on is installed you are able to launch Min Vid from the
 overlay icon over videos on YouTube and Vimeo.
 
 You can also launch Min Vid by right clicking on a video link and
@@ -35,7 +35,7 @@ sending to the player from the context menu.
 
 **note**
 The `xpinstall.signatures.required` option in `about:config` needs to
-be set in order to install unsigned addons.
+be set in order to install unsigned add-ons.
 
 ## Development
 Contributions welcome. To get started,
@@ -46,7 +46,7 @@ Contributions welcome. To get started,
 
 2.  Install packages:  `npm install`
 
-3. Install [autoinstaller addon](https://addons.mozilla.org/en-US/firefox/addon/autoinstaller/)
+3. Install [autoinstaller add-on](https://addons.mozilla.org/en-US/firefox/addon/autoinstaller/)
 
 4. `npm run dev` to watch for file changes while developing.
 
@@ -55,6 +55,10 @@ For further information on contributing, see [contributing.md](./contributing.md
 ## Notes
 
 [data/img/loading-bars.svg](data/img/loading-bars.svg) is from https://github.com/jxnblk/loading
+
+## Localization
+
+Min Vid localization is managed via [Pontoon](https://pontoon.mozilla.org/projects/test-pilot-min-vid/), not direct pull requests to the repository. If you want to fix a typo, add a new language, or simply know more about localization, please get in touch with the [existing localization team](https://pontoon.mozilla.org/teams/) for your language, or Mozilla’s [l10n-drivers](https://wiki.mozilla.org/L10n:Mozilla_Team#Mozilla_Corporation) for guidance.
 
 ## LICENSE
 [Mozilla Public License 2.0](LICENSE)
