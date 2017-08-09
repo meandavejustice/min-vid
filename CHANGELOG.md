@@ -3,6 +3,19 @@ Pontoon changes have been redacted for readability, the true commit
 log can be accessed in the
 [GitHub repo](https://github.com/meandavejustice/min-vid/commits/master).
 
+## 0.4.0 (2017-8-9)
+* [[`0527765700`](https://github.com/meandave/min-vid/commit/0527765700)] - Port to Bootstrapped WebExtension (#957) (Dave Justice)
+* [[`2dc01b8381`](https://github.com/meandave/min-vid/commit/2dc01b8381)] - Add basic support for Soundcloud playlist (#875) (Ernesto Ramirez)
+* [[`b1b8356fc7`](https://github.com/meandave/min-vid/commit/b1b8356fc7)] - chore(package): update audiosource to version 3.0.3 (#951) (greenkeeper[bot])
+* [[`15c3dc1766`](https://github.com/meandave/min-vid/commit/15c3dc1766)] - chore(package): update cross-env to version 5.0.2 (#933) (greenkeeper[bot])
+* [[`4017a0e7d7`](https://github.com/meandave/min-vid/commit/4017a0e7d7)] - minimize the window again, after opening the playlist if the window was minimized (#936) (#937) (koko)
+* [[`b455506554`](https://github.com/meandave/min-vid/commit/b455506554)] - Add Pontoon notice to README (#934) (Peter deHaan)
+* [[`606c3865c3`](https://github.com/meandave/min-vid/commit/606c3865c3)] - new version (#930) (Wil Clouser)
+* [[`afdf0f6220`](https://github.com/meandave/min-vid/commit/afdf0f6220)] - Update README.md (#918) (Pi Toolie)
+* [[`139b63062d`](https://github.com/meandave/min-vid/commit/139b63062d)] - Update Metrics (John Gruen)
+* [[`666e45e6a4`](https://github.com/meandave/min-vid/commit/666e45e6a4)] - Release 0.3.8 (#886) (Dave Justice)
+* [[`978cd4a4c8`](https://github.com/meandave/min-vid/commit/978cd4a4c8)] - Metrics audit (#879) (Dave Justice)
+
 ## 0.3.9 (2017-7-31)
 * No changes.  Incrementing the version to upgrade to new signing pipeline
 

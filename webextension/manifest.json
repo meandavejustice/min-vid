@@ -1,6 +1,6 @@
 {
   "name": "Min Vid",
-  "version": "1.0.10",
+  "version": "0.4.0",
   "manifest_version": 2,
   "default_locale": "en_US",
   "permissions": ["storage", "alarms", "tabs", "<all_urls>"],
