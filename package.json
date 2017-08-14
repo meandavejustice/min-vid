@@ -40,7 +40,7 @@
     "deploy-txp": "1.0.7",
     "eslint": "3.19.0",
     "eslint-plugin-mozilla": "0.3.2",
-    "eslint-plugin-react": "7.0.1",
+    "eslint-plugin-react": "7.2.0",
     "get-video-id": "2.1.5",
     "husky": "0.13.4",
     "iso8601-duration": "1.0.6",
