@@ -61,6 +61,7 @@ function startup(data, reason) { // eslint-disable-line no-unused-vars
 }
 
 function shutdown(data, reason) { // eslint-disable-line no-unused-vars
+  closeWindow();
   LegacyExtensionsUtils.getEmbeddedExtensionFor({
     id: ADDON_ID,
     resourceURI: data.resourceURI
