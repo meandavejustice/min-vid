@@ -320,10 +320,10 @@ export default class Player extends React.Component {
                  onMouseEnter={this.enterPlayer.bind(this)}
                  onMouseLeave={this.leavePlayer.bind(this)}
                  onClick={debouncedVideoClickHandler.bind(this)}>
-              {exited}
               <PrevTrackBtn {...this.props} hovered={this.state.hovered} />
               <NextTrackBtn {...this.props} nextTrack={this.nextTrack.bind(this)} hovered={this.state.hovered} />
               {controls}
+              {exited}
               {notification}
               {queuePanel}
               {visualEl}
