@@ -42,7 +42,7 @@
     "eslint": "3.19.0",
     "eslint-plugin-mozilla": "0.4.2",
     "eslint-plugin-no-unsanitized": "2.0.1",
-    "eslint-plugin-react": "7.2.1",
+    "eslint-plugin-react": "7.3.0",
     "get-video-id": "2.1.5",
     "husky": "0.14.3",
     "iso8601-duration": "1.0.6",
