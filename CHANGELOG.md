@@ -3,6 +3,22 @@ Pontoon changes have been redacted for readability, the true commit
 log can be accessed in the
 [GitHub repo](https://github.com/meandavejustice/min-vid/commits/master).
 
+
+## 0.4.2 (2017-8-22)
+
+* [[`c937cbc571`](https://github.com/meandave/min-vid/commit/c937cbc571)] - Update webpack to the latest version 🚀 (#990) (greenkeeper[bot])
+* [[`ae041e3793`](https://github.com/meandave/min-vid/commit/ae041e3793)] - Update babel-core to the latest version 🚀 (#991) (greenkeeper[bot])
+* [[`4b5823e4b6`](https://github.com/meandave/min-vid/commit/4b5823e4b6)] - Enforce resolution max and retain dimensions settings through refresh (#992) (Dave Justice)
+* [[`38e679af02`](https://github.com/meandave/min-vid/commit/38e679af02)] - Close window on addon removal (#987) (Dave Justice)
+* [[`f589218a48`](https://github.com/meandave/min-vid/commit/f589218a48)] - Show draggable control bar in replay view (#988) (Dave Justice)
+* [[`bbd56c705d`](https://github.com/meandave/min-vid/commit/bbd56c705d)] - Update non breaking dependencies (#985) (Dave Justice)
+* [[`f519ba6f50`](https://github.com/meandave/min-vid/commit/f519ba6f50)] - Fix links in changelog (#977) (Péter Szabados)
+* [[`7b72c85a84`](https://github.com/meandave/min-vid/commit/7b72c85a84)] - Output addon to root of project instead of to dist/ (Dave Justice)
+* [[`1259d5602c`](https://github.com/meandave/min-vid/commit/1259d5602c)] - Fix issue in package-addon script with dist/ dir (Dave Justice)
+* [[`a81deadce4`](https://github.com/meandave/min-vid/commit/a81deadce4)] - Package addon in a node script over Makefile (Dave Justice)
+* [[`142dfd857c`](https://github.com/meandave/min-vid/commit/142dfd857c)] - Minor version bump to ensure autoupdate (Dave Justice)
+* [[`a0649e17c1`](https://github.com/meandave/min-vid/commit/a0649e17c1)] - Release 0.4.0 (#966) (Dave Justice)
+
 ## 0.4.0 (2017-8-9)
 * [[`0527765700`](https://github.com/meandavejustice/min-vid/commit/0527765700)] - Port to Bootstrapped WebExtension (#957) (Dave Justice)
 * [[`2dc01b8381`](https://github.com/meandavejustice/min-vid/commit/2dc01b8381)] - Add basic support for Soundcloud playlist (#875) (Ernesto Ramirez)
