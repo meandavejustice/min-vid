@@ -40,7 +40,7 @@
     "deep-assign": "2.0.0",
     "deploy-txp": "1.0.7",
     "eslint": "3.19.0",
-    "eslint-plugin-mozilla": "0.4.2",
+    "eslint-plugin-mozilla": "0.4.3",
     "eslint-plugin-no-unsanitized": "2.0.1",
     "eslint-plugin-react": "7.2.1",
     "get-video-id": "2.1.5",
