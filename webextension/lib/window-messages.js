@@ -1,4 +1,4 @@
-export {send, close, prepareWindow, minimize, maximize, dimensionsUpdate};
+export {send, close, prepareWindow, minimize, maximize, dimensionsUpdate, fullscreenChange};
 const port = browser.runtime.connect({name: 'connection-to-legacy'});
 
 function prepareWindow() {
@@ -29,4 +29,8 @@ function dimensionsUpdate(data) {
     content: 'window:dimensions:update',
     data: data
   });
+}
+
+function fullscreenChange() {
+  port.postMessage({content: 'window:fullscreen:change'});
 }

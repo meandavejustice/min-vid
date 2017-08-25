@@ -55,6 +55,9 @@ function startup(data, reason) { // eslint-disable-line no-unused-vars
         else if (msg.content === 'window:minimize') minimize();
         else if (msg.content === 'window:maximize') maximize();
         else if (msg.content === 'window:dimensions:update') setDimensions(msg.data);
+        else if (msg.content === 'window:fullscreen:change') {
+          if (mvWindow) topify(mvWindow);
+        }
       });
     });
   });
@@ -153,6 +156,7 @@ function create() {
   // const windowArgs = `left=${x},top=${y},chrome,dialog=no,width=${prefs.width},height=${prefs.height},titlebar=no`;
   // implicit assignment to mvWindow global
   mvWindow = window.open('resource://minvid-data/default.html', 'min-vid', windowArgs);
+
   // once the window's ready, make it always topmost
   whenReady(() => { topify(mvWindow); });
   initCommunication();

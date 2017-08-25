@@ -10,7 +10,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content-scripts/icon-overlay.js"],
+      "js": ["content-scripts/icon-overlay.js", "content-scripts/fullscreen-change.js"],
       "css": ["content-scripts/icon-overlay.css"],
       "all_frames": true
     }

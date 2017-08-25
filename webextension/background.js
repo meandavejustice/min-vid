@@ -29,7 +29,7 @@ import getVimeoUrl from './lib/get-vimeo-url';
 import youtubeHelpers from './lib/youtube-helpers';
 import sendMetricsData from './lib/send-metrics-data';
 import getSoundcloudUrl from './lib/get-soundcloud-url';
-import {dimensionsUpdate} from './lib/window-messages';
+import {dimensionsUpdate, fullscreenChange} from './lib/window-messages';
 
 import handleMessage from './lib/message-handler';
 
@@ -76,4 +76,5 @@ function onLaunch(opts) {
 
     launchVideo(opts);
   } else if (title === 'metric') sendMetricsData(opts);
+  else if (title === 'fullscreen-change') fullscreenChange();
 }
