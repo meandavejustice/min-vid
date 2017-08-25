@@ -323,9 +323,9 @@ export default class Player extends React.Component {
               <PrevTrackBtn {...this.props} hovered={this.state.hovered} />
               <NextTrackBtn {...this.props} nextTrack={this.nextTrack.bind(this)} hovered={this.state.hovered} />
               {controls}
-              {exited}
               {notification}
               {queuePanel}
+              {exited}
               {visualEl}
             </div>);
   }
