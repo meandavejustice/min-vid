@@ -4,6 +4,13 @@ import sendToAddon from '../client-lib/send-to-addon';
 import sendMetricsEvent from '../client-lib/send-metrics-event';
 
 export default class ReplayView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasSetInitialPlayerState: false
+    };
+  }
+
   close() {
     sendMetricsEvent('replay_view', 'close', this.props.queue[0].domain);
     sendToAddon({action: 'close'});
@@ -27,6 +34,14 @@ export default class ReplayView extends React.Component {
     };
 
     if (!this.props.exited) return;
+
+    // only set playing to false once, on initial load, otherwise
+    // we end up in an ugly loop!
+    if (!this.state.hasSetInitialPlayerState && this.props.exited) {
+      this.setState({hasSetInitialPlayerState: true});
+      window.AppData.set({playing: false});
+    }
+
     interval();
   }
 

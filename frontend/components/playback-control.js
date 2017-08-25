@@ -7,7 +7,9 @@ import sendMetricsEvent from '../client-lib/send-metrics-event';
 export default class PlaybackControl extends React.Component {
   play() {
     if (this.props.exited) {
-      return this.props.replay();
+      sendMetricsEvent('player_view', 'replay', '');
+      this.props.replay();
+      return;
     }
     if (this.props.audio) {
       this.props.audio.play();
