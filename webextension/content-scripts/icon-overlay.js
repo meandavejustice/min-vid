@@ -33,6 +33,13 @@ function checkForEmbeds() {
 function ytEmbedChecks() {
   if (!(host.indexOf('youtube.com') > -1)) return;
 
+  // New Youtube Home Page
+  const ytNewHomeContainers = Array.from(document.querySelectorAll('#contents ytd-thumbnail'));
+  if (ytNewHomeContainers.length) {
+    sendMetric('available');
+    ytNewHomeContainers.forEach(ytHomePageHandler);
+  }
+
   // YouTube Home Page
   const ytHomeContainers = Array.from(document.querySelectorAll('#feed .yt-lockup-thumbnail'));
   if (ytHomeContainers.length) {
@@ -76,7 +83,7 @@ function ytEmbedChecks() {
 function ytHomePageHandler(el) {
   if (el.classList.contains('minvid__overlay__wrapper')) return;
 
-  const urlEl = el.querySelector('.yt-uix-sessionlink');
+  const urlEl = el.querySelector('.yt-uix-sessionlink') || el.querySelector('.ytd-thumbnail');
 
   if (!urlEl || !urlEl.getAttribute('href')) return;
 
