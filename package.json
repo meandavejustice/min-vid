@@ -39,6 +39,7 @@
     "cross-spawn": "5.1.0",
     "deep-assign": "2.0.0",
     "deploy-txp": "1.0.7",
+    "enhanced-resolve": "3.4.1",
     "eslint": "3.19.0",
     "eslint-plugin-mozilla": "0.4.2",
     "eslint-plugin-no-unsanitized": "2.0.1",
@@ -47,6 +48,7 @@
     "husky": "0.14.3",
     "iso8601-duration": "1.0.6",
     "keyboardjs": "2.3.3",
+    "loader-utils": "1.1.0",
     "lodash.debounce": "4.0.8",
     "onchange": "3.2.1",
     "pontoon-to-webext": "1.0.2",
@@ -56,8 +58,10 @@
     "react-tabs": "0.8.3",
     "react-tooltip": "3.3.0",
     "sortablejs": "1.6.1",
+    "source-list-map": "2.0.0",
     "testpilot-ga": "0.3.0",
     "uuid": "3.1.0",
+    "watchpack": "1.4.0",
     "webpack": "3.5.5"
   }
 }
