@@ -33,6 +33,13 @@ function checkForEmbeds() {
 function ytEmbedChecks() {
   if (!(host.indexOf('youtube.com') > -1)) return;
 
+  // New Youtube Home Page
+  const ytNewHomeContainers = Array.from(document.querySelectorAll('#contents ytd-thumbnail'));
+  if (ytNewHomeContainers.length) {
+    sendMetric('available');
+    ytNewHomeContainers.forEach(ytHomePageHandler);
+  }
+
   // YouTube Home Page
   const ytHomeContainers = Array.from(document.querySelectorAll('#feed .yt-lockup-thumbnail'));
   if (ytHomeContainers.length) {
@@ -71,12 +78,30 @@ function ytEmbedChecks() {
     sendMetric('available');
     ytChannelUploadsContainers.forEach(ytHomePageHandler);
   }
+
+  // Youtube Gaming Home Page
+  const ytGamingContainers = Array.from(document.querySelectorAll('#contents .game-cell-contents'));
+  if (ytGamingContainers.length) {
+    sendMetric('available');
+    ytGamingContainers.forEach(function ytGamingWrapper(el) {
+      ytGamingHandler(el, { type: 'ytGamingHomePage' });
+    });
+  }
+
+  // Youtube Gaming Home Page Carousel
+  const ytGamingCarouselContainers = Array.from(document.querySelectorAll('#container.ytg-video-carousel .video-cell'));
+  if (ytGamingCarouselContainers.length) {
+    sendMetric('available');
+    ytGamingCarouselContainers.forEach(function ytGamingCarouselWrapper(el) {
+      ytGamingHandler(el, { type: 'ytGamingCarousel' });
+    });
+  }
 }
 
 function ytHomePageHandler(el) {
   if (el.classList.contains('minvid__overlay__wrapper')) return;
 
-  const urlEl = el.querySelector('.yt-uix-sessionlink');
+  const urlEl = el.querySelector('.yt-uix-sessionlink') || el.querySelector('.ytd-thumbnail');
 
   if (!urlEl || !urlEl.getAttribute('href')) return;
 
@@ -122,6 +147,41 @@ function ytWatchElementHandler(el) {
       options.muted = videoEl.muted;
     }
     browser.runtime.sendMessage(options);
+  });
+  el.appendChild(tmp);
+}
+
+function ytGamingHandler(el, props) {
+  if (el.classList.contains('minvid__overlay__wrapper')) return;
+
+  if (el.contains(el.querySelector('.minvid__overlay__bottom_container'))) {
+    el.classList.add('minvid__overlay__wrapper');
+    return;
+  }
+
+  const urlEl = el.querySelector('.ytg-nav-endpoint');
+
+  if (!urlEl || !urlEl.getAttribute('href')) return;
+
+  const url = urlEl.getAttribute('href');
+
+  if (!url.startsWith('/watch')) return;
+
+  if (props.type === 'ytGamingHomePage') {
+    // Fixes for Youtube Gaming
+    el.style.position = 'relative';
+  }
+
+  el.classList.add('minvid__overlay__wrapper');
+  const tmp = getTemplate(props);
+  tmp.addEventListener('click', function(ev) {
+    evNoop(ev);
+    browser.runtime.sendMessage({
+      title: 'launch',
+      url: 'https://youtube.com' + url,
+      domain: 'youtube.com',
+      action: getAction(ev)
+    });
   });
   el.appendChild(tmp);
 }
@@ -255,13 +315,21 @@ function getAction(ev) {
   return (ev.target.id === 'minvid__overlay__icon__play') ? 'play' : 'add-to-queue';
 }
 
+function getContainerClass(props) {
+  switch (props.type) {
+  case 'ytGamingCarousel': return 'minvid__overlay__bottom_container';
+  default: return 'minvid__overlay__container';
+  }
+}
+
 // General Helpers
-function getTemplate() {
+function getTemplate(props) {
+  props = props || {};
   const containerEl = document.createElement('div');
   const playIconEl = document.createElement('div');
   const addIconEl = document.createElement('div');
 
-  containerEl.className = 'minvid__overlay__container';
+  containerEl.className = getContainerClass(props);
   playIconEl.className = 'minvid__overlay__icon';
   playIconEl.id = 'minvid__overlay__icon__play';
   playIconEl.title = browser.i18n.getMessage('play_now');
@@ -297,6 +365,23 @@ function closeFullscreen() {
 
 function injectStyle() {
   const css = `
+.minvid__overlay__bottom_container {
+  align-items: center;
+  background-color: rgba(0,0,0,0.8);
+  opacity: 0;
+  border-radius: 0 0 4px 4px;
+  height: 100%;
+  justify-content: center;
+  left: 4%;
+  max-height: 80px;
+  max-width: 36px;
+  padding: 2px 2px 4px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 999999;
+}
+
 .minvid__overlay__container {
     align-items: center;
     background-color: rgba(0,0,0,0.8);
@@ -314,7 +399,8 @@ function injectStyle() {
     z-index: 999999;
 }
 
-.minvid__overlay__container:hover {
+.minvid__overlay__container:hover,
+.minvid__overlay__bottom_container:hover {
     background: rgba(0,0,0,0.9);
 }
 
@@ -339,7 +425,8 @@ function injectStyle() {
   margin-top: 5px;
 }
 
-.minvid__overlay__wrapper:hover .minvid__overlay__container {
+.minvid__overlay__wrapper:hover .minvid__overlay__container,
+.minvid__overlay__wrapper:hover .minvid__overlay__bottom_container {
     opacity: 1;
     /*background-color: rgba(0, 0, 0, .8);*/
     /*animation-name: fade;
