@@ -46,7 +46,7 @@
     "get-video-id": "2.1.6",
     "husky": "0.14.3",
     "iso8601-duration": "1.0.6",
-    "keyboardjs": "2.3.3",
+    "keyboardjs": "2.3.4",
     "lodash.debounce": "4.0.8",
     "onchange": "3.2.1",
     "pontoon-to-webext": "1.0.2",
