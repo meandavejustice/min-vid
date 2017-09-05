@@ -14,15 +14,16 @@ var EXPORTED_SYMBOLS = ['ostypes'];
 
 // no need to define core or import cutils as all the globals of the worker who importScripts'ed it are availble here
 
-if (!this.DedicatedWorkerGlobalScope) {
+var global = this;
+if (!global.DedicatedWorkerGlobalScope) {
 	importOsConstsJsm(); // needed for access OS.Constants.libc
 	importServicesJsm();
 }
 
 const APP_64BIT = ctypes.voidptr_t.size === 4 ? false : true;
-const OS_NAME = this.DedicatedWorkerGlobalScope ? OS.Constants.Sys.Name.toLowerCase() : Services.appinfo.OS.toLowerCase(); // lower case platform name
-const FIREFOX_VERSION = this.DedicatedWorkerGlobalScope ? parseFloat(/Firefox\/(\d+\.\d+)/.exec(navigator.userAgent)[1]) : Services.appinfo.version; // not used for anything right now
-Object.defineProperty(this, 'GTK_VERSION', { get: function() { return getGtkVersion() } }); // make this a getter, so that ostyeps can be loaded without needing to have first got `TOOLKIT` from mainthread if this is a worker
+const OS_NAME = global.DedicatedWorkerGlobalScope ? OS.Constants.Sys.Name.toLowerCase() : Services.appinfo.OS.toLowerCase(); // lower case platform name
+const FIREFOX_VERSION = global.DedicatedWorkerGlobalScope ? parseFloat(/Firefox\/(\d+\.\d+)/.exec(navigator.userAgent)[1]) : Services.appinfo.version; // not used for anything right now
+Object.defineProperty(global, 'GTK_VERSION', { get: function() { return getGtkVersion() } }); // make this a getter, so that ostyeps can be loaded without needing to have first got `TOOLKIT` from mainthread if this is a worker
 
 var xlibTypes = function() {
 	// ABIs
@@ -4892,7 +4893,7 @@ var x11Init = function() {
 
 // helper function
 function importServicesJsm() {
-	if (!this.DedicatedWorkerGlobalScope && typeof(Services) == 'undefined') {
+	if (!global.DedicatedWorkerGlobalScope && typeof(Services) == 'undefined') {
 		if (typeof(Cu) == 'undefined') {
 			if (typeof(Components) != 'undefined') {
 				// Bootstrap
@@ -4911,7 +4912,7 @@ function importServicesJsm() {
 }
 
 function importOsConstsJsm() {
-	if (!this.DedicatedWorkerGlobalScope && typeof(OS) == 'undefined') {
+	if (!global.DedicatedWorkerGlobalScope && typeof(OS) == 'undefined') {
 		if (typeof(Cu) == 'undefined') {
 			if (typeof(Components) != 'undefined') {
 				// Bootstrap
@@ -4936,7 +4937,7 @@ function getGtkVersion() {
 	if (!getGtkVersion_cache) {
 		var c_toolkit;
 
-		if (!this.DedicatedWorkerGlobalScope) {
+		if (!global.DedicatedWorkerGlobalScope) {
 			c_toolkit = Services.appinfo.widgetToolkit.toLowerCase();
 		} else {
 			// its a worker

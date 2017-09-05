@@ -14,7 +14,8 @@ if (ctypes.voidptr_t.size == 4 /* 32-bit */) {
 
 var ifdef_UNICODE = true;
 
-if (this.DedicatedWorkerGlobalScope) {
+var global = this;
+if (global.DedicatedWorkerGlobalScope) {
 	// osname = OS.Constants.Sys.Name.toLowerCase();
 	// i dont use `osname` in ostypes_win.jsm
 } else {
@@ -4769,7 +4770,7 @@ var winInit = function() {
 var ostypes = new winInit();
 
 function importOsConstsJsm() {
-	if (!this.DedicatedWorkerGlobalScope && typeof(OS) == 'undefined') {
+	if (!global.DedicatedWorkerGlobalScope && typeof(OS) == 'undefined') {
 		if (typeof(Cu) == 'undefined') {
 			if (typeof(Components) != 'undefined') {
 				// Bootstrap
@@ -4789,7 +4790,7 @@ function importOsConstsJsm() {
 
 function ostypesSyncXhrText(url) {
 	// xhr's the url and returns the text response
-	if (this.DedicatedWorkerGlobalScope) {
+	if (global.DedicatedWorkerGlobalScope) {
 		var req = new XMLHttpRequest();
 	} else {
 		if (typeof(Cu) == 'undefined') {

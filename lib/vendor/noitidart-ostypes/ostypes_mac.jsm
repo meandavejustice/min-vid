@@ -14,7 +14,8 @@ if (ctypes.voidptr_t.size == 4 /* 32-bit */) {
 }
 
 var osname;
-if (this.DedicatedWorkerGlobalScope) {
+var global = this;
+if (global.DedicatedWorkerGlobalScope) {
 	osname = OS.Constants.Sys.Name.toLowerCase();
 } else {
 	importServicesJsm();
@@ -2116,7 +2117,7 @@ var macInit = function() {
 
 // helper function
 function importServicesJsm() {
-	if (!this.DedicatedWorkerGlobalScope && typeof(Services) == 'undefined') {
+	if (!global.DedicatedWorkerGlobalScope && typeof(Services) == 'undefined') {
 		if (typeof(Cu) == 'undefined') {
 			if (typeof(Components) != 'undefined') {
 				// Bootstrap
@@ -2135,7 +2136,7 @@ function importServicesJsm() {
 }
 
 function importOsConstsJsm() {
-	if (!this.DedicatedWorkerGlobalScope && typeof(OS) == 'undefined') {
+	if (!global.DedicatedWorkerGlobalScope && typeof(OS) == 'undefined') {
 		if (typeof(Cu) == 'undefined') {
 			if (typeof(Components) != 'undefined') {
 				// Bootstrap
