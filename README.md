@@ -28,8 +28,11 @@ sending to the player from the context menu.
 
 ## Installation
 
-* `npm run package`
-* set `xpinstall.signatures.required` in `about:config`
+* `npm install`
+* `npm run package` (creates `addon.xpi` in the min-vid directory)
+* Open Firefox, go to `about:config`, set some prefs:
+  * set `xpinstall.signatures.required` to `false` (allows unsigned add-ons to be installed)
+  * set `extensions.legacy.enabled` to `true` (allows legacy add-ons, like min-vid)
 * install xpi by dragging onto the `about:addons` page
 
 **note**
