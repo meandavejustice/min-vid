@@ -7,6 +7,15 @@ injectStyle();
 checkForEmbeds();
 const overlayCheckInterval = setInterval(checkForEmbeds, 3000);
 
+function onFullscreenChange() {
+  const el = document.querySelector('.minvid__overlay__container');
+
+  if (document.fullscreen) el.classList.add('fullscreen');
+  else el.classList.remove('fullscreen');
+}
+
+document.addEventListener('fullscreenchange', onFullscreenChange);
+
 function onMessage(opts) {
   const title = opts.title;
   delete opts.title;
@@ -460,12 +469,17 @@ function injectStyle() {
     opacity: 1;
 }
 
+.minvid__overlay__container.fullscreen {
+  display: none;
+}
+
 @keyframes fade {
   0%   {opacity: 0}
   5%, 80% {opacity: 1}
   100% {opacity: 0}
 }
-  `;
+
+`;
 
   const head = document.head;
   const style = document.createElement('style');
