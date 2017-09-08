@@ -514,10 +514,6 @@ canvas {
     position: static !important;
 }
 
-.queue {
-    
-}
-
 .queues {
     width: 75%;
     height: 100%;
@@ -531,6 +527,7 @@ canvas {
     color: white;
 
     box-shadow: inset -1px -10px 10px 0px rgba(50, 50, 50, 0.75);
+    z-index: 1;
 }
 
 .queue-headers > li {
