@@ -3,6 +3,17 @@ Pontoon changes have been redacted for readability, the true commit
 log can be accessed in the
 [GitHub repo](https://github.com/meandavejusticejustice/min-vid/commits/master).
 
+## 0.4.4 (2017-9-12)
+* [[`703bc42bbc`](https://github.com/meandavejustice/min-vid/commit/703bc42bbc)] - Fix icons showing through queue panel (#1034) (Dave Justice)
+* [[`f9f512be85`](https://github.com/meandavejustice/min-vid/commit/f9f512be85)] - hide overlay icon when in fullscreen mode (#1033) (Dave Justice)
+* [[`e916c01bbb`](https://github.com/meandavejustice/min-vid/commit/e916c01bbb)] - gaming.youtube.com (#1020) (Victor Quiroz)
+* [[`e8b3785ba4`](https://github.com/meandavejustice/min-vid/commit/e8b3785ba4)] - chore(package): update keyboardjs to version 2.3.4 (#1027) (greenkeeper[bot])
+* [[`10ca4c5826`](https://github.com/meandavejustice/min-vid/commit/10ca4c5826)] - chore(package): update webpack to version 3.5.6 (#1031) (greenkeeper[bot])
+* [[`ba32f089b8`](https://github.com/meandavejustice/min-vid/commit/ba32f089b8)] - Fix New Youtube (#1026) (Victor Quiroz)
+* [[`12e343fddb`](https://github.com/meandavejustice/min-vid/commit/12e343fddb)] - Fix topify/draggable behavior by removing refs to global 'this' (#1029) (Jared Hirsch)
+* [[`4c650e0503`](https://github.com/meandavejustice/min-vid/commit/4c650e0503)] - Document legacy extension pref for 57+ (#1030) (Jared Hirsch)
+* [[`024b424570`](https://github.com/meandavejustice/min-vid/commit/024b424570)] - Release 0.4.3 (#1022) (Dave Justice)
+
 ## 0.4.3 (2017-8-30)
 
 * [[`4fdd988c17`](https://github.com/meandavejustice/min-vid/commit/4fdd988c17)] - Dependency update for 0.4.3 release (#1018) (Dave Justice)
