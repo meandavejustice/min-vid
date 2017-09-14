@@ -1,5 +1,4 @@
 const TestPilotGA = require('testpilot-ga');
-const store = browser.storage.local;
 
 const analytics = new TestPilotGA({
   aid: browser.runtime.id,
@@ -9,17 +8,16 @@ const analytics = new TestPilotGA({
 });
 
 export default function sendMetricsData(o) {
-  store.get().then(r => {
-    analytics
-      .sendEvent(o.object, o.method, {
-        // cd1: "variant value",
-        cd2: r.left,
-        cd3: r.top,
-        cd4: r.width,
-        cd5: r.height,
-        cd6: o.domain,
-        el: o,
-        ds: 'webextension'
-      });
+  browser.storage.local.get().then(r => {
+    analytics.sendEvent(o.object, o.method, {
+      // cd1: "variant value",
+      cd2: r.left,
+      cd3: r.top,
+      cd4: r.width,
+      cd5: r.height,
+      cd6: o.domain,
+      ds: 'webextension',
+      ec: 'interactions'
+    });
   });
 }

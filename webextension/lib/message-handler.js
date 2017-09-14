@@ -28,7 +28,6 @@ export default function(msg) {
   } else if (title === 'maximize') {
     maximize();
   } else if (title === 'metrics-event') {
-    // Note: sending in the window ref to avoid circular imports.
     sendMetricsData(opts.payload);
   } else if (title === 'track-ended') {
     store.get().then(r => {
