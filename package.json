@@ -58,6 +58,6 @@
     "sortablejs": "1.6.1",
     "testpilot-ga": "0.3.0",
     "uuid": "3.1.0",
-    "webpack": "3.5.6"
+    "webpack": "3.6.0"
   }
 }
