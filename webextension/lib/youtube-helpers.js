@@ -52,8 +52,8 @@ function getVideo(opts, cb) {
         .then((res) => res.text().then(function(text) {
           const result = qsParse(text);
           if (result.status === 'fail') {
-            if (result.reason.indexOf('restricted')) item.error = 'error_youtube_not_allowed';
-            else item.error = 'error_youtube_not_found';
+            if (result.reason.indexOf('restricted')) item.error = 'errorYTNotAllowed';
+            else item.error = 'errorYTNotFound';
           }
 
           cb(item);
