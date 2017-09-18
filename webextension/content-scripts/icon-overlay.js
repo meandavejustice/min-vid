@@ -57,7 +57,7 @@ function newYtEmbedChecks() {
   }
 
   // Youtube playlists
-  const ytNewPlaylistContainers = Array.from(document.querySelectorAll('#items ytd-playlist-thumbnail'));
+  const ytNewPlaylistContainers = Array.from(document.querySelectorAll('ytd-playlist-thumbnail'));
   if (ytNewPlaylistContainers.length) {
     sendMetric('available');
     ytNewPlaylistContainers.forEach(ytHomePageHandler);
