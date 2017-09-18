@@ -6,8 +6,10 @@
 
 [![Build Status](https://travis-ci.org/meandavejustice/min-vid.svg?branch=master)](https://travis-ci.org/meandavejustice/min-vid) [![Available on Test Pilot](https://img.shields.io/badge/available_on-Test_Pilot-0996F8.svg)](https://testpilot.firefox.com/experiments/min-vid)
 
-Min Vid is a Firefox add-on that gives you **complete control** over the videos in your browser.
-You can pop out, sticky, resize, and drag videos anywhere within the browser - it even stays visible when you switch tabs, so you can keep watching while you browse.
+Min Vid is a Firefox web extension that gives you **complete control**
+over the videos in your browser. You can pop out, sticky, resize, and
+drag videos anywhere within the browser - it even stays visible when
+you switch tabs, so you can keep watching while you browse.
 
 This is an experiment - seeing what happens when users have
 total control over the media they're consuming on the web. Users should be
@@ -17,7 +19,7 @@ such as audio or pdfs.
 
 ## Usage
 
-Once the add-on is installed you are able to launch Min Vid from the
+Once the extension is installed you are able to launch Min Vid from the
 overlay icon over videos on YouTube and Vimeo.
 
 You can also launch Min Vid by right clicking on a video link and
@@ -31,13 +33,13 @@ sending to the player from the context menu.
 * `npm install`
 * `npm run package` (creates `addon.xpi` in the min-vid directory)
 * Open Firefox, go to `about:config`, set some prefs:
-  * set `xpinstall.signatures.required` to `false` (allows unsigned add-ons to be installed)
-  * set `extensions.legacy.enabled` to `true` (allows legacy add-ons, like min-vid)
+  * set `xpinstall.signatures.required` to `false` (allows unsigned extensions to be installed)
+  * set `extensions.legacy.enabled` to `true` (allows legacy extensions, like min-vid)
 * install xpi by dragging onto the `about:addons` page
 
 **note**
 The `xpinstall.signatures.required` option in `about:config` needs to
-be set in order to install unsigned add-ons.
+be set in order to install unsigned extensions.
 
 ## Development
 Contributions welcome. To get started,

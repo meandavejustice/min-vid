@@ -15,8 +15,8 @@ status is the [MVP Milestone](https://github.com/meandavejustice/min-vid/milesto
 | Action | issues |
 | ------------- | ------------- |
 | View details on testpilot.firefox.com  | [#42](https://github.com/meandavejustice/min-vid/issues/42) |
-| Install add-on  | [#13](https://github.com/meandavejustice/min-vid/issues/13) |
-| Tour the add-on  | [#43](https://github.com/meandavejustice/min-vid/issues/43) |
+| Install extension  | [#13](https://github.com/meandavejustice/min-vid/issues/13) |
+| Tour the extension  | [#43](https://github.com/meandavejustice/min-vid/issues/43) |
 | Verify Min Vid is fully installed without restart | **Resolved** |
 | Visit youtube.com, play a video, send it to Min Vid using video-overlay icon | **Resolved** |
 | Context click on  a video link, send video to Min Vid | **Resolved** |

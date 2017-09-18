@@ -8,7 +8,7 @@ Images are used for visualization and are not composed of actual data.
 
 What is the overall usage of Min Vid?  **This is the standard DAU/MAU
 analysis.**  This graph reports overall installations of Min Vid, but does not
-report actual usage of the add-on's functionality.
+report actual usage of the extension's functionality.
 
 ![](images/kpi-1.png)
 
@@ -98,14 +98,14 @@ otherwise noted.
     * Sent when a video is launched from the overlay icon.
 
 Here's an example of a complete Test Pilot telemetry ping. Note that Min Vid only sends the
-`payload` portion to the Test Pilot add-on. The Test Pilot add-on appends the `test` and `agent`
+`payload` portion to the Test Pilot extension. The Test Pilot extension appends the `test` and `agent`
 fields, transforms the `timestamp` from a standard JavaScript milliseconds-since-epoch time
 to the number of seconds since Firefox app startup, and wraps the payload under the `payload` key.
 
 ```js
 // Example: complete Test Pilot telemetry ping:
 {
-  "test": "@min-vid",                // The em:id field from the add-on
+  "test": "@min-vid",                // The em:id field from the extension
   "agent": "User Agent String",
   "payload": {
     "object": "player_view",         // UI component
@@ -121,7 +121,7 @@ to the number of seconds since Firefox app startup, and wraps the payload under 
     "video_height": 110,             // Height of Min Vid panel, in pixels
     "timestamp": 1470                // Timestamp in seconds since Firefox started (note:
                                      // Min Vid sends over a regular JS millisecond timestamp,
-                                     // the Test Pilot add-on converts it to seconds since startup)
+                                     // the Test Pilot extension converts it to seconds since startup)
   }
 }
 ```
@@ -159,5 +159,5 @@ All data is kept by default for 180 days.
 ### Changing the Event Format
 
 When changing keys in the metrics data object, be sure to
-- update the add-on version
+- update the extension version
 - ping the data team to update the Redshift schema (clone [this](https://bugzilla.mozilla.org/show_bug.cgi?id=1270586) Bugzilla bug)
