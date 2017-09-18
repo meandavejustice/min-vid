@@ -14,7 +14,7 @@ function onFullscreenChange() {
   else el.classList.remove('fullscreen');
 }
 
-document.addEventListener('fullscreenchange', onFullscreenChange);
+document.addEventListener('mozfullscreenchange', onFullscreenChange);
 
 function onMessage(opts) {
   const title = opts.title;
