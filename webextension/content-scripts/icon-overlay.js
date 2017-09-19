@@ -79,11 +79,11 @@ function ytEmbedChecks() {
     ytSearchContainers.forEach(ytHomePageHandler);
   }
 
-  // YouTube Watch Page
-  const ytWatchContainer = document.querySelector('.html5-video-player');
-  if (ytWatchContainer) {
+  // YouTube Watch Page and main featured videos on channel page
+  const ytWatchContainers = document.querySelectorAll('.html5-video-player');
+  if (ytWatchContainers) {
     sendMetric('available');
-    ytWatchElementHandler(ytWatchContainer);
+    ytWatchContainers.forEach(ytWatchElementHandler);
   }
 
   // YouTube Watch Page related videos
