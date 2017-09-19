@@ -3,7 +3,6 @@ let availableMetricSent = false;
 
 browser.runtime.onMessage.addListener(onMessage);
 
-injectStyle();
 checkForEmbeds();
 const overlayCheckInterval = setInterval(checkForEmbeds, 3000);
 
@@ -379,6 +378,8 @@ function sendMetric(method) {
     object: 'overlay_icon',
     method
   });
+  // only inject style if there are valid embeds on the page.
+  injectStyle();
 }
 
 function evNoop(ev) {
