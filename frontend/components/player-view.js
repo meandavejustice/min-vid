@@ -312,6 +312,7 @@ export default class Player extends React.Component {
                                               </div>) : (<MinimizedControls {...this.props} progress={this.state.progress}
                                                                             nextTrack={this.nextTrack.bind(this)}
                                                                             openQueueMenu={this.openQueueMenu.bind(this)}
+                                                                            replay={this.replay.bind(this)}
                                                                             time={this.state.time} audio={this.audio}
                                                                             setTime={this.setTime.bind(this)}
                                                                             hovered={this.state.hovered} />);
