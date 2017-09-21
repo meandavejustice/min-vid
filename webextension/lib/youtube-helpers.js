@@ -1,7 +1,7 @@
 import { parse as qsParse, stringify } from './querystring';
 import { parse, toSeconds } from 'iso8601-duration';
 
-const apiKey = browser.runtime.getManifest().config['YOUTUBE_DATA_API_KEY'];
+const apiKey = browser.runtime.getManifest().config.YOUTUBE_DATA_API_KEY;
 const headers = new Headers({
   'Accept': 'application/json',
   'Content-Type': 'application/json'

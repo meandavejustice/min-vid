@@ -1,4 +1,4 @@
-const clientId = browser.runtime.getManifest().config['SOUNDCLOUD_CLIENT_ID'];
+const clientId = browser.runtime.getManifest().config.SOUNDCLOUD_CLIENT_ID;
 
 function getSoundcloudArtworkUrl(json) {
   // track artwork

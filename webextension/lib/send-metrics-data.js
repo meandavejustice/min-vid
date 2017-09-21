@@ -4,7 +4,7 @@ const analytics = new TestPilotGA({
   aid: browser.runtime.id,
   an: browser.runtime.getManifest().name,
   av: browser.runtime.getManifest().version,
-  tid: browser.runtime.getManifest().config['GA_TRACKING_ID']
+  tid: browser.runtime.getManifest().config.GA_TRACKING_ID
 });
 
 export default function sendMetricsData(o) {

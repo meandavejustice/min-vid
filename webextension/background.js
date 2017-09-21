@@ -14,8 +14,8 @@ function initStorage() {
   store.get().then(r => {
     const storage = Object.assign({}, r);
     if (!r.clientUUID) storage.clientUUID = getRandomId();
-    if (!r.width) storage.width = browser.runtime.getManifest().config['DEFAULT_WIDTH'];
-    if (!r.height) storage.height = browser.runtime.getManifest().config['DEFAULT_HEIGHT'];
+    if (!r.width) storage.width = browser.runtime.getManifest().config.DEFAULT_WIDTH;
+    if (!r.height) storage.height = browser.runtime.getManifest().config.DEFAULT_HEIGHT;
     if (!r.queue) storage.queue = [];
     if (!r.history) storage.history = [];
     store.set(storage);

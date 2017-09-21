@@ -23,7 +23,7 @@ export default function(opts, cb) {
     if (json.request) {
       item = Object.assign(item, {
         url: json.request.files.progressive[0].url,
-        launchUrl: json.request['share_url'],
+        launchUrl: json.request.share_url,
         title: json.video.title,
         preview: json.video.thumbs['960'],
         duration: json.video.duration
