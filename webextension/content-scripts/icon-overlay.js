@@ -9,10 +9,11 @@ const overlayCheckInterval = setInterval(checkForEmbeds, 3000);
 function onFullscreenChange() {
   const el = document.querySelector('.minvid__overlay__container');
 
-  if (document.fullscreen) el.classList.add('fullscreen');
+  if (document.mozFullScreen) el.classList.add('fullscreen');
   else el.classList.remove('fullscreen');
 }
 
+document.addEventListener('fullscreenchange', onFullscreenChange);
 document.addEventListener('mozfullscreenchange', onFullscreenChange);
 
 function onMessage(opts) {
