@@ -50,7 +50,7 @@
     "lodash.debounce": "4.0.8",
     "onchange": "3.2.1",
     "pontoon-to-webext": "1.0.2",
-    "react": "15.6.1",
+    "react": "15.6.2",
     "react-dom": "15.6.1",
     "react-player": "0.24.5",
     "react-tabs": "0.8.3",
