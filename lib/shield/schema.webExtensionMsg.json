@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "webExtension browserMessage",
+  "type": "object",
+  "properties": {
+    "shield": {
+      "type": "boolean"
+    },
+    "msg": {
+      "type": "string",
+      "enum": [
+        "endStudy",
+        "telemetry",
+        "info"
+      ]
+    },
+    "data": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "shield",
+    "msg"
+  ]
+}

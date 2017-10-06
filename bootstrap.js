@@ -17,7 +17,15 @@ XPCOMUtils.defineLazyModuleGetter(this, 'DraggableElement',
 
 XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
                                   'resource://gre/modules/LegacyExtensionsUtils.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, "Preferences",
+                                  "resource://gre/modules/Preferences.jsm");
 
+XPCOMUtils.defineLazyModuleGetter(this, 'config',
+                                  'resource://share-button-study/Config.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, 'studyUtils',
+                                  'chrome://minvid-lib/content/source/StudyUtils.in.jsm');
+
+const EXPIRATION_DATE_STRING_PREF = 'extensions.minvidstudy.expirationDateString';
 const LOCATION = { x: 0, y: 0 };
 // TODO: consolidate with webextension/manifest.json
 let DIMENSIONS = {
@@ -43,6 +51,17 @@ XPCOMUtils.defineLazyModuleGetter(this, 'Services',
 XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
                                   'resource://gre/modules/LegacyExtensionsUtils.jsm');
 
+const REASONS = {
+  APP_STARTUP:      1, // The application is starting up.
+  APP_SHUTDOWN:     2, // The application is shutting down.
+  ADDON_ENABLE:     3, // The add-on is being enabled.
+  ADDON_DISABLE:    4, // The add-on is being disabled. (Also sent during uninstallation)
+  ADDON_INSTALL:    5, // The add-on is being installed.
+  ADDON_UNINSTALL:  6, // The add-on is being uninstalled.
+  ADDON_UPGRADE:    7, // The add-on is being upgraded.
+  ADDON_DOWNGRADE:  8, // The add-on is being downgraded.
+};
+
 function startup(data, reason) { // eslint-disable-line no-unused-vars
   if (data.webExtension.started) return;
   data.webExtension.startup(reason).then(api => {
@@ -58,10 +77,55 @@ function startup(data, reason) { // eslint-disable-line no-unused-vars
       });
     });
   });
+
+  // launch study setup
+  studyUtils.setup({
+      ...config,
+    addon: { id: data.id, version: data.version }
+  });
+
+  // Always set EXPIRATION_DATE_PREF if it not set, even if outside of install.
+  // This is a failsafe if opt-out expiration doesn't work, so should be resilient.
+  // Also helps for testing.
+  if (!Preferences.has(EXPIRATION_DATE_STRING_PREF)) {
+    const now = new Date(Date.now());
+    const expirationDateString = new Date(now.setDate(now.getDate() + 14)).toISOString();
+    Preferences.set(EXPIRATION_DATE_STRING_PREF, expirationDateString);
+  }
+
+  if (reason === REASONS>ADDON_INSTALL) {
+    studyUtils.firstSeen(); // sends telemetry "enter"
+    const eligible = await config.isEligible(); // addon-specific
+    if (!eligible) {
+      // uses config.endings.ineligible.url if any,
+      // sends UT for "ineligible"
+      // then uninstalls addon
+      await studyUtils.endStudy({ reason: "ineligible" });
+      return;
+    }
+  }
+  // sets experiment as active and sends installed telemetry upon
+  // first install
+  await studyUtils.startup({ reason });
+
+  const expirationDate = new Date(Preferences.get(EXPIRATION_DATE_STRING_PREF));
+  if (Date.now() > expirationDate) {
+    studyUtils.endStudy({ reason: "expired" });
+  }
 }
 
 function shutdown(data, reason) { // eslint-disable-line no-unused-vars
   closeWindow();
+
+  // are we uninstalling?
+  // if so, user or automatic?
+  if (reason === REASONS.ADDON_UNINSTALL || reason === REASONS.ADDON_DISABLE) {
+    if (!studyUtils._isEnding) {
+      // we are the first requestors, must be user action.
+      studyUtils.endStudy({ reason: "user-disable" });
+    }
+  }
+
   LegacyExtensionsUtils.getEmbeddedExtensionFor({
     id: ADDON_ID,
     resourceURI: data.resourceURI
@@ -147,10 +211,8 @@ function create() {
   if (mvWindow) return mvWindow;
 
   const window = WM.getMostRecentWindow('navigator:browser');
-  // TODO: pass correct dimensions and location
   const windowArgs = `left=${LOCATION.x},top=${LOCATION.y},chrome,dialog=no,width=${DIMENSIONS.width},height=${DIMENSIONS.height},titlebar=no`;
 
-  // const windowArgs = `left=${x},top=${y},chrome,dialog=no,width=${prefs.width},height=${prefs.height},titlebar=no`;
   // implicit assignment to mvWindow global
   mvWindow = window.open('resource://minvid-data/default.html', 'min-vid', windowArgs);
   // once the window's ready, make it always topmost

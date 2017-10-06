@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "variation": {
+      "name": {
+        "type": "string"
+      },
+      "weight": {
+        "type": "number",
+        "minimum": 0
+      },
+      "required": [
+        "name",
+        "weight"
+      ]
+    }
+  },
+  "items": {
+    "$ref": "#/definitions/variation"
+  },
+  "type": "array"
+}
