@@ -93,7 +93,7 @@ export default class Player extends React.Component {
   }
 
   onPause() {
-    sendMetricsEvent('player_view', 'pause'), this.props.queue[0].domain;
+    sendMetricsEvent('player_view', 'pause', this.props.queue[0].domain);
     window.AppData.set({playing: false});
   }
 
