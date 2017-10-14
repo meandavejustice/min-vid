@@ -39,7 +39,7 @@
     "cross-spawn": "5.1.0",
     "deep-assign": "2.0.0",
     "deploy-txp": "1.0.7",
-    "eslint": "3.19.0",
+    "eslint": "4.9.0",
     "eslint-plugin-mozilla": "0.4.4",
     "eslint-plugin-no-unsanitized": "2.0.1",
     "eslint-plugin-react": "7.3.0",
