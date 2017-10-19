@@ -1,3 +1,4 @@
+/* global config */
 const { classes: Cc, interfaces: Ci, utils: Cu } = Components;
 Cu.import('resource://gre/modules/XPCOMUtils.jsm');
 
@@ -20,7 +21,7 @@ XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
 XPCOMUtils.defineLazyModuleGetter(this, 'Preferences',
                                   'resource://gre/modules/Preferences.jsm');
 
-const { config } = Cu.import('chrome://minvid-root/Config.jsm', {}); // eslint-disable-line mozilla/no-import-into-var-and-global
+Cu.import('chrome://minvid-root/content/Config.jsm');
 const { studyUtils } = Cu.import('chrome://minvid-lib/content/StudyUtils.jsm', {}); // eslint-disable-line mozilla/no-import-into-var-and-global
 const studyConfig = config.study;
 
@@ -78,12 +79,7 @@ async function startup(data, reason) { // eslint-disable-line no-unused-vars
   });
 
   // launch study setup
-  studyUtils.setup(Object.assign(studyConfig, {
-    studyName: studyConfig.studyName,
-    endings: studyConfig.endings,
-    addon: { id: data.id, version: data.version },
-    telemetry: studyConfig.telemetry
-  }));
+  studyUtils.setup(studyConfig);
 
   // Always set EXPIRATION_DATE_PREF if it not set, even if outside of install.
   // This is a failsafe if opt-out expiration doesn't work, so should be resilient.
