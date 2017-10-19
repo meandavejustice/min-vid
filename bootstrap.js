@@ -1,30 +1,36 @@
+/* global config */
 const { classes: Cc, interfaces: Ci, utils: Cu } = Components;
 Cu.import('resource://gre/modules/XPCOMUtils.jsm');
-
-const ADDON_ID = '@min-vid';
-const WM = Cc['@mozilla.org/appshell/window-mediator;1'].
-      getService(Ci.nsIWindowMediator);
+Cu.import('resource://gre/modules/Console.jsm');
 
 XPCOMUtils.defineLazyModuleGetter(this, 'setTimeout',
                                   'resource://gre/modules/Timer.jsm');
 XPCOMUtils.defineLazyModuleGetter(this, 'clearTimeout',
                                   'resource://gre/modules/Timer.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
+                                  'resource://gre/modules/LegacyExtensionsUtils.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, 'Preferences',
+                                  'resource://gre/modules/Preferences.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, 'AddonManager',
+                                  'resource://gre/modules/AddonManager.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, 'Services',
+                                  'resource://gre/modules/Services.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, 'TelemetryController',
+                                  'resource://gre/modules/TelemetryController.jsm');
+
+Cu.import('chrome://minvid-root/content/Config.jsm');
 
 XPCOMUtils.defineLazyModuleGetter(this, 'topify',
                                   'chrome://minvid-lib/content/topify.js');
 XPCOMUtils.defineLazyModuleGetter(this, 'DraggableElement',
                                   'chrome://minvid-lib/content/dragging-utils.js');
-
-XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
-                                  'resource://gre/modules/LegacyExtensionsUtils.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, "Preferences",
-                                  "resource://gre/modules/Preferences.jsm");
-
-XPCOMUtils.defineLazyModuleGetter(this, 'config',
-                                  'resource://share-button-study/Config.jsm');
 XPCOMUtils.defineLazyModuleGetter(this, 'studyUtils',
-                                  'chrome://minvid-lib/content/source/StudyUtils.in.jsm');
+                                  'chrome://minvid-lib/content/StudyUtils.jsm');
 
+const ADDON_ID = 'min-vid-study';
+const startTime = Date.now();
+const WM = Cc['@mozilla.org/appshell/window-mediator;1'].
+      getService(Ci.nsIWindowMediator);
 const EXPIRATION_DATE_STRING_PREF = 'extensions.minvidstudy.expirationDateString';
 const LOCATION = { x: 0, y: 0 };
 // TODO: consolidate with webextension/manifest.json
@@ -34,7 +40,7 @@ let DIMENSIONS = {
   minimizedHeight: 100
 };
 
-let commandPollTimer;
+let commandPollTimer, addonMetadata;
 
 // TODO: if mvWindow changes, we need to destroy and create the player.
 // This must be why we get those dead object errors. Note that mvWindow
@@ -42,27 +48,8 @@ let commandPollTimer;
 // those errors. Maybe pass a getter instead of a window reference.
 let mvWindow, webExtPort; // global port for communication with webextension
 
-XPCOMUtils.defineLazyModuleGetter(this, 'AddonManager',
-                                  'resource://gre/modules/AddonManager.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'Console',
-                                  'resource://gre/modules/Console.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'Services',
-                                  'resource://gre/modules/Services.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
-                                  'resource://gre/modules/LegacyExtensionsUtils.jsm');
-
-const REASONS = {
-  APP_STARTUP:      1, // The application is starting up.
-  APP_SHUTDOWN:     2, // The application is shutting down.
-  ADDON_ENABLE:     3, // The add-on is being enabled.
-  ADDON_DISABLE:    4, // The add-on is being disabled. (Also sent during uninstallation)
-  ADDON_INSTALL:    5, // The add-on is being installed.
-  ADDON_UNINSTALL:  6, // The add-on is being uninstalled.
-  ADDON_UPGRADE:    7, // The add-on is being upgraded.
-  ADDON_DOWNGRADE:  8, // The add-on is being downgraded.
-};
-
-function startup(data, reason) { // eslint-disable-line no-unused-vars
+this.startup = async function startup(data, reason) { // eslint-disable-line no-unused-vars
+  addonMetadata = data;
   if (data.webExtension.started) return;
   data.webExtension.startup(reason).then(api => {
     api.browser.runtime.onConnect.addListener(port => {
@@ -79,10 +66,7 @@ function startup(data, reason) { // eslint-disable-line no-unused-vars
   });
 
   // launch study setup
-  studyUtils.setup({
-      ...config,
-    addon: { id: data.id, version: data.version }
-  });
+  studyUtils.setup(config);
 
   // Always set EXPIRATION_DATE_PREF if it not set, even if outside of install.
   // This is a failsafe if opt-out expiration doesn't work, so should be resilient.
@@ -93,14 +77,14 @@ function startup(data, reason) { // eslint-disable-line no-unused-vars
     Preferences.set(EXPIRATION_DATE_STRING_PREF, expirationDateString);
   }
 
-  if (reason === REASONS>ADDON_INSTALL) {
+  if (reason === studyUtils.REASONS.ADDON_INSTALL) {
     studyUtils.firstSeen(); // sends telemetry "enter"
     const eligible = await config.isEligible(); // addon-specific
     if (!eligible) {
       // uses config.endings.ineligible.url if any,
       // sends UT for "ineligible"
       // then uninstalls addon
-      await studyUtils.endStudy({ reason: "ineligible" });
+      await studyUtils.endStudy({ reason: 'ineligible' });
       return;
     }
   }
@@ -110,19 +94,19 @@ function startup(data, reason) { // eslint-disable-line no-unused-vars
 
   const expirationDate = new Date(Preferences.get(EXPIRATION_DATE_STRING_PREF));
   if (Date.now() > expirationDate) {
-    studyUtils.endStudy({ reason: "expired" });
+    studyUtils.endStudy({ reason: 'expired' });
   }
-}
+};
 
-function shutdown(data, reason) { // eslint-disable-line no-unused-vars
+this.shutdown = function shutdown(data, reason) { // eslint-disable-line no-unused-vars
   closeWindow();
 
   // are we uninstalling?
   // if so, user or automatic?
-  if (reason === REASONS.ADDON_UNINSTALL || reason === REASONS.ADDON_DISABLE) {
+  if (reason === studyUtils.REASONS.ADDON_UNINSTALL || reason === studyUtils.REASONS.ADDON_DISABLE) {
     if (!studyUtils._isEnding) {
       // we are the first requestors, must be user action.
-      studyUtils.endStudy({ reason: "user-disable" });
+      studyUtils.endStudy({ reason: 'user-disable' });
     }
   }
 
@@ -130,7 +114,7 @@ function shutdown(data, reason) { // eslint-disable-line no-unused-vars
     id: ADDON_ID,
     resourceURI: data.resourceURI
   }).shutdown(reason);
-}
+};
 
 // These are mandatory in bootstrap.js, even if unused
 function install(data, reason) {} // eslint-disable-line no-unused-vars
@@ -158,12 +142,32 @@ function whenReady(cb) {
   setTimeout(() => { whenReady(cb); }, 25);
 }
 
+function makeTimestamp(timestamp = Date.now()) {
+  return Math.round((timestamp - startTime) / 1000);
+}
+
 // I can't get frame scripts working, so instead we just set global state directly in react. fml
 function send(msg) {
   whenReady(() => {
     const newData = Object.assign(mvWindow.wrappedJSObject.AppData, msg);
     if (newData.confirm) maximize();
     mvWindow.wrappedJSObject.AppData = newData;
+
+    if (ADDON_ID === 'min-vid-study') {
+      TelemetryController.submitExternalPing({
+        topic: 'minvid-study',
+        payload: {
+          timestamp: makeTimestamp(),
+          test: addonMetadata.id,
+          version: addonMetadata.version,
+          events: [{
+            timestamp: makeTimestamp(),
+            event: 'launch-video',
+            object: addonMetadata.id
+          }]
+        }
+      });
+    }
   });
 }
 

@@ -1,4 +1,5 @@
 content minvid-ostypes lib/vendor/noitidart-ostypes/
 content minvid-lib lib/
-resource minvid-data chrome/content/
 content minvid-skin chrome/skin/
+resource minvid-data chrome/content/
+content minvid-root .
