@@ -40,5 +40,25 @@ module.exports = [
     output: {
       filename: './chrome/content/frontend.bundle.js'
     }
-  }
+  }// ,
+  // {
+  //   name: 'jsonschema',
+  //   module: {
+  //     rules: [
+  //       {
+  //         test: /\.js$/,
+  //         use: {
+  //           loader: 'babel-loader',
+  //           options: {
+  //             presets: ['es2015']
+  //           }
+  //         }
+  //       }
+  //     ]
+  //   },
+  //   entry: './node_modules/jsonschema/lib/index.js',
+  //   output: {
+  //     filename: './lib/shield/jsonschema.bundle.js'
+  //   }
+  // }
 ];

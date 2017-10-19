@@ -59,5 +59,9 @@
     "testpilot-ga": "0.3.0",
     "uuid": "3.1.0",
     "webpack": "3.6.0"
+  },
+  "dependencies": {
+    "ajv": "4.11.2",
+    "jsonschema": "1.2.0"
   }
 }

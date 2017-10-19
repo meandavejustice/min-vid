@@ -2,4 +2,7 @@ bin/
 node_modules/
 chrome/content/frontend.bundle.js
 chrome/content/www-widgetapi.js
+lib/shield/ajv.min.js
+lib/shield/jsonschema.bundle.js
+lib/shield/ajv.bundle.js
 webextension/dist/background.bundle.js

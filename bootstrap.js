@@ -17,13 +17,12 @@ XPCOMUtils.defineLazyModuleGetter(this, 'DraggableElement',
 
 XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
                                   'resource://gre/modules/LegacyExtensionsUtils.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, "Preferences",
-                                  "resource://gre/modules/Preferences.jsm");
+XPCOMUtils.defineLazyModuleGetter(this, 'Preferences',
+                                  'resource://gre/modules/Preferences.jsm');
 
-XPCOMUtils.defineLazyModuleGetter(this, 'config',
-                                  'resource://share-button-study/Config.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'studyUtils',
-                                  'chrome://minvid-lib/content/source/StudyUtils.in.jsm');
+const { config } = Cu.import('chrome://minvid-root/Config.jsm', {}); // eslint-disable-line mozilla/no-import-into-var-and-global
+const { studyUtils } = Cu.import('chrome://minvid-lib/content/StudyUtils.jsm', {}); // eslint-disable-line mozilla/no-import-into-var-and-global
+const studyConfig = config.study;
 
 const EXPIRATION_DATE_STRING_PREF = 'extensions.minvidstudy.expirationDateString';
 const LOCATION = { x: 0, y: 0 };
@@ -59,10 +58,10 @@ const REASONS = {
   ADDON_INSTALL:    5, // The add-on is being installed.
   ADDON_UNINSTALL:  6, // The add-on is being uninstalled.
   ADDON_UPGRADE:    7, // The add-on is being upgraded.
-  ADDON_DOWNGRADE:  8, // The add-on is being downgraded.
+  ADDON_DOWNGRADE:  8  // The add-on is being downgraded.
 };
 
-function startup(data, reason) { // eslint-disable-line no-unused-vars
+async function startup(data, reason) { // eslint-disable-line no-unused-vars
   if (data.webExtension.started) return;
   data.webExtension.startup(reason).then(api => {
     api.browser.runtime.onConnect.addListener(port => {
@@ -79,10 +78,12 @@ function startup(data, reason) { // eslint-disable-line no-unused-vars
   });
 
   // launch study setup
-  studyUtils.setup({
-      ...config,
-    addon: { id: data.id, version: data.version }
-  });
+  studyUtils.setup(Object.assign(studyConfig, {
+    studyName: studyConfig.studyName,
+    endings: studyConfig.endings,
+    addon: { id: data.id, version: data.version },
+    telemetry: studyConfig.telemetry
+  }));
 
   // Always set EXPIRATION_DATE_PREF if it not set, even if outside of install.
   // This is a failsafe if opt-out expiration doesn't work, so should be resilient.
@@ -93,14 +94,14 @@ function startup(data, reason) { // eslint-disable-line no-unused-vars
     Preferences.set(EXPIRATION_DATE_STRING_PREF, expirationDateString);
   }
 
-  if (reason === REASONS>ADDON_INSTALL) {
+  if (reason === REASONS.ADDON_INSTALL) {
     studyUtils.firstSeen(); // sends telemetry "enter"
-    const eligible = await config.isEligible(); // addon-specific
+    const eligible = await studyConfig.isEligible(); // addon-specific
     if (!eligible) {
       // uses config.endings.ineligible.url if any,
       // sends UT for "ineligible"
       // then uninstalls addon
-      await studyUtils.endStudy({ reason: "ineligible" });
+      await studyUtils.endStudy({ reason: 'ineligible' });
       return;
     }
   }
@@ -108,9 +109,11 @@ function startup(data, reason) { // eslint-disable-line no-unused-vars
   // first install
   await studyUtils.startup({ reason });
 
+  console.log(`info ${JSON.stringify(studyUtils.info())}`);
+
   const expirationDate = new Date(Preferences.get(EXPIRATION_DATE_STRING_PREF));
   if (Date.now() > expirationDate) {
-    studyUtils.endStudy({ reason: "expired" });
+    studyUtils.endStudy({ reason: 'expired' });
   }
 }
 
@@ -122,7 +125,7 @@ function shutdown(data, reason) { // eslint-disable-line no-unused-vars
   if (reason === REASONS.ADDON_UNINSTALL || reason === REASONS.ADDON_DISABLE) {
     if (!studyUtils._isEnding) {
       // we are the first requestors, must be user action.
-      studyUtils.endStudy({ reason: "user-disable" });
+      studyUtils.endStudy({ reason: 'user-disable' });
     }
   }
 
