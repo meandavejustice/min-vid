@@ -83,6 +83,7 @@ XPCOMUtils.defineLazyModuleGetter(this, 'DraggableElement',
                                   'chrome://minvid-lib/content/dragging-utils.js');
 XPCOMUtils.defineLazyModuleGetter(this, 'studyUtils',
                                   'chrome://minvid-lib/content/StudyUtils.jsm');
+
 const ADDON_ID = '@min-vid-study';
 const startTime = Date.now();
 const WM = Cc['@mozilla.org/appshell/window-mediator;1'].
@@ -104,6 +105,7 @@ let commandPollTimer, addonMetadata;
 // those errors. Maybe pass a getter instead of a window reference.
 let mvWindow, webExtPort; // global port for communication with webextension
 
+<<<<<<< 8799c3fa76319fac13ef285bcfcc5e1b18ca2afb
 // Name of the variation selected by Shield study.
 // One of 'inactive', 'active', or 'activeAndOnboarding'.
 const VARIATION_PREF = 'extensions.minvidstudy.variation';
@@ -153,6 +155,10 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
     config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl + '?ver=2';
   }
 
+=======
+this.startup = async function startup(data, reason) { // eslint-disable-line no-unused-vars
+  addonMetadata = data;
+>>>>>>> 1060 shield utils (#1093)
   if (data.webExtension.started) return;
   data.webExtension.startup(reason).then(api => {
     api.browser.runtime.onConnect.addListener(port => {
@@ -175,7 +181,10 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
 
   // launch study setup
   studyUtils.setup(config);
+<<<<<<< 8799c3fa76319fac13ef285bcfcc5e1b18ca2afb
   studyUtils.setVariation({ name: currentVariation, weight: 1 });
+=======
+>>>>>>> 1060 shield utils (#1093)
 
   // Always set EXPIRATION_DATE_PREF if it not set, even if outside of install.
   // This is a failsafe if opt-out expiration doesn't work, so should be resilient.
@@ -187,11 +196,19 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
   }
 
   if (reason === studyUtils.REASONS.ADDON_INSTALL) {
+<<<<<<< 8799c3fa76319fac13ef285bcfcc5e1b18ca2afb
     studyUtils.firstSeen(); // sends telemetry 'enter'
     const eligible = await config.isEligible(); // addon-specific
     if (!eligible) {
       // uses config.endings.ineligible.url if any,
       // sends UT for 'ineligible'
+=======
+    studyUtils.firstSeen(); // sends telemetry "enter"
+    const eligible = await config.isEligible(); // addon-specific
+    if (!eligible) {
+      // uses config.endings.ineligible.url if any,
+      // sends UT for "ineligible"
+>>>>>>> 1060 shield utils (#1093)
       // then uninstalls addon
       await studyUtils.endStudy({ reason: 'ineligible' });
       return;
@@ -213,7 +230,10 @@ this.shutdown = function shutdown(data, reason) { // eslint-disable-line no-unus
   // are we uninstalling?
   // if so, user or automatic?
   if (reason === studyUtils.REASONS.ADDON_UNINSTALL || reason === studyUtils.REASONS.ADDON_DISABLE) {
+<<<<<<< 8799c3fa76319fac13ef285bcfcc5e1b18ca2afb
     Preferences.reset(VARIATION_PREF);
+=======
+>>>>>>> 1060 shield utils (#1093)
     if (!studyUtils._isEnding) {
       // we are the first requestors, must be user action.
       studyUtils.endStudy({ reason: 'user-disable' });
@@ -256,6 +276,7 @@ function makeTimestamp(timestamp = Date.now()) {
   return Math.round((timestamp - startTime) / 1000);
 }
 
+<<<<<<< 8799c3fa76319fac13ef285bcfcc5e1b18ca2afb
 function submitExternalPing(eventData, localInfo) {
   if (ADDON_ID === '@min-vid-study') {
     TelemetryController.submitExternalPing({
@@ -284,12 +305,30 @@ function submitExternalPing(eventData, localInfo) {
   }
 }
 
+=======
+>>>>>>> 1060 shield utils (#1093)
 // I can't get frame scripts working, so instead we just set global state directly in react. fml
 function send(msg) {
   whenReady(() => {
     const newData = Object.assign(mvWindow.wrappedJSObject.AppData, msg);
     if (newData.confirm) maximize();
     mvWindow.wrappedJSObject.AppData = newData;
+
+    if (ADDON_ID === 'min-vid-study') {
+      TelemetryController.submitExternalPing({
+        topic: 'minvid-study',
+        payload: {
+          timestamp: makeTimestamp(),
+          test: addonMetadata.id,
+          version: addonMetadata.version,
+          events: [{
+            timestamp: makeTimestamp(),
+            event: 'launch-video',
+            object: addonMetadata.id
+          }]
+        }
+      });
+    }
   });
 }
 
