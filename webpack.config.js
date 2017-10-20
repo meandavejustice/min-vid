@@ -1,3 +1,10 @@
+const webpack = require('webpack');
+const plugins = [
+  new webpack.DefinePlugin({
+    'process.env.IS_SHIELD_STUDY': 'true'
+  })
+];
+
 module.exports = [
   {
     name: 'addon',
@@ -36,6 +43,7 @@ module.exports = [
         }
       ]
     },
+    plugins,
     entry: './frontend/app.js',
     output: {
       filename: './chrome/content/frontend.bundle.js'

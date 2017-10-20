@@ -1,23 +1,37 @@
+/* global config */
 const { classes: Cc, interfaces: Ci, utils: Cu } = Components;
 Cu.import('resource://gre/modules/XPCOMUtils.jsm');
-
-const ADDON_ID = '@min-vid';
-const WM = Cc['@mozilla.org/appshell/window-mediator;1'].
-      getService(Ci.nsIWindowMediator);
+Cu.import('resource://gre/modules/Console.jsm');
 
 XPCOMUtils.defineLazyModuleGetter(this, 'setTimeout',
                                   'resource://gre/modules/Timer.jsm');
 XPCOMUtils.defineLazyModuleGetter(this, 'clearTimeout',
                                   'resource://gre/modules/Timer.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
+                                  'resource://gre/modules/LegacyExtensionsUtils.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, 'Preferences',
+                                  'resource://gre/modules/Preferences.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, 'AddonManager',
+                                  'resource://gre/modules/AddonManager.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, 'Services',
+                                  'resource://gre/modules/Services.jsm');
+XPCOMUtils.defineLazyModuleGetter(this, 'TelemetryController',
+                                  'resource://gre/modules/TelemetryController.jsm');
+
+Cu.import('chrome://minvid-root/content/Config.jsm');
 
 XPCOMUtils.defineLazyModuleGetter(this, 'topify',
                                   'chrome://minvid-lib/content/topify.js');
 XPCOMUtils.defineLazyModuleGetter(this, 'DraggableElement',
                                   'chrome://minvid-lib/content/dragging-utils.js');
+XPCOMUtils.defineLazyModuleGetter(this, 'studyUtils',
+                                  'chrome://minvid-lib/content/StudyUtils.jsm');
 
-XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
-                                  'resource://gre/modules/LegacyExtensionsUtils.jsm');
-
+const ADDON_ID = 'min-vid-study';
+const startTime = Date.now();
+const WM = Cc['@mozilla.org/appshell/window-mediator;1'].
+      getService(Ci.nsIWindowMediator);
+const EXPIRATION_DATE_STRING_PREF = 'extensions.minvidstudy.expirationDateString';
 const LOCATION = { x: 0, y: 0 };
 // TODO: consolidate with webextension/manifest.json
 let DIMENSIONS = {
@@ -26,7 +40,7 @@ let DIMENSIONS = {
   minimizedHeight: 100
 };
 
-let commandPollTimer;
+let commandPollTimer, addonMetadata;
 
 // TODO: if mvWindow changes, we need to destroy and create the player.
 // This must be why we get those dead object errors. Note that mvWindow
@@ -34,16 +48,8 @@ let commandPollTimer;
 // those errors. Maybe pass a getter instead of a window reference.
 let mvWindow, webExtPort; // global port for communication with webextension
 
-XPCOMUtils.defineLazyModuleGetter(this, 'AddonManager',
-                                  'resource://gre/modules/AddonManager.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'Console',
-                                  'resource://gre/modules/Console.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'Services',
-                                  'resource://gre/modules/Services.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
-                                  'resource://gre/modules/LegacyExtensionsUtils.jsm');
-
-function startup(data, reason) { // eslint-disable-line no-unused-vars
+this.startup = async function startup(data, reason) { // eslint-disable-line no-unused-vars
+  addonMetadata = data;
   if (data.webExtension.started) return;
   data.webExtension.startup(reason).then(api => {
     api.browser.runtime.onConnect.addListener(port => {
@@ -58,15 +64,57 @@ function startup(data, reason) { // eslint-disable-line no-unused-vars
       });
     });
   });
-}
 
-function shutdown(data, reason) { // eslint-disable-line no-unused-vars
+  // launch study setup
+  studyUtils.setup(config);
+
+  // Always set EXPIRATION_DATE_PREF if it not set, even if outside of install.
+  // This is a failsafe if opt-out expiration doesn't work, so should be resilient.
+  // Also helps for testing.
+  if (!Preferences.has(EXPIRATION_DATE_STRING_PREF)) {
+    const now = new Date(Date.now());
+    const expirationDateString = new Date(now.setDate(now.getDate() + 14)).toISOString();
+    Preferences.set(EXPIRATION_DATE_STRING_PREF, expirationDateString);
+  }
+
+  if (reason === studyUtils.REASONS.ADDON_INSTALL) {
+    studyUtils.firstSeen(); // sends telemetry "enter"
+    const eligible = await config.isEligible(); // addon-specific
+    if (!eligible) {
+      // uses config.endings.ineligible.url if any,
+      // sends UT for "ineligible"
+      // then uninstalls addon
+      await studyUtils.endStudy({ reason: 'ineligible' });
+      return;
+    }
+  }
+  // sets experiment as active and sends installed telemetry upon
+  // first install
+  await studyUtils.startup({ reason });
+
+  const expirationDate = new Date(Preferences.get(EXPIRATION_DATE_STRING_PREF));
+  if (Date.now() > expirationDate) {
+    studyUtils.endStudy({ reason: 'expired' });
+  }
+};
+
+this.shutdown = function shutdown(data, reason) { // eslint-disable-line no-unused-vars
   closeWindow();
+
+  // are we uninstalling?
+  // if so, user or automatic?
+  if (reason === studyUtils.REASONS.ADDON_UNINSTALL || reason === studyUtils.REASONS.ADDON_DISABLE) {
+    if (!studyUtils._isEnding) {
+      // we are the first requestors, must be user action.
+      studyUtils.endStudy({ reason: 'user-disable' });
+    }
+  }
+
   LegacyExtensionsUtils.getEmbeddedExtensionFor({
     id: ADDON_ID,
     resourceURI: data.resourceURI
   }).shutdown(reason);
-}
+};
 
 // These are mandatory in bootstrap.js, even if unused
 function install(data, reason) {} // eslint-disable-line no-unused-vars
@@ -94,12 +142,32 @@ function whenReady(cb) {
   setTimeout(() => { whenReady(cb); }, 25);
 }
 
+function makeTimestamp(timestamp = Date.now()) {
+  return Math.round((timestamp - startTime) / 1000);
+}
+
 // I can't get frame scripts working, so instead we just set global state directly in react. fml
 function send(msg) {
   whenReady(() => {
     const newData = Object.assign(mvWindow.wrappedJSObject.AppData, msg);
     if (newData.confirm) maximize();
     mvWindow.wrappedJSObject.AppData = newData;
+
+    if (ADDON_ID === 'min-vid-study') {
+      TelemetryController.submitExternalPing({
+        topic: 'minvid-study',
+        payload: {
+          timestamp: makeTimestamp(),
+          test: addonMetadata.id,
+          version: addonMetadata.version,
+          events: [{
+            timestamp: makeTimestamp(),
+            event: 'launch-video',
+            object: addonMetadata.id
+          }]
+        }
+      });
+    }
   });
 }
 
@@ -147,10 +215,8 @@ function create() {
   if (mvWindow) return mvWindow;
 
   const window = WM.getMostRecentWindow('navigator:browser');
-  // TODO: pass correct dimensions and location
   const windowArgs = `left=${LOCATION.x},top=${LOCATION.y},chrome,dialog=no,width=${DIMENSIONS.width},height=${DIMENSIONS.height},titlebar=no`;
 
-  // const windowArgs = `left=${x},top=${y},chrome,dialog=no,width=${prefs.width},height=${prefs.height},titlebar=no`;
   // implicit assignment to mvWindow global
   mvWindow = window.open('resource://minvid-data/default.html', 'min-vid', windowArgs);
   // once the window's ready, make it always topmost
