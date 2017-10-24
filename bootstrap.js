@@ -26,7 +26,6 @@ XPCOMUtils.defineLazyModuleGetter(this, 'DraggableElement',
                                   'chrome://minvid-lib/content/dragging-utils.js');
 XPCOMUtils.defineLazyModuleGetter(this, 'studyUtils',
                                   'chrome://minvid-lib/content/StudyUtils.jsm');
-
 const ADDON_ID = '@min-vid-study';
 const startTime = Date.now();
 const WM = Cc['@mozilla.org/appshell/window-mediator;1'].

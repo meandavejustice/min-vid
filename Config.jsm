@@ -8,6 +8,9 @@ const config = {
   },
   study: {
     studyName: "min-vid-study", // no spaces, for all the reasons
+    variation: {
+      name: "non-txp",
+    },
     /** **endings**
      * - keys indicate the 'endStudy' even that opens these.
      * - urls should be static (data) or external, because they have to
@@ -36,6 +39,10 @@ const config = {
     // to get the correct file location. Then it is necessary to use
     // XPCOMUtils.defineLazyModuleGetter() to import the library.
     return true;
+  },
+  addon: {
+    id: '@min-vid-study',
+    version: '0.4.5-study'
   },
   // addon-specific modules to load/unload during `startup`, `shutdown`
   modules: [
