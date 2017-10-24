@@ -2,6 +2,10 @@
 const EXPORTED_SYMBOLS = ["config"];
 
 const config = {
+  addon: {
+    id: "@min-vid-study",
+    version: "0.4.5-study"
+  },
   study: {
     studyName: "min-vid-study", // no spaces, for all the reasons
     /** **endings**
