@@ -64,8 +64,10 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
     });
   });
 
+  studyUtils.setLoggingLevel(config.log.studyUtils.level);
   // launch study setup
   studyUtils.setup(config);
+  studyUtils.setVariation(config.study.variation);
 
   // Always set EXPIRATION_DATE_PREF if it not set, even if outside of install.
   // This is a failsafe if opt-out expiration doesn't work, so should be resilient.
