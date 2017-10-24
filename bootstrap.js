@@ -64,7 +64,6 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
     });
   });
 
-  studyUtils.setLoggingLevel(config.log.studyUtils.level);
   // launch study setup
   studyUtils.setup(config);
   studyUtils.setVariation(config.study.variation);
