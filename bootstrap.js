@@ -281,6 +281,12 @@ function destroy(isUnload) {
   if (isUnload) {
     Services.obs.removeObserver(onWindowClosed, 'xul-window-destroyed');
     Services.obs.removeObserver(closeRequested, 'browser-lastwindow-close-requested');
+
+    Cu.unload('chrome://minvid-root/content/Config.jsm');
+    Cu.unload('chrome://minvid-lib/content/StudyUtils.jsm');
+    Cu.unload('chrome://minvid-lib/content/topify.js');
+    Cu.unload('chrome://minvid-lib/content/dragging-utils.js');
+
   }
 }
 
