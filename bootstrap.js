@@ -18,7 +18,61 @@ XPCOMUtils.defineLazyModuleGetter(this, 'Services',
 XPCOMUtils.defineLazyModuleGetter(this, 'TelemetryController',
                                   'resource://gre/modules/TelemetryController.jsm');
 
-Cu.import('chrome://minvid-root/content/Config.jsm');
+// Config.jsm, inlined
+const config = {
+  addon: {
+    id: '@min-vid-study',
+    version: '0.4.5-study'
+  },
+  study: {
+    studyName: 'min-vid-study', // no spaces, for all the reasons
+    variation: {
+      name: 'non-txp'
+    },
+    /** **endings**
+     * - keys indicate the 'endStudy' even that opens these.
+     * - urls should be static (data) or external, because they have to
+     *   survive uninstall
+     * - If there is no key for an endStudy reason, no url will open.
+     * - usually surveys, orientations, explanations
+     */
+    endings: {
+      expired: {
+        baseUrl: 'https://qsurvey.mozilla.com/s3/min-vid-study'
+      },
+      'user-disable': {
+        baseUrl: 'https://qsurvey.mozilla.com/s3/min-vid-study'
+      }
+    },
+    telemetry: {
+      send: true, // assumed false. Actually send pings?
+      removeTestingFlag: true  // Marks pings as testing, set true for actual release
+      // TODO 'onInvalid': 'throw'  // invalid packet for schema?  throw||log
+    }
+  },
+  async isEligible() {
+    // get whatever prefs, addons, telemetry, anything!
+    // Cu.import can see 'firefox things', but not package things.
+    // In order to import addon libraries, use chrome.manifest and 'resource://' in order
+    // to get the correct file location. Then it is necessary to use
+    // XPCOMUtils.defineLazyModuleGetter() to import the library.
+    return true;
+  },
+  // addon-specific modules to load/unload during `startup`, `shutdown`
+  modules: [
+    // can use ${slug} here for example
+  ],
+  // sets the logging for BOTH the bootstrap file AND shield-study-utils
+  log: {
+    // Fatal: 70, Error: 60, Warn: 50, Info: 40, Config: 30, Debug: 20, Trace: 10, All: -1,
+    bootstrap:  {
+      level: 'Warn'
+    },
+    studyUtils:  {
+      level: 'Warn'
+    }
+  }
+};
 
 XPCOMUtils.defineLazyModuleGetter(this, 'topify',
                                   'chrome://minvid-lib/content/topify.js');
@@ -78,11 +132,11 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
   }
 
   if (reason === studyUtils.REASONS.ADDON_INSTALL) {
-    studyUtils.firstSeen(); // sends telemetry "enter"
+    studyUtils.firstSeen(); // sends telemetry 'enter'
     const eligible = await config.isEligible(); // addon-specific
     if (!eligible) {
       // uses config.endings.ineligible.url if any,
-      // sends UT for "ineligible"
+      // sends UT for 'ineligible'
       // then uninstalls addon
       await studyUtils.endStudy({ reason: 'ineligible' });
       return;
@@ -282,7 +336,6 @@ function destroy(isUnload) {
     Services.obs.removeObserver(onWindowClosed, 'xul-window-destroyed');
     Services.obs.removeObserver(closeRequested, 'browser-lastwindow-close-requested');
 
-    Cu.unload('chrome://minvid-root/content/Config.jsm');
     Cu.unload('chrome://minvid-lib/content/StudyUtils.jsm');
     Cu.unload('chrome://minvid-lib/content/topify.js');
     Cu.unload('chrome://minvid-lib/content/dragging-utils.js');
