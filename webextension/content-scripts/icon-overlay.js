@@ -125,9 +125,44 @@ function ytEmbedChecks() {
   }
 }
 
-function ytHomePageHandler(el) {
-  if (el.classList.contains('minvid__overlay__wrapper')) return;
+function registerClick({ el, url }) {
+  return function(ev) {
+    evNoop(ev);
+    browser.runtime.sendMessage({
+      title: 'launch',
+      url: 'https://youtube.com' + url,
+      domain: 'youtube.com',
+      action: getAction(ev)
+    });
+  };
+}
 
+function updateClickIfNeeded(el, { url, props }) {
+  const targetClassName = `minvid__url__${url.replace('?', '')}`;
+
+  // Element has the correct `URL`.
+  if (el.classList.contains(targetClassName)) {
+    return;
+  }
+
+  // Updates the `minvid__url__` className with new `url`
+  const regExp = new RegExp('minvid__url__', 'g');
+  const updatedClassName = el.className.split(' ').map(className => {
+    if (!className.match(regExp)) {
+      return className;
+    }
+
+    return targetClassName;
+  }).join(' ');
+  el.className = updatedClassName;
+
+  // Reassign `eventListener` with new URL
+  const tmp = getTemplate();
+  tmp.addEventListener('click', registerClick({ el, url }));
+  el.appendChild(tmp);
+}
+
+function ytHomePageHandler(el) {
   const urlEl = el.querySelector('.yt-uix-sessionlink')
     || el.querySelector('.ytd-playlist-thumbnail')
     || el.querySelector('.ytd-thumbnail');
@@ -138,17 +173,15 @@ function ytHomePageHandler(el) {
 
   if (!url.startsWith('/watch')) return;
 
+  if (el.classList.contains('minvid__overlay__wrapper')) {
+    updateClickIfNeeded(el, { url });
+    return;
+  }
+
   el.classList.add('minvid__overlay__wrapper');
+  el.classList.add(`minvid__url__${url.replace('?', '')}`);
   const tmp = getTemplate();
-  tmp.addEventListener('click', function(ev) {
-    evNoop(ev);
-    browser.runtime.sendMessage({
-      title: 'launch',
-      url: 'https://youtube.com' + url,
-      domain: 'youtube.com',
-      action: getAction(ev)
-    });
-  });
+  tmp.addEventListener('click', registerClick({ el, url }));
   el.appendChild(tmp);
 }
 
