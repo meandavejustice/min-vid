@@ -55,7 +55,7 @@
     "react-player": "0.25.3",
     "react-tabs": "0.8.3",
     "react-tooltip": "3.4.0",
-    "sortablejs": "1.6.1",
+    "sortablejs": "1.7.0",
     "testpilot-ga": "0.3.0",
     "uuid": "3.1.0",
     "webpack": "3.8.1"
