@@ -20,7 +20,6 @@
     <em:description>Minimize a web video or audio track into a small always-on-top panel in Firefox.</em:description>
     <em:homepageURL>https://testpilot.firefox.com/experiments/min-vid</em:homepageURL>
     <em:iconURL>chrome://minvid-skin/content/icon.png</em:iconURL>
-    <em:optionsType>2</em:optionsType>
     <em:updateURL>https://testpilot.firefox.com/files/@min-vid/updates.json</em:updateURL>
     <em:targetApplication>
       <Description>
