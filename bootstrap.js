@@ -26,9 +26,10 @@ const config = {
   },
   study: {
     studyName: 'min-vid-study', // no spaces, for all the reasons
-    variation: {
-      name: 'non-txp'
-    },
+    // inactive: control group, no minvid
+    // active: regular minvid
+    // activeAndOnboarding: minvid + any extra UI
+    variations: ['inactive', 'active', 'activeAndOnboarding'],
     /** **endings**
      * - keys indicate the 'endStudy' even that opens these.
      * - urls should be static (data) or external, because they have to
@@ -50,13 +51,11 @@ const config = {
       // TODO 'onInvalid': 'throw'  // invalid packet for schema?  throw||log
     }
   },
+  // Exclude if min-vid is currently installed.
+  // TODO: should we also exclude if telemetry is disabled?
   async isEligible() {
-    // get whatever prefs, addons, telemetry, anything!
-    // Cu.import can see 'firefox things', but not package things.
-    // In order to import addon libraries, use chrome.manifest and 'resource://' in order
-    // to get the correct file location. Then it is necessary to use
-    // XPCOMUtils.defineLazyModuleGetter() to import the library.
-    return true;
+    const addon = await AddonManager.getAddonByID('@min-vid');
+    return addon === null;
   },
   // addon-specific modules to load/unload during `startup`, `shutdown`
   modules: [
@@ -101,8 +100,46 @@ let commandPollTimer, addonMetadata;
 // those errors. Maybe pass a getter instead of a window reference.
 let mvWindow, webExtPort; // global port for communication with webextension
 
+// Name of the variation selected by Shield study.
+// One of 'inactive', 'active', or 'activeAndOnboarding'.
+const VARIATION_PREF = 'extensions.minvidstudy.variation';
+
+// Pick a specific variation using this pref. Intended for QA / testing.
+const VARIATION_OVERRIDE_PREF = 'extensions.minvidstudy.override';
+
+function chooseVariation() {
+  // TODO: not listening for pref changes: a restart is required to change variation
+  const userVariation = Preferences.get(VARIATION_OVERRIDE_PREF);
+  if (userVariation) {
+    if (!config.study.variations.includes(userVariation)) {
+      throw new Error(`The user variation ${userVariation} is invalid.`);
+    }
+    console.info(`Using the variation ${userVariation}.`);
+    return userVariation;
+  }
+
+  let variation = Preferences.get(VARIATION_PREF);
+  if (variation && !config.study.variations.includes(variation)) {
+    Preferences.set(VARIATION_PREF, '');
+    variation = null;
+    console.error(`The variation ${variation} is invalid. Picking another.`);
+  }
+  if (!variation) {
+    // Pick any variation at random. Assumes equal weighting.
+    const rand = Math.floor(Math.random() * config.study.variations.length);
+    variation = config.study.variations[rand];
+    Preferences.set(VARIATION_PREF, variation);
+  }
+  console.info(`Using the variation ${variation}.`);
+  return variation;
+}
+
 this.startup = async function startup(data, reason) { // eslint-disable-line no-unused-vars
   addonMetadata = data;
+  const variation = chooseVariation();
+  if (variation === 'inactive') {
+    return;
+  }
   if (data.webExtension.started) return;
   data.webExtension.startup(reason).then(api => {
     api.browser.runtime.onConnect.addListener(port => {
@@ -120,7 +157,7 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
 
   // launch study setup
   studyUtils.setup(config);
-  studyUtils.setVariation(config.study.variation);
+  studyUtils.setVariation({ name: variation, weight: 1 });
 
   // Always set EXPIRATION_DATE_PREF if it not set, even if outside of install.
   // This is a failsafe if opt-out expiration doesn't work, so should be resilient.
@@ -158,6 +195,7 @@ this.shutdown = function shutdown(data, reason) { // eslint-disable-line no-unus
   // are we uninstalling?
   // if so, user or automatic?
   if (reason === studyUtils.REASONS.ADDON_UNINSTALL || reason === studyUtils.REASONS.ADDON_DISABLE) {
+    Preferences.reset(VARIATION_PREF);
     if (!studyUtils._isEnding) {
       // we are the first requestors, must be user action.
       studyUtils.endStudy({ reason: 'user-disable' });
