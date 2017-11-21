@@ -44,6 +44,15 @@ port.onMessage.addListener((msg) => {
       left: msg.data.left
     });
   }
+  if (msg.content === 'variation') {
+    if (msg.data.variation === 'activeAndOnboarding') {
+      console.log('SHOULD SHOW ONBOARDING');
+      browser.tabs.executeScript({
+        file: '/content-scripts/.js'
+      });
+    }
+
+  }
 });
 
 browser.storage.onChanged.addListener(onStorageChanged);

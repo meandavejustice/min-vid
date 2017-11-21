@@ -25,7 +25,7 @@ const TELEMETRY_ENABLED_PREF = 'testpilot.backup.toolkit.telemetry.enabled';
 const config = {
   addon: {
     id: '@min-vid-study',
-    version: '0.4.5-study'
+    version: '0.4.7-study'
   },
   study: {
     studyName: 'min-vid-study', // no spaces, for all the reasons
@@ -165,6 +165,10 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
         else if (msg.content === 'window:maximize') maximize();
         else if (msg.content === 'window:dimensions:update') setDimensions(msg.data);
         else if (msg.content === 'window:sendShieldMetric') submitExternalPing(msg.data);
+      });
+      webExtPort.postMessage({
+        content: 'variation',
+        data: {variation: currentVariation}
       });
     });
   });
