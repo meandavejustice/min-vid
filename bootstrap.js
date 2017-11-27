@@ -18,6 +18,8 @@ XPCOMUtils.defineLazyModuleGetter(this, 'Services',
 XPCOMUtils.defineLazyModuleGetter(this, 'TelemetryController',
                                   'resource://gre/modules/TelemetryController.jsm');
 
+const TELEMETRY_ENABLED_PREF = 'testpilot.backup.toolkit.telemetry.enabled';
+
 // Config.jsm, inlined
 const config = {
   addon: {
@@ -54,8 +56,9 @@ const config = {
   // Exclude if min-vid is currently installed.
   // TODO: should we also exclude if telemetry is disabled?
   async isEligible() {
+    const telemetryEnabled = Preferences.get(TELEMETRY_ENABLED_PREF);
     const addon = await AddonManager.getAddonByID('@min-vid');
-    return addon === null;
+    return (addon === null && telemetryEnabled);
   },
   // addon-specific modules to load/unload during `startup`, `shutdown`
   modules: [
