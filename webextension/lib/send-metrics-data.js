@@ -1,4 +1,5 @@
 const TestPilotGA = require('testpilot-ga');
+import { sendShieldMetricPing } from './window-messages';
 const isShieldStudy = (process.env.IS_SHIELD_STUDY === 'true');
 let analytics;
 
@@ -13,9 +14,11 @@ if (!isShieldStudy) {
 
 export default function sendMetricsData(o) {
   browser.storage.local.get().then(r => {
-    if (!isShieldStudy) {
+    if (isShieldStudy) {
+      // send to telemetry method in bootstrap.js
+      sendShieldMetricPing(o, r);
+    } else {
       analytics.sendEvent(o.object, o.method, {
-        // cd1: "variant value",
         cd2: r.left,
         cd3: r.top,
         cd4: r.width,
