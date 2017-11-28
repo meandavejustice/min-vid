@@ -145,10 +145,10 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
     return;
   }
 
-  if (variation === 'active') {
+  if (currentVariation === 'active') {
     config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=1';
     config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl + '?ver=1';
-  } else if (variation === 'activeAndOnboarding') {
+  } else if (currentVariation === 'activeAndOnboarding') {
     config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=2';
     config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl + '?ver=2';
   }
