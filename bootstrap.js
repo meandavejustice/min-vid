@@ -17,6 +17,7 @@ XPCOMUtils.defineLazyModuleGetter(this, 'Services',
                                   'resource://gre/modules/Services.jsm');
 XPCOMUtils.defineLazyModuleGetter(this, 'TelemetryController',
                                   'resource://gre/modules/TelemetryController.jsm');
+let currentVariation;
 
 // Config.jsm, inlined
 const config = {
@@ -136,8 +137,8 @@ function chooseVariation() {
 
 this.startup = async function startup(data, reason) { // eslint-disable-line no-unused-vars
   addonMetadata = data;
-  const variation = chooseVariation();
-  if (variation === 'inactive') {
+  currentVariation = chooseVariation();
+  if (currentVariation === 'inactive') {
     return;
   }
   if (data.webExtension.started) return;
@@ -151,13 +152,14 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
         else if (msg.content === 'window:minimize') minimize();
         else if (msg.content === 'window:maximize') maximize();
         else if (msg.content === 'window:dimensions:update') setDimensions(msg.data);
+        else if (msg.content === 'window:sendShieldMetric') submitExternalPing(msg.data);
       });
     });
   });
 
   // launch study setup
   studyUtils.setup(config);
-  studyUtils.setVariation({ name: variation, weight: 1 });
+  studyUtils.setVariation({ name: currentVariation, weight: 1 });
 
   // Always set EXPIRATION_DATE_PREF if it not set, even if outside of install.
   // This is a failsafe if opt-out expiration doesn't work, so should be resilient.
@@ -238,28 +240,40 @@ function makeTimestamp(timestamp = Date.now()) {
   return Math.round((timestamp - startTime) / 1000);
 }
 
+function submitExternalPing(eventData, localInfo) {
+  if (ADDON_ID === '@min-vid-study') {
+    TelemetryController.submitExternalPing({
+      topic: 'minvid-study',
+      payload: {
+        timestamp: makeTimestamp(),
+        test: addonMetadata.id,
+        version: addonMetadata.version,
+        variant: currentVariation,
+        category: 'interactions',
+        dimensions: {
+          left: localInfo.left,
+          top: localInfo.top,
+          width: localInfo.width,
+          height: localInfo.height
+        },
+        events: [{
+          timestamp: makeTimestamp(),
+          event: eventData.object,
+          object: addonMetadata.id,
+          domain: eventData.domain,
+          method: eventData.method
+        }]
+      }
+    });
+  }
+}
+
 // I can't get frame scripts working, so instead we just set global state directly in react. fml
 function send(msg) {
   whenReady(() => {
     const newData = Object.assign(mvWindow.wrappedJSObject.AppData, msg);
     if (newData.confirm) maximize();
     mvWindow.wrappedJSObject.AppData = newData;
-
-    if (ADDON_ID === '@min-vid-study') {
-      TelemetryController.submitExternalPing({
-        topic: 'minvid-study',
-        payload: {
-          timestamp: makeTimestamp(),
-          test: addonMetadata.id,
-          version: addonMetadata.version,
-          events: [{
-            timestamp: makeTimestamp(),
-            event: 'launch-video',
-            object: addonMetadata.id
-          }]
-        }
-      });
-    }
   });
 }
 
