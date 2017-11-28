@@ -141,6 +141,15 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
   if (currentVariation === 'inactive') {
     return;
   }
+
+  if (variation === 'active') {
+    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=1';
+    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl + '?ver=1';
+  } else if (variation === 'activeAndOnboarding') {
+    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=2';
+    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl + '?ver=2';
+  }
+
   if (data.webExtension.started) return;
   data.webExtension.startup(reason).then(api => {
     api.browser.runtime.onConnect.addListener(port => {
