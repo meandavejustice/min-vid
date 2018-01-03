@@ -3,6 +3,10 @@ Pontoon changes have been redacted for readability, the true commit
 log can be accessed in the
 [GitHub repo](https://github.com/meandavejusticejustice/min-vid/commits/master).
 
+
+## 0.4.7 (2018-01-03)
+* [[`77c3d69`](https://github.com/meandavejustice/min-vid/commit/77c3d69)] - restrict content script to youtube, vimeo, and soundcloud (#1151) (Dave Justice)
+
 ## 0.4.6 (2017-11-21)
 * [[`fe6fd84ea0`](https://github.com/meandavejustice/min-vid/commit/fe6fd84ea0)] - Remove unsupported 'optionsType' key from install.rdf (#1128) (Jared Hirsch)
 * [[`19286dbc71`](https://github.com/meandavejustice/min-vid/commit/19286dbc71)] - update link to loading image in README (Dave Justice)
