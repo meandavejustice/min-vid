@@ -48,7 +48,7 @@
     "iso8601-duration": "1.1.1",
     "keyboardjs": "2.3.4",
     "lodash.debounce": "4.0.8",
-    "onchange": "3.2.1",
+    "onchange": "3.3.0",
     "pontoon-to-webext": "1.0.2",
     "react": "15.6.1",
     "react-dom": "15.6.1",
