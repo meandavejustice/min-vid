@@ -10,6 +10,9 @@
 import getRandomId from './lib/get-random-id';
 const store = browser.storage.local;
 
+// for dev only
+store.set({'seenModal': true});
+
 function initStorage() {
   store.get().then(r => {
     const storage = Object.assign({}, r);
@@ -18,6 +21,7 @@ function initStorage() {
     if (!r.height) storage.height = browser.runtime.getManifest().config.DEFAULT_HEIGHT;
     if (!r.queue) storage.queue = [];
     if (!r.history) storage.history = [];
+    if (!r.seenModal) storage.seenModal = false;
     store.set(storage);
   });
 }

@@ -20,42 +20,40 @@ const css = `
 
 .minvid__modalDialog header {
   text-align: center;
-  padding: 10px;
+  padding: 20px;
   background: #008ea4;
   color: white;
+}
+
+.minvid__modalDialog header h2 {
+  font-weight: normal;
+  font-size: 14px;
 }
 
 .minvid__modalDialog img {
   width: 90%;
   height: auto;
-  margin: 0 auto;
-  padding: 10px 26px;
+  margin: 15px auto;
+  padding: 10px 26px 0px;
 }
 
 .minvid__modalDialog p {
-  padding: 20px;
+  padding: 5px 20px 30px;
+  width: 85%;
+  margin: 0 auto;
+  font-size: 14px;
 }
 
 .minvid__close {
-  background: #606061;
+  cursor: pointer;
   color: #FFFFFF;
-  line-height: 25px;
-  position: absolute;
-  right: -12px;
-  text-align: center;
-  top: -10px;
-  width: 24px;
-  text-decoration: none;
+  float: right;
   font-weight: bold;
-    -webkit-border-radius: 12px;
-    -moz-border-radius: 12px;
-  border-radius: 12px;
-    -moz-box-shadow: 1px 1px 3px #000;
-    -webkit-box-shadow: 1px 1px 3px #000;
-  box-shadow: 1px 1px 3px #000;
+  font-size: 14px;
 }
+
 .minvid__close:hover {
-  background: #00d9ff;
+  opacity: .7;
 }
 `;
 
@@ -72,11 +70,14 @@ function createModal() {
   closeLink.textContent = 'X';
 
   closeLink.onclick = () => {
-    document.querySelector('minvid__modalDialog').remove();
+    document.querySelector('.minvid__modalDialog').remove();
   };
 
   const h2 = document.createElement('h2');
   h2.textContent = 'We\'ve added a little something to your videos';
+
+  const img = document.createElement('img');
+  img.src = browser.extension.getURL('/onboarding.gif');
 
   const p = document.createElement('p');
   p.textContent = `We\'re experimenting with a new feature which allows you to
@@ -89,15 +90,12 @@ function createModal() {
     - <3 Firefox Team
   `;
 
-  const img = document.createElement('img');
-  img.src = 'https://github.com/meandavejustice/min-vid/raw/master/docs/images/launching.gif';
-
   const header = document.createElement('header');
   header.appendChild(closeLink);
   header.appendChild(h2);
   contentWrapper.appendChild(header);
-  contentWrapper.appendChild(p);
   contentWrapper.appendChild(img);
+  contentWrapper.appendChild(p);
   modal.appendChild(contentWrapper);
   return modal;
 }
@@ -115,5 +113,10 @@ function injectStyle() {
   document.head.appendChild(style);
 }
 
-injectStyle();
-document.body.appendChild(createModal());
+browser.storage.local.get('seenModal').then((storage) => {
+  if (!storage.seenModal) {
+    browser.storage.local.set({'seenModal': true});
+    injectStyle();
+    document.body.appendChild(createModal());
+  }
+});
