@@ -12,11 +12,6 @@
       "matches": ["https://*.youtube.com/*", "https://vimeo.com/*", "https://soundcloud.com/*"],
       "js": ["content-scripts/icon-overlay.js"],
       "all_frames": true
-    },
-    {
-      "matches": ["https://*.youtube.com/"],
-      "js": ["content-scripts/onboarding-modal.js"],
-      "all_frames": true
     }
   ],
   "options_ui": {

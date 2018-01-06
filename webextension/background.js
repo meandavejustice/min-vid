@@ -9,9 +9,7 @@
 
 import getRandomId from './lib/get-random-id';
 const store = browser.storage.local;
-
-// for dev only
-store.set({'seenModal': true});
+let seenModal = false;
 
 function initStorage() {
   store.get().then(r => {
@@ -50,12 +48,20 @@ port.onMessage.addListener((msg) => {
   }
   if (msg.content === 'variation') {
     if (msg.data.variation === 'activeAndOnboarding') {
-      console.log('SHOULD SHOW ONBOARDING');
-      browser.tabs.executeScript({
-        file: '/content-scripts/.js'
+      browser.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) => {
+        // return before fetching `seenModal` if already set
+        if (seenModal) return;
+        if (new URL(tabInfo.url).hostname === 'www.youtube.com') {
+          store.get('seenModal').then((results) => {
+            seenModal = results.seenModal;
+            store.set({'seenModal': true});
+            browser.tabs.executeScript({
+              file: '/content-scripts/onboarding-modal.js'
+            });
+          });
+        }
       });
     }
-
   }
 });
 

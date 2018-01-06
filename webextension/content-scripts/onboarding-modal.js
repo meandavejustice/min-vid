@@ -12,6 +12,7 @@ const css = `
 
 .minvid__modalDialog > div {
   width: 35%;
+  min-width: 350px;
   position: relative;
   margin: 10% auto;
   border-radius: 2px;
@@ -113,10 +114,5 @@ function injectStyle() {
   document.head.appendChild(style);
 }
 
-browser.storage.local.get('seenModal').then((storage) => {
-  if (!storage.seenModal) {
-    browser.storage.local.set({'seenModal': true});
-    injectStyle();
-    document.body.appendChild(createModal());
-  }
-});
+injectStyle();
+document.body.appendChild(createModal());
