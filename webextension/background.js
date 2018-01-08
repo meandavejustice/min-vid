@@ -9,7 +9,7 @@
 
 import getRandomId from './lib/get-random-id';
 const store = browser.storage.local;
-let seenModal = false;
+let seenModal;
 
 function initStorage() {
   store.get().then(r => {
@@ -54,6 +54,7 @@ port.onMessage.addListener((msg) => {
         if (new URL(tabInfo.url).hostname === 'www.youtube.com') {
           store.get('seenModal').then((results) => {
             seenModal = results.seenModal;
+            if (seenModal) return;
             store.set({'seenModal': true});
             browser.tabs.executeScript({
               file: '/content-scripts/onboarding-modal.js'
