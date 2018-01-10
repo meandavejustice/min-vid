@@ -27,6 +27,7 @@ const css = `
 }
 
 .minvid__modalDialog header h2 {
+  display: inline;
   font-weight: normal;
   font-size: 14px;
 }
@@ -71,6 +72,7 @@ function createModal() {
   closeLink.textContent = 'X';
 
   closeLink.onclick = () => {
+    browser.storage.local.set({seenModal: true});
     document.querySelector('.minvid__modalDialog').remove();
   };
 

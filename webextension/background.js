@@ -37,6 +37,22 @@ import handleMessage from './lib/message-handler';
 
 const port = browser.runtime.connect({name: 'connection-to-legacy'});
 
+function launchOnboardingModal(tabId, changeInfo, tabInfo) {
+  console.log('launchOnboardingModal', changeInfo.url, changeInfo.status);
+  // return before fetching `seenModal` if already set
+  if (seenModal) return;
+
+  if (new URL(tabInfo.url).hostname === 'www.youtube.com') {
+    store.get('seenModal').then((results) => {
+      seenModal = results.seenModal;
+      if (seenModal) return;
+      browser.tabs.executeScript({
+        file: '/content-scripts/onboarding-modal.js'
+      });
+    });
+  }
+}
+
 port.onMessage.addListener((msg) => {
   if (msg.content === 'msg-from-frontend') handleMessage(msg.data, port);
   if (msg.content === 'context-menu') onLaunch(msg.data);
@@ -48,20 +64,7 @@ port.onMessage.addListener((msg) => {
   }
   if (msg.content === 'variation') {
     if (msg.data.variation === 'activeAndOnboarding') {
-      browser.tabs.onUpdated.addListener((tabId, changeInfo, tabInfo) => {
-        // return before fetching `seenModal` if already set
-        if (seenModal) return;
-        if (new URL(tabInfo.url).hostname === 'www.youtube.com') {
-          store.get('seenModal').then((results) => {
-            seenModal = results.seenModal;
-            if (seenModal) return;
-            store.set({'seenModal': true});
-            browser.tabs.executeScript({
-              file: '/content-scripts/onboarding-modal.js'
-            });
-          });
-        }
-      });
+      browser.tabs.onUpdated.addListener(launchOnboardingModal);
     }
   }
 });
