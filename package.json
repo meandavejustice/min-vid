@@ -57,7 +57,7 @@
     "react-tooltip": "3.4.0",
     "sortablejs": "1.6.1",
     "testpilot-ga": "0.3.0",
-    "uuid": "3.1.0",
+    "uuid": "3.2.0",
     "webpack": "3.8.1"
   }
 }
