@@ -44,7 +44,7 @@
     "eslint-plugin-no-unsanitized": "2.0.1",
     "eslint-plugin-react": "7.4.0",
     "get-video-id": "2.1.6",
-    "husky": "0.14.3",
+    "husky": "0.15.0-rc.2",
     "iso8601-duration": "1.1.1",
     "keyboardjs": "2.3.4",
     "lodash.debounce": "4.0.8",
