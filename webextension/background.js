@@ -9,6 +9,7 @@
 
 import getRandomId from './lib/get-random-id';
 const store = browser.storage.local;
+let seenModal;
 
 function initStorage() {
   store.get().then(r => {
@@ -18,6 +19,7 @@ function initStorage() {
     if (!r.height) storage.height = browser.runtime.getManifest().config.DEFAULT_HEIGHT;
     if (!r.queue) storage.queue = [];
     if (!r.history) storage.history = [];
+    if (!r.seenModal) storage.seenModal = false;
     store.set(storage);
   });
 }
@@ -35,6 +37,22 @@ import handleMessage from './lib/message-handler';
 
 const port = browser.runtime.connect({name: 'connection-to-legacy'});
 
+function launchOnboardingModal(tabId, changeInfo, tabInfo) {
+  console.log('launchOnboardingModal', changeInfo.url, changeInfo.status);
+  // return before fetching `seenModal` if already set
+  if (seenModal) return;
+
+  if (new URL(tabInfo.url).hostname === 'www.youtube.com') {
+    store.get('seenModal').then((results) => {
+      seenModal = results.seenModal;
+      if (seenModal) return;
+      browser.tabs.executeScript({
+        file: '/content-scripts/onboarding-modal.js'
+      });
+    });
+  }
+}
+
 port.onMessage.addListener((msg) => {
   if (msg.content === 'msg-from-frontend') handleMessage(msg.data, port);
   if (msg.content === 'context-menu') onLaunch(msg.data);
@@ -43,6 +61,11 @@ port.onMessage.addListener((msg) => {
       top: msg.data.top,
       left: msg.data.left
     });
+  }
+  if (msg.content === 'variation') {
+    if (msg.data.variation === 'activeAndOnboarding') {
+      browser.tabs.onUpdated.addListener(launchOnboardingModal);
+    }
   }
 });
 

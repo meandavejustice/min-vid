@@ -25,7 +25,7 @@ const TELEMETRY_ENABLED_PREF = 'testpilot.backup.toolkit.telemetry.enabled';
 const config = {
   addon: {
     id: '@min-vid-study',
-    version: '0.4.5-study'
+    version: '0.4.7-study'
   },
   study: {
     studyName: 'min-vid-study', // no spaces, for all the reasons
@@ -83,6 +83,7 @@ XPCOMUtils.defineLazyModuleGetter(this, 'DraggableElement',
                                   'chrome://minvid-lib/content/dragging-utils.js');
 XPCOMUtils.defineLazyModuleGetter(this, 'studyUtils',
                                   'chrome://minvid-lib/content/StudyUtils.jsm');
+
 const ADDON_ID = '@min-vid-study';
 const startTime = Date.now();
 const WM = Cc['@mozilla.org/appshell/window-mediator;1'].
@@ -166,6 +167,10 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
         else if (msg.content === 'window:dimensions:update') setDimensions(msg.data);
         else if (msg.content === 'window:sendShieldMetric') submitExternalPing(msg.data);
       });
+      webExtPort.postMessage({
+        content: 'variation',
+        data: {variation: currentVariation}
+      });
     });
   });
 
@@ -183,11 +188,11 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
   }
 
   if (reason === studyUtils.REASONS.ADDON_INSTALL) {
-    studyUtils.firstSeen(); // sends telemetry 'enter'
+    studyUtils.firstSeen(); // sends telemetry "enter"
     const eligible = await config.isEligible(); // addon-specific
     if (!eligible) {
       // uses config.endings.ineligible.url if any,
-      // sends UT for 'ineligible'
+      // sends UT for "ineligible"
       // then uninstalls addon
       await studyUtils.endStudy({ reason: 'ineligible' });
       return;
