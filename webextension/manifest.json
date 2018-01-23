@@ -9,7 +9,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.youtube.com/*", "https://vimeo.com/*", "https://soundcloud.com/*"],
+      "matches": ["https://*.youtube.com/*"],
       "js": ["content-scripts/icon-overlay.js"],
       "all_frames": true
     }
