@@ -389,17 +389,17 @@ function getTemplate(props) {
   props = props || {};
   const containerEl = document.createElement('div');
   const playIconEl = document.createElement('div');
-  const addIconEl = document.createElement('div');
+  // const addIconEl = document.createElement('div');
 
   containerEl.className = getContainerClass(props);
   playIconEl.className = 'minvid__overlay__icon';
   playIconEl.id = 'minvid__overlay__icon__play';
   playIconEl.title = browser.i18n.getMessage('play_now');
-  addIconEl.className = 'minvid__overlay__icon';
-  addIconEl.id = 'minvid__overlay__icon__add';
-  addIconEl.title = browser.i18n.getMessage('add_to_queue');
+  // addIconEl.className = 'minvid__overlay__icon';
+  // addIconEl.id = 'minvid__overlay__icon__add';
+  // addIconEl.title = browser.i18n.getMessage('add_to_queue');
   containerEl.appendChild(playIconEl);
-  containerEl.appendChild(addIconEl);
+  // containerEl.appendChild(addIconEl);
 
   return containerEl;
 }
@@ -454,7 +454,7 @@ function injectStyle() {
     height: 100%;
     justify-content: center;
     left: 4%;
-    max-height: 80px;
+    max-height: 30px;
     max-width: 36px;
     padding: 2px 2px 4px;
     position: absolute;
@@ -471,7 +471,7 @@ function injectStyle() {
 .minvid__overlay__icon {
     display: block;
     cursor: pointer;
-    height: 40%;
+    height: 100%;
     opacity: 0.7;
     width: 100%;
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import cn from 'classnames';
 import keyboardJS from 'keyboardjs';
 import ReactPlayer from 'react-player';
 
@@ -8,7 +7,7 @@ import formatTime from '../client-lib/format-time';
 import sendToAddon from '../client-lib/send-to-addon';
 import sendMetricsEvent from '../client-lib/send-metrics-event';
 
-import Queues from './queues';
+// import Queues from './queues';
 import ErrorView from './error-view';
 import ReplayView from './replay-view';
 import PrevTrackBtn from './prev-button';
@@ -22,7 +21,8 @@ export default class Player extends React.Component {
     super(props);
     this.state = {
       hovered: false, progress: 0, exited: false,
-      showQueue: false, historyIndex: 0,
+      // showQueue: false,
+      historyIndex: 0,
       time: '0:00 / 0:00', errorCount: 0,
       notificationCount: 0, wasMinimized: false
     };
@@ -186,24 +186,24 @@ export default class Player extends React.Component {
     });
   }
 
-  openQueueMenu() {
-    if (this.props.minimized) {
-      sendToAddon({action: 'maximize'});
-      window.AppData.set({minimized: false});
-      this.setState({wasMinimized: true});
-    } else {
-      this.setState({wasMinimized: false});
-    }
-    this.setState({showQueue: true});
-  }
+  // openQueueMenu() {
+  //   if (this.props.minimized) {
+  //     sendToAddon({action: 'maximize'});
+  //     window.AppData.set({minimized: false});
+  //     this.setState({wasMinimized: true});
+  //   } else {
+  //     this.setState({wasMinimized: false});
+  //   }
+  //   this.setState({showQueue: true});
+  // }
 
-  closeQueueMenu() {
-    this.setState({showQueue: false});
-    if (this.state.wasMinimized) {
-      sendToAddon({action: 'minimize'});
-      window.AppData.set({minimized: true});
-    }
-  }
+  // closeQueueMenu() {
+  //   this.setState({showQueue: false});
+  //   if (this.state.wasMinimized) {
+  //     sendToAddon({action: 'minimize'});
+  //     window.AppData.set({minimized: true});
+  //   }
+  // }
 
   handleSpace() {
     if (this.props.exited) return this.replay();
@@ -285,33 +285,30 @@ export default class Player extends React.Component {
                         onEnded={this.onEnded.bind(this)} />;
     }
 
-    let notification = null;
+    // let notification = null;
 
-    if (!this.state.showQueue && this.props.trackAdded) {
-      notification = <div className="notification fade-in-out">{this.props.strings.itemAddedNotification}</div>;
-    }
+    // if (!this.state.showQueue && this.props.trackAdded) {
+    //   notification = <div className="notification fade-in-out">{this.props.strings.itemAddedNotification}</div>;
+    // }
 
-    if (notification) this.startNotificationTimeout();
+    // if (notification) this.startNotificationTimeout();
 
-    const queuePanel = this.state.showQueue ? (<Queues className={cn({hidden: !this.state.showQueue})}
-                                               {...this.props} replay={this.replay.bind(this)} audio={this.audio}
-                                               closeQueueMenu={this.closeQueueMenu.bind(this)}/>)
-                                            : null;
+    // const queuePanel = this.state.showQueue ? (<Queues className={cn({hidden: !this.state.showQueue})}
+    //                                            {...this.props} replay={this.replay.bind(this)} audio={this.audio}
+    //                                            closeQueueMenu={this.closeQueueMenu.bind(this)}/>)
+    //                                         : null;
 
     const exited = this.props.exited ? (<ReplayView {...this.props} nextTrack={this.nextTrack.bind(this)} exited={this.props.exited}
                                                     replay={this.replay.bind(this)} />) : null;
     const controls = !this.props.minimized ? (<div>
-                                                <GeneralControls {...this.props} hovered={this.state.hovered}
-                                                                 openQueueMenu={this.openQueueMenu.bind(this)} />
+                                                <GeneralControls {...this.props} hovered={this.state.hovered} />
                                                 <PlayerControls {...this.props} hovered={this.state.hovered}
                                                                 progress={this.state.progress}
                                                                 audio={this.audio} time={this.state.time}
                                                                 setTime={this.setTime.bind(this)}
-                                                                replay={this.replay.bind(this)}
-                                                                closeQueueMenu={this.closeQueueMenu.bind(this)} />
+                                                                replay={this.replay.bind(this)} />
                                               </div>) : (<MinimizedControls {...this.props} progress={this.state.progress}
                                                                             nextTrack={this.nextTrack.bind(this)}
-                                                                            openQueueMenu={this.openQueueMenu.bind(this)}
                                                                             replay={this.replay.bind(this)}
                                                                             time={this.state.time} audio={this.audio}
                                                                             setTime={this.setTime.bind(this)}
@@ -324,8 +321,6 @@ export default class Player extends React.Component {
               <PrevTrackBtn {...this.props} hovered={this.state.hovered} />
               <NextTrackBtn {...this.props} nextTrack={this.nextTrack.bind(this)} hovered={this.state.hovered} />
               {controls}
-              {notification}
-              {queuePanel}
               {exited}
               {visualEl}
             </div>);
