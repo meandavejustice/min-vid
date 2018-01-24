@@ -117,4 +117,9 @@ function injectStyle() {
 }
 
 injectStyle();
-document.body.appendChild(createModal());
+// timeout takes care of an edgecase where the modal would show up
+// when refreshing a youtube tab that was already loaded in the browser
+// before the shield study was installed. #1171
+setTimeout(() => {
+  document.body.appendChild(createModal());
+}, 500);
