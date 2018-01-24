@@ -193,9 +193,15 @@ function utilsInit() {
 				var char8_val = stringPtr.readString();
 				//console.info('stringPtr.readString():', char8_val);
 				return char8_val;
-			} catch (ex if ex.message.indexOf('malformed UTF-8 character sequence at offset ') == 0) {
-				//console.warn('ex of offset utf8 read error when trying to do readString so using alternative method, ex:', ex);
-				return readJSCharString();
+			// NOTE: updated to adjust for removal of conditional catch from firefox implementation of JS in bug 1228841.
+			// See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch#Conditional_catch_clauses
+			//
+			} catch (ex) {
+				if (ex.message.indexOf('malformed UTF-8 character sequence at offset ') == 0) {
+					//console.warn('ex of offset utf8 read error when trying to do readString so using alternative method, ex:', ex);
+					return readJSCharString();
+				}
+				throw ex;
 			}
 		} else {
 			return readJSCharString();
