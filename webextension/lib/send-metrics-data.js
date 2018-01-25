@@ -1,5 +1,5 @@
 const TestPilotGA = require('testpilot-ga');
-const isShieldStudy = (process.env.IS_SHIELD_STUDY === 'true');
+const isShieldStudy = (process.env.IS_SHIELD_STUDY === true);
 let analytics;
 
 if (!isShieldStudy) {
