@@ -23,6 +23,7 @@ export default function(domain, isAudio) {
     playQueue: _('play_queue'),
     ttMute: _('tooltip_mute'),
     ttPlay: _('tooltip_play'),
+    ttReplay: _('tooltip_replay'),
     ttPause: _('tooltip_pause'),
     ttClose: _('tooltip_close'),
     ttUnmute: _('tooltip_unmute'),
