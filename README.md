@@ -54,6 +54,12 @@ the xpi onto the `about:addons` page)
 
 For further information on contributing, see [contributing.md](./contributing.md)
 
+## How to build the Shield study
+
+Be sure to set the IS_SHIELD_STUDY env var when building. This sends analytics data to Mozilla's Telemetry servers, not GA:
+
+`IS_SHIELD_STUDY=true npm run package`
+
 ## Notes
 
 [chrome/content/img/loading-bars.svg](chrome/content/img/loading-bars.svg) is from https://github.com/jxnblk/loading
