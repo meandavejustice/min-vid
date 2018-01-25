@@ -204,7 +204,7 @@ video#video {
     opacity: 1;
 }
 
-.exited .exit-replay {
+.exit-replay {
     background-image: url('img/exit-replay.svg');
 }
 

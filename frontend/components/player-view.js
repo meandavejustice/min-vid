@@ -10,8 +10,6 @@ import sendMetricsEvent from '../client-lib/send-metrics-event';
 // import Queues from './queues';
 import ErrorView from './error-view';
 import ReplayView from './replay-view';
-import PrevTrackBtn from './prev-button';
-import NextTrackBtn from './next-button';
 import PlayerControls from './player-controls';
 import GeneralControls from './general-controls';
 import MinimizedControls from './minimized-controls';
@@ -318,8 +316,6 @@ export default class Player extends React.Component {
                  onMouseEnter={this.enterPlayer.bind(this)}
                  onMouseLeave={this.leavePlayer.bind(this)}
                  onClick={debouncedVideoClickHandler.bind(this)}>
-              <PrevTrackBtn {...this.props} hovered={this.state.hovered} />
-              <NextTrackBtn {...this.props} nextTrack={this.nextTrack.bind(this)} hovered={this.state.hovered} />
               {controls}
               {exited}
               {visualEl}

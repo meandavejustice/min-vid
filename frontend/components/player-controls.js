@@ -5,11 +5,6 @@ import SoundControl from './sound-control';
 import PlaybackControl from './playback-control';
 
 export default class PlayerControls extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {exited: false};
-  }
-
   render() {
     return (<div className={cn('player-controls', {
       hidden: this.props.confirm,
