@@ -22,6 +22,7 @@ module.exports = [
         }
       ]
     },
+    plugins,
     entry: './webextension/background.js',
     output: {
       filename: './webextension/dist/background.bundle.js'
