@@ -19,7 +19,7 @@ XPCOMUtils.defineLazyModuleGetter(this, 'TelemetryController',
                                   'resource://gre/modules/TelemetryController.jsm');
 let currentVariation;
 
-const TELEMETRY_ENABLED_PREF = 'testpilot.backup.toolkit.telemetry.enabled';
+const TELEMETRY_ENABLED_PREF = 'datareporting.healthreport.uploadEnabled';
 
 // Config.jsm, inlined
 const config = {
