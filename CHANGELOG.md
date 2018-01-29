@@ -3,6 +3,8 @@ Pontoon changes have been redacted for readability, the true commit
 log can be accessed in the
 [GitHub repo](https://github.com/meandavejusticejustice/min-vid/commits/master).
 
+## 0.4.8 (2018-01-29)
+* [[`5b95bda091`](https://github.com/meandavejustice/min-vid/commit/5b95bda091)] - manually apply commit 299cca3 to address window drag issue (#1204) (Dave Justice)
 
 ## 0.4.7 (2018-01-03)
 * [[`77c3d69`](https://github.com/meandavejustice/min-vid/commit/77c3d69)] - restrict content script to youtube, vimeo, and soundcloud (#1151) (Dave Justice)
