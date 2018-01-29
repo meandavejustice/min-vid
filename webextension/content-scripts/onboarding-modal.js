@@ -71,10 +71,27 @@ function createModal() {
   closeLink.title = 'Close';
   closeLink.textContent = 'X';
 
-  closeLink.onclick = () => {
+  function dismissModal() {
     browser.storage.local.set({seenModal: true});
-    document.querySelector('.minvid__modalDialog').remove();
+    let modal = document.querySelector('.minvid__modalDialog');
+    if (!modal) return;
+    modal.remove();
+    modal = null;
+    document.removeEventListener('keydown', onKeyDown);
+  }
+
+  closeLink.onclick = (evt) => {
+    evt.preventDefault();
+    dismissModal();
   };
+
+  let escaped;
+  function onKeyDown(evt) {
+    if (escaped || evt.key !== 'Escape') return;
+    escaped = true;
+    evt.preventDefault();
+    dismissModal();
+  }
 
   const h2 = document.createElement('h2');
   h2.textContent = 'We\'ve added a little something to your videos';
@@ -100,6 +117,7 @@ function createModal() {
   contentWrapper.appendChild(img);
   contentWrapper.appendChild(p);
   modal.appendChild(contentWrapper);
+  document.addEventListener('keydown', onKeyDown);
   return modal;
 }
 
