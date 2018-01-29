@@ -33,14 +33,11 @@ export default class ReplayView extends React.Component {
   render() {
     if (this.props.exited) this.startQueueCheck();
 
-    const fromHistoryLink = this.props.history.length ? (<a className='play-from-history'
-                                                         onClick={this.playFromHistory.bind(this)}>
-                                                         Play from History?</a>) : null;
     return (
         <div className={cn('exited', {hidden: !this.props.exited || this.props.minimized})}>
           <div className='row'>
             <div className='ended-dialog'>
-              <p>{this.props.strings.endOfQueue}. {fromHistoryLink}</p>
+              <p></p>
             </div>
             <button className='exit-replay' onClick={this.props.replay.bind(this)}></button>
             <button className='exit-close' onClick={this.close.bind(this)}></button>
