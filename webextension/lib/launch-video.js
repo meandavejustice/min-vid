@@ -30,14 +30,10 @@ export default function launchVideo(opts) {
       confirmContent: '{}'
     }, opts));
 
-    // fetch the media source and set it
     getUrlFn(opts, function(item) {
       if (item.error) console.error('LaunchVideo failed to get the streamUrl: ', item.error); // eslint-disable-line no-console
 
-      if (action === 'play') r.queue.unshift(item);
-      else r.queue.push(item);
-
-      store.set({queue: r.queue});
+      store.set({queue: [item]});
       const videoOptions = {
         trackAdded: (action === 'add-to-queue') && (r.queue.length > 1),
         error: item.error ? item.error : false,
