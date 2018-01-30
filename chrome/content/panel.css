@@ -275,7 +275,7 @@ video#video {
 }
 
 .minimized .playback-button {
-    margin: -3px 35px 0 37px;
+    margin: -3px 35px 0 0;
 }
 
 .minimized .prev-wrapper.hidden ~ .playback-button {
@@ -790,7 +790,7 @@ canvas {
 }
 
 .minimized .prev-wrapper {
- 	margin-top: -8px;   
+ 	margin-top: -8px;
 }
 
 .prev-wrapper a {
