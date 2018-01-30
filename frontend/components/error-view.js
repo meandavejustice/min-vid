@@ -28,15 +28,11 @@ export default class ErrorView extends React.Component {
     const errorMsg = this.props.strings[this.props.error] ?
           this.props.strings[this.props.error] : this.props.strings.errorMsg;
 
-    const countdownMsg = (this.props.countdown > 0 && this.props.queue.length > 1) ?
-          (`Playing ${this.props.queue[1].title} in ${this.props.countdown} seconds`) : '';
-
     return (
         <div className='error'>
           <div className='error-message-container'>
             <div className='error-message'>
                <p>{errorMsg}</p>
-               <p>{countdownMsg}</p>
               <span className='error-link'
                     onClick={this.sendToTab.bind(this)}>{this.props.strings.errorLink}</span>
             </div>
