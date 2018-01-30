@@ -36,8 +36,6 @@ function removeOverlay(el) {
 function checkForEmbeds() {
   ytEmbedChecks();
   newYtEmbedChecks();
-  vimeoEmbedChecks();
-  soundcloudEmbedChecks();
 }
 
 // New Youtube Page
@@ -54,13 +52,6 @@ function newYtEmbedChecks() {
   if (ytNewRelatedContainers.length) {
     sendMetric('available');
     ytNewRelatedContainers.forEach(ytHomePageHandler);
-  }
-
-  // Youtube playlists
-  const ytNewPlaylistContainers = Array.from(document.querySelectorAll('ytd-playlist-thumbnail'));
-  if (ytNewPlaylistContainers.length) {
-    sendMetric('available');
-    ytNewPlaylistContainers.forEach(ytHomePageHandler);
   }
 }
 
@@ -164,7 +155,6 @@ function updateClickIfNeeded(el, { url, props }) {
 
 function ytHomePageHandler(el) {
   const urlEl = el.querySelector('.yt-uix-sessionlink')
-    || el.querySelector('.ytd-playlist-thumbnail')
     || el.querySelector('.ytd-thumbnail');
 
   if (!urlEl || !urlEl.getAttribute('href')) return;
@@ -246,131 +236,6 @@ function ytGamingHandler(el, props) {
     });
   });
   el.appendChild(tmp);
-}
-
-function soundcloudEmbedChecks() {
-  if (!(host.indexOf('soundcloud.com') > -1)) return;
-
-  // soundcloud.com/stream
-  const soundcloudStreamCovers = Array.from(document.querySelectorAll('.sound__coverArt'));
-  if (soundcloudStreamCovers.length) {
-    soundcloudStreamCovers.forEach(el => {
-      if (el.classList.contains('minvid__overlay__wrapper')) return;
-
-      el.classList.add('minvid__overlay__wrapper');
-      const tmp = getTemplate();
-      tmp.addEventListener('click', function(ev) {
-        evNoop(ev);
-        browser.runtime.sendMessage({
-          title: 'launch',
-          url: 'https://soundcloud.com' + el.getAttribute('href'),
-          domain: 'soundcloud.com',
-          action: getAction(ev)
-        });
-      });
-      el.appendChild(tmp);
-    });
-    sendMetric('available');
-  }
-
-  // souncloud.com/artist/track
-  const soundcloudTrackCover = document.querySelector('.fullHero__artwork');
-  if (soundcloudTrackCover) {
-    if (soundcloudTrackCover.classList.contains('minvid__overlay__wrapper')) return;
-    soundcloudTrackCover.classList.add('minvid__overlay__wrapper');
-    const tmp = getTemplate();
-    tmp.addEventListener('click', function(ev) {
-      evNoop(ev);
-      browser.runtime.sendMessage({
-        title: 'launch',
-        url: window.location.href,
-        domain: 'soundcloud.com',
-        action: getAction(ev)
-      });
-    }, true);
-    soundcloudTrackCover.appendChild(tmp);
-    sendMetric('available');
-  }
-}
-
-
-function vimeoEmbedChecks() {
-  if (!(host.indexOf('vimeo.com') > -1)) return;
-
-  // VIMEO LOGGED-OUT HOME PAGE
-  const vimeoDefaultHomeContainers = Array.from(document.querySelectorAll('.iris_video-vital__overlay'));
-  if (vimeoDefaultHomeContainers.length) {
-    vimeoDefaultHomeContainers.forEach(el => {
-      if (el.classList.contains('minvid__overlay__wrapper')) return;
-
-      el.classList.add('minvid__overlay__wrapper');
-      const tmp = getTemplate();
-      tmp.addEventListener('click', function(ev) {
-        evNoop(ev);
-        browser.runtime.sendMessage({
-          title: 'launch',
-          url: 'https://vimeo.com' + el.getAttribute('href'),
-          domain: 'vimeo.com',
-          action: getAction(ev)
-        });
-      });
-      el.appendChild(tmp);
-    });
-    sendMetric('available');
-  }
-
-  // VIMEO LOGGED-IN HOME PAGE
-  const vimeoHomeContainers = Array.from(document.querySelectorAll('.player_wrapper'));
-  if (vimeoHomeContainers.length) {
-    vimeoHomeContainers.forEach(el => {
-      if (el.classList.contains('minvid__overlay__wrapper')) return;
-
-      el.classList.add('minvid__overlay__wrapper');
-      const tmp = getTemplate();
-      tmp.addEventListener('click', function(ev) {
-        evNoop(ev);
-        const fauxEl = el.querySelector('.faux_player');
-        if (fauxEl) {
-          browser.runtime.sendMessage({
-            title: 'launch',
-            url: 'https://vimeo.com/' + fauxEl.getAttribute('data-clip-id'),
-            domain: 'vimeo.com',
-            action: getAction(ev)
-          });
-        } else console.error('Error: failed to locate vimeo url'); // eslint-disable-line no-console
-      });
-      el.appendChild(tmp);
-    });
-    sendMetric('available');
-  }
-
-  // VIMEO DETAIL PAGE
-  const vimeoDetailContainer = document.querySelector('.player_container');
-  if (vimeoDetailContainer) {
-    if (vimeoDetailContainer.classList.contains('minvid__overlay__wrapper')) return;
-    vimeoDetailContainer.classList.add('minvid__overlay__wrapper');
-    const videoEl = vimeoDetailContainer.querySelector('video');
-    const tmp = getTemplate();
-    tmp.addEventListener('mouseup', evNoop);
-    tmp.addEventListener('click', function(ev) {
-      evNoop(ev);
-      videoEl.pause();
-      const options = {
-        title: 'launch',
-        url: window.location.href,
-        domain: 'vimeo.com',
-        action: getAction(ev)
-      };
-
-      if (options.action !== 'add-to-queue') {
-        options.volume = videoEl.volume;
-        options.muted = videoEl.muted;
-      }
-      browser.runtime.sendMessage(options);
-    }, true);
-    vimeoDetailContainer.appendChild(tmp);
-    sendMetric('available');
-  }
 }
 
 function getAction(ev) {
@@ -480,13 +345,6 @@ function injectStyle() {
   background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iNzQiIHZpZXdCb3g9IjAgMCA5NiA3NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+TWluIFZpZCBEYXJrIENvcHk8L3RpdGxlPjxnIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0iTTAgOC4wMDdDMCAzLjU4NSAzLjU4OCAwIDggMGg4MGM0LjQxOSAwIDggMy41ODIgOCA4LjAwN3Y1Ny45ODZDOTYgNzAuNDE1IDkyLjQxMiA3NCA4OCA3NEg4Yy00LjQxOSAwLTgtMy41ODItOC04LjAwN1Y4LjAwN3pNNyAyNmE1IDUgMCAwIDEgNS4wMDYtNWg3MS45ODhBNSA1IDAgMCAxIDg5IDI2djM2YTUgNSAwIDAgMS01LjAwNiA1SDEyLjAwNkE1IDUgMCAwIDEgNyA2MlYyNnoiLz48cGF0aCBkPSJNMTIgMzcuOTk3QTMuOTkzIDMuOTkzIDAgMCAxIDE1Ljk5OCAzNGgyNy4wMDRBNCA0IDAgMCAxIDQ3IDM3Ljk5N3YyMC4wMDZBMy45OTMgMy45OTMgMCAwIDEgNDMuMDAyIDYySDE1Ljk5OEE0IDQgMCAwIDEgMTIgNTguMDAzVjM3Ljk5N3ptMTEuNSA0LjM3YzAtLjMwOS4yMjItLjQ1LjQ5OS0uMzE2bDEyLjc5NCA2LjIwN2MuMjc1LjEzNC4yNzcuMzUgMCAuNDg0TDIzLjk5OSA1NC45NWMtLjI3Ni4xMzMtLjQ5OS0uMDA4LS40OTktLjMxNlY0Mi4zNjd6Ii8+PC9nPjwvc3ZnPg==") no-repeat;
   background-position: center bottom;
   background-size: 32px auto;
-}
-
-#minvid__overlay__icon__add {
-  background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+DQogICAgPGcgaWQ9IlN5bWJvbHMiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPg0KICAgICAgICA8cG9seWdvbiBpZD0iUGF0aCIgZmlsbD0iI0ZGRkZGRiIgcG9pbnRzPSI4LjQgNS42IDguNCAwIDUuNiAwIDUuNiA1LjYgMCA1LjYgMCA4LjQgNS42IDguNCA1LjYgMTQgOC40IDE0IDguNCA4LjQgMTQgOC40IDE0IDUuNiI+PC9wb2x5Z29uPg0KICAgIDwvZz4NCjwvc3ZnPg==") no-repeat;
-  background-position: center bottom;
-  background-size: 25px auto;
-  margin-top: 5px;
 }
 
 .minvid__overlay__wrapper:hover .minvid__overlay__container,

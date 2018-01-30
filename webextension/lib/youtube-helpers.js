@@ -9,9 +9,7 @@ const headers = new Headers({
 });
 
 export default {
-  getVideo,
-  getPlaylist,
-  getPlaylistMeta
+  getVideo
 };
 
 function getVideo(opts, cb) {
@@ -59,81 +57,4 @@ function getVideo(opts, cb) {
           cb(item);
         }));
     }));
-}
-
-function getPlaylistMeta(opts, cb) {
-  let query = stringify({
-    key: apiKey,
-    part: 'snippet',
-    id: opts.playlistId
-  });
-
-  const url = `https://www.googleapis.com/youtube/v3/playlists?${query}`;
-  fetch(url, {
-    method: 'GET',
-    mode: 'cors',
-    headers: headers,
-    cache: 'default' })
-    .then((res) => res.json().then(function(json) {
-      const result = json.items[0].snippet;
-
-      query = qsParse(query);
-      query.id = opts.videoId;
-      query = stringify(query);
-
-      const url = `https://www.googleapis.com/youtube/v3/videos?${query}`;
-      fetch(url, {
-        method: 'GET',
-        mode: 'cors',
-        headers: headers,
-        cache: 'default' })
-        .then((res) => res.json().then(function(json) {
-          cb(Object.assign(opts, {
-            playlistTitle: result.title,
-            videoTitle: json.items[0].snippet.title
-          }));
-        }));
-    }));
-}
-
-function getPlaylist(opts, cb, passedPlaylist) {
-  const query = stringify({
-    key: apiKey,
-    part: 'snippet',
-    playlistId: opts.playlistId,
-    maxResults: 50,
-    pageToken: opts.pageToken || ''
-  });
-
-  const url = `https://www.googleapis.com/youtube/v3/playlistItems?${query}`;
-  fetch(url, {
-    method: 'GET',
-    mode: 'cors',
-    headers: headers,
-    cache: 'default' })
-    .then((res) => res.json().then(function(json) {
-      const result = json;
-      if (result.pageInfo.totalResults <= 50) {
-        Promise.all(result.items.map(i => getVideoDetails(i.snippet.resourceId.videoId, i.snippet.position)))
-          .then(playlist => cb(playlist.sort((a, b) => a.position - b.position)));
-      } else {
-        const shouldFetch = result.items[result.items.length - 1].snippet.position < result.pageInfo.totalResults - 1;
-        Promise.all(result.items.map(i => getVideoDetails(i.snippet.resourceId.videoId, i.snippet.position)))
-          .then(playlist => passedPlaylist ? passedPlaylist.concat(playlist) : playlist)
-          .then(playlist => (shouldFetch) ? getPlaylist(Object.assign(qsParse(query), {pageToken: result.nextPageToken}), cb, playlist)
-                : cb(playlist));
-      }
-    }));
-}
-
-function getVideoDetails(videoId, position) {
-  return new Promise((resolve) => {
-    getVideo({
-      time: 0,
-      videoId
-    }, item => {
-      item.position = position;
-      resolve(item);
-    });
-  });
 }
