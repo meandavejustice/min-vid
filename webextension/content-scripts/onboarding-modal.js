@@ -101,7 +101,7 @@ function createModal() {
 
   const p = document.createElement('p');
   p.textContent = `We\'re experimenting with a new feature which allows you to
-  pop out web videos and audio from soundcloud into an always on top view so
+  pop out YouTube videos into an always on top view so
   you can view videos the way you want.
   \n
   Just click the little icon in the top left corner to launch "Min Vid"
