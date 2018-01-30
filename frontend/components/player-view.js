@@ -21,8 +21,9 @@ export default class Player extends React.Component {
       hovered: false, progress: 0, exited: false,
       // showQueue: false,
       historyIndex: 0,
-      time: '0:00 / 0:00', errorCount: 0,
-      notificationCount: 0, wasMinimized: false
+      time: '0:00 / 0:00',
+      notificationCount: 0,
+      wasMinimized: false
     };
 
     if (this.props.queue[0].player === 'audio') this.loadAudio();
@@ -225,21 +226,6 @@ export default class Player extends React.Component {
     } else this.setTime(null, 0);
   }
 
-  startErrorTimeout() {
-    // We want to only show the errored view for 3 seconds before
-    // moving on to another track, unless there aren't anymore tracks
-    // in the queue.
-    const countdown = (count) => {
-      this.setState({errorCount: count});
-      if (count > 0) {
-        setTimeout(() => { countdown(count - 1); }, 1000);
-      } else if (this.props.queue[0].error) this.nextTrack();
-    };
-
-    if (this.state.errorCount) return;
-    countdown(3);
-  }
-
   startNotificationTimeout() {
     const countdown = (count) => {
       this.setState({notificationCount: count});
@@ -261,12 +247,10 @@ export default class Player extends React.Component {
       }, 100);
     }
 
-    if (this.props.queue[0].error && this.props.queue.length > 1) this.startErrorTimeout();
-
     let visualEl;
 
     if (this.props.queue[0].error) {
-      visualEl = <ErrorView {...this.props} countdown={this.state.errorCount} />;
+      visualEl = <ErrorView {...this.props} />;
     } else if (this.props.queue[0].player === 'audio') {
       visualEl = <div id='audio-container' ref={(c) => { this.audioContainer = c; }} onClick={debouncedVideoClickHandler.bind(this)}/>;
     } else {
