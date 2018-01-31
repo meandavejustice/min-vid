@@ -74,7 +74,7 @@ function ytEmbedChecks() {
   const ytWatchContainers = document.querySelectorAll('.html5-video-player');
   if (ytWatchContainers) {
     sendMetric('available');
-    ytWatchContainers.forEach(ytWatchElementHandler);
+    ytWatchContainers.forEach(ytChannelElementHandler);
   }
 
   // YouTube Watch Page related videos
@@ -175,7 +175,9 @@ function ytHomePageHandler(el) {
   el.appendChild(tmp);
 }
 
-function ytWatchElementHandler(el) {
+
+
+function ytChannelElementHandler(el) {
   if (el.classList.contains('minvid__overlay__wrapper')) return;
 
   el.classList.add('minvid__overlay__wrapper');
@@ -188,16 +190,12 @@ function ytWatchElementHandler(el) {
     closeFullscreen();
     const options = {
       title: 'launch',
-      url: window.location.href,
+      url: el.querySelector('.ytp-title-link').href,
       domain: 'youtube.com',
       time: videoEl.currentTime,
       action: getAction(ev),
       cc
     };
-    if (options.action !== 'add-to-queue') {
-      options.volume = videoEl.volume;
-      options.muted = videoEl.muted;
-    }
     browser.runtime.sendMessage(options);
   });
   el.appendChild(tmp);
