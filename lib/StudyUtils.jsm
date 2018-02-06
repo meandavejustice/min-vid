@@ -360,7 +360,9 @@ class StudyUtils {
       // Wait for the window to be opened
       await new Promise(resolve => setTimeout(resolve, 30000));
     }
-    Services.wm.getMostRecentWindow("navigator:browser").gBrowser.addTab(url, params);
+    var tabbrowser = Services.wm.getMostRecentWindow("navigator:browser").gBrowser;
+    var newTab = tabbrowser.addTab(url, params);
+    tabbrowser.selectedTab = newTab;
   }
   async getTelemetryId() {
     return await getTelemetryId(); // eslint-disable-line no-return-await
