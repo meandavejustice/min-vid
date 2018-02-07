@@ -1,4 +1,5 @@
 const TestPilotGA = require('testpilot-ga');
+const { sendShieldMetricPing } = require('./window-messages');
 const isShieldStudy = (process.env.IS_SHIELD_STUDY === true);
 let analytics;
 
@@ -24,6 +25,6 @@ export default function sendMetricsData(o) {
         ds: 'webextension',
         ec: 'interactions'
       });
-    }
+    } else sendShieldMetricPing(o, r);
   });
 }
