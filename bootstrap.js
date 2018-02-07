@@ -165,7 +165,7 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
         else if (msg.content === 'window:minimize') minimize();
         else if (msg.content === 'window:maximize') maximize();
         else if (msg.content === 'window:dimensions:update') setDimensions(msg.data);
-        else if (msg.content === 'window:sendShieldMetric') submitExternalPing(msg.data);
+        else if (msg.content === 'window:sendShieldMetric') submitExternalPing(msg.data, msg.localInfo);
       });
       webExtPort.postMessage({
         content: 'variation',
@@ -259,8 +259,7 @@ function makeTimestamp(timestamp = Date.now()) {
 
 function submitExternalPing(eventData, localInfo) {
   if (ADDON_ID === '@min-vid-study') {
-    TelemetryController.submitExternalPing({
-      topic: 'minvid-study',
+    TelemetryController.submitExternalPing('shield-study', {
       payload: {
         timestamp: makeTimestamp(),
         test: addonMetadata.id,
@@ -268,8 +267,8 @@ function submitExternalPing(eventData, localInfo) {
         variant: currentVariation,
         category: 'interactions',
         dimensions: {
-          left: localInfo.left,
-          top: localInfo.top,
+          left: LOCATION.x,
+          top: LOCATION.y,
           width: localInfo.width,
           height: localInfo.height
         },
@@ -281,6 +280,9 @@ function submitExternalPing(eventData, localInfo) {
           method: eventData.method
         }]
       }
+    }, {
+      addClientId: true,
+      addEnvironment: true
     });
   }
 }
