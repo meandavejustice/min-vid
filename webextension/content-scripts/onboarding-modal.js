@@ -1,61 +1,106 @@
 const css = `
 .minvid__modalDialog {
   position: fixed;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Roboto, Arial, sans-serif;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 9999999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .minvid__modalDialog > div {
-  width: 35%;
-  min-width: 350px;
-  position: relative;
-  margin: 10% auto;
-  border-radius: 2px;
   background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, .2), 0 0 0 1px rgba(0,0,0,.05);
+  min-width: 480px;
+  overflow: hidden;
+  position: relative;
+  width: 35%;
 }
 
 .minvid__modalDialog header {
   text-align: center;
-  padding: 20px;
+  padding: 0 20px;
   background: #008ea4;
   color: white;
+  position: relative;
+  display: flex;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
 }
 
 .minvid__modalDialog header h2 {
-  display: inline;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 20px;
+  margin: 0;
+  font-weight: 500;
+  flex: 0 1 380px;
 }
 
 .minvid__modalDialog img {
-  width: 90%;
+  width: 88%;
   height: auto;
-  margin: 15px auto;
-  padding: 10px 26px 0px;
+  margin: 0 auto;
+  padding: 25px 6% 20px;
 }
 
 .minvid__modalDialog p {
-  padding: 5px 20px 30px;
-  width: 85%;
+  padding: 5px 0 10px;
+  width: 74%;
   margin: 0 auto;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.minvid__modalDialog p:last-child {
+  margin-bottom: 36px;
 }
 
 .minvid__close {
   cursor: pointer;
-  color: #FFFFFF;
-  float: right;
   font-weight: bold;
-  font-size: 14px;
+  position: absolute;
+  top: 0;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  background-size: 24px 24px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  top: 14px;
+  border-radius: 2px;
+  transition: backgroud-color 50ms;
 }
 
 .minvid__close:hover {
-  opacity: .7;
+  background-color: rgba(0,0,0,.2);
+}
+
+@media (max-height: 540px) {
+
+  .minvid__modalDialog {
+    align-items: flex-start;
+  }
+
+  .minvid__modalDialog > div {
+    margin-top: 10px;
+  }
+
+  .minvid__modalDialog p {
+    padding: 4px 0 8px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .minvid__modalDialog p:last-child {
+    margin-bottom: 16px;
+  }
 }
 `;
 
@@ -69,7 +114,7 @@ function createModal() {
   closeLink.className = 'minvid__close';
   closeLink.id = 'minvid__close';
   closeLink.title = 'Close';
-  closeLink.textContent = 'X';
+  closeLink.style.backgroundImage = `url(${browser.extension.getURL('/close.svg')})`;
 
   function dismissModal() {
     browser.storage.local.set({seenModal: true});
@@ -85,6 +130,11 @@ function createModal() {
     dismissModal();
   };
 
+  modal.onclick = (evt) => {
+    evt.preventDefault();
+    dismissModal();
+  };
+
   let escaped;
   function onKeyDown(evt) {
     if (escaped || evt.key !== 'Escape') return;
@@ -94,28 +144,24 @@ function createModal() {
   }
 
   const h2 = document.createElement('h2');
-  h2.textContent = 'We\'ve added a little something to your videos';
+  h2.textContent = 'Keep your videos front and center';
 
   const img = document.createElement('img');
   img.src = browser.extension.getURL('/onboarding.gif');
 
-  const p = document.createElement('p');
-  p.textContent = `We\'re experimenting with a new feature which allows you to
-  pop out YouTube videos into an always on top view so
-  you can view videos the way you want.
-  \n
-  Just click the little icon in the top left corner to launch "Min Vid"
-  \n
-  \n
-    - <3 Firefox Team
-  `;
+  const p1 = document.createElement('p');
+  const p2 = document.createElement('p');
+
+  p1.textContent = `New from Firefox,  an experimental feature that lets you play YouTube videos in the foreground while you browse.`;
+  p2.textContent = `Select the icon in the top left corner of any video to give it a try.`;
 
   const header = document.createElement('header');
   header.appendChild(closeLink);
   header.appendChild(h2);
   contentWrapper.appendChild(header);
   contentWrapper.appendChild(img);
-  contentWrapper.appendChild(p);
+  contentWrapper.appendChild(p1);
+  contentWrapper.appendChild(p2);
   modal.appendChild(contentWrapper);
   document.addEventListener('keydown', onKeyDown);
   return modal;
