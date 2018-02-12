@@ -3,6 +3,7 @@ import cn from 'classnames';
 import keyboardJS from 'keyboardjs';
 import ReactTooltip from 'react-tooltip';
 import sendMetricsEvent from '../client-lib/send-metrics-event';
+import getView from '../client-lib/get-view';
 
 export default class SoundControl extends React.Component {
   constructor(props) {
@@ -48,7 +49,7 @@ export default class SoundControl extends React.Component {
 
   mute() {
     const domain = this.props.queue.length ? this.props.queue[0].domain : null;
-    sendMetricsEvent('player_view', 'mute', domain);
+    if (getView() !== 'error_view') sendMetricsEvent(getView(), 'mute', domain);
     this.setState({prevVolume: this.props.volume});
     if (this.props.audio) this.props.audio.mute();
     window.AppData.set({muted: true, volume: 0});
@@ -56,7 +57,7 @@ export default class SoundControl extends React.Component {
 
   unmute() {
     const domain = this.props.queue.length ? this.props.queue[0].domain : null;
-    sendMetricsEvent('player_view', 'unmute', domain);
+    if (getView() !== 'error_view') sendMetricsEvent(getView(), 'unmute', domain);
     if (this.props.audio) this.props.audio.unmute();
     window.AppData.set({muted: false, volume: this.state.prevVolume});
   }
