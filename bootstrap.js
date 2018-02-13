@@ -24,7 +24,7 @@ const TELEMETRY_ENABLED_PREF = 'datareporting.healthreport.uploadEnabled';
 // Config.jsm, inlined
 const config = {
   addon: {
-    id: '@min-vid-study',
+    id: 'min-vid@shield.mozilla.org',
     version: '0.4.7-study'
   },
   study: {
@@ -84,7 +84,7 @@ XPCOMUtils.defineLazyModuleGetter(this, 'DraggableElement',
 XPCOMUtils.defineLazyModuleGetter(this, 'studyUtils',
                                   'chrome://minvid-lib/content/StudyUtils.jsm');
 
-const ADDON_ID = '@min-vid-study';
+const ADDON_ID = 'min-vid@shield.mozilla.org';
 const startTime = Date.now();
 const WM = Cc['@mozilla.org/appshell/window-mediator;1'].
       getService(Ci.nsIWindowMediator);
@@ -258,7 +258,7 @@ function makeTimestamp(timestamp = Date.now()) {
 }
 
 function submitExternalPing(eventData, localInfo) {
-  if (ADDON_ID === '@min-vid-study') {
+  if (ADDON_ID === 'min-vid@shield.mozilla.org') {
     TelemetryController.submitExternalPing('shield-study', {
       payload: {
         timestamp: makeTimestamp(),
