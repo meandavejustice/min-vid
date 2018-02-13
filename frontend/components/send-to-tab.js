@@ -2,11 +2,7 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import sendToAddon from '../client-lib/send-to-addon';
 import sendMetricsEvent from '../client-lib/send-metrics-event';
-
-function getView() {
-  if (window.AppData.error) return 'error_view';
-  return window.AppData.loaded ? 'player_view' : 'loading_view';
-}
+import getView from '../client-lib/get-view';
 
 export default class SendToTab extends React.Component {
   sendToTab() {

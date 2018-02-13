@@ -4,11 +4,7 @@ import keyboardJS from 'keyboardjs';
 import ReactTooltip from 'react-tooltip';
 import sendMetricsEvent from '../client-lib/send-metrics-event';
 import sendToAddon from '../client-lib/send-to-addon';
-
-function getView() {
-  if (window.AppData.error) return 'error_view';
-  return window.AppData.loaded ? 'player_view' : 'loading_view';
-}
+import getView from '../client-lib/get-view';
 
 export default class SizeControl extends React.Component {
   componentDidMount() {
