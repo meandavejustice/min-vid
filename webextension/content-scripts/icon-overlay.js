@@ -53,7 +53,10 @@ function newYtEmbedChecks() {
   const ytNewRelatedContainers = Array.from(document.querySelectorAll('#items ytd-thumbnail'));
   if (ytNewRelatedContainers.length) {
     sendMetric('available');
-    ytNewRelatedContainers.forEach(ytHomePageHandler);
+    ytNewRelatedContainers.filter((el) => {
+      // filter out playlists
+      return !~el.querySelector('.yt-simple-endpoint').href.indexOf('list=');
+    }).forEach(ytHomePageHandler);
   }
 
   // Youtube playlists
