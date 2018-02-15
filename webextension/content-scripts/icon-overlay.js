@@ -51,7 +51,9 @@ function newYtEmbedChecks() {
   const ytNewRelatedContainers = Array.from(document.querySelectorAll('#items ytd-thumbnail'));
   if (ytNewRelatedContainers.length) {
     sendMetric('available');
-    ytNewRelatedContainers.forEach(ytHomePageHandler);
+    ytNewRelatedContainers.filter((el) => {
+      return !~el.querySelector('.yt-simple-endpoint').href.indexOf('list=');
+    }).forEach(ytHomePageHandler);
   }
 }
 
