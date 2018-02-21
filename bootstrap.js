@@ -89,7 +89,7 @@ const startTime = Date.now();
 const WM = Cc['@mozilla.org/appshell/window-mediator;1'].
       getService(Ci.nsIWindowMediator);
 const EXPIRATION_DATE_STRING_PREF = 'extensions.minvidstudy.expirationDateString';
-const LOCATION = { x: 0, y: 0 };
+const LOCATION = { x: '30%', y: '30%' };
 // TODO: consolidate with webextension/manifest.json
 let DIMENSIONS = {
   height: 260,
