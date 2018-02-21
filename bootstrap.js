@@ -321,7 +321,7 @@ Services.obs.addObserver(onWindowClosed, 'xul-window-destroyed', false); // esli
 function closeRequested() {
   destroy(true);
 }
-Services.obs.addObserver(closeRequested, 'browser-lastwindow-close-requested', false); // eslint-disable-line mozilla/no-useless-parameters
+Services.obs.addObserver(closeRequested, 'browser-lastwindow-close-granted', false); // eslint-disable-line mozilla/no-useless-parameters
 
 function closeWindow() {
   // If the window is gone, a 'dead object' error will be thrown; discard it.
