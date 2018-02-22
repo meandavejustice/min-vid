@@ -18,7 +18,7 @@ XPCOMUtils.defineLazyModuleGetter(this, 'DraggableElement',
 XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
                                   'resource://gre/modules/LegacyExtensionsUtils.jsm');
 
-const LOCATION = { x: 0, y: 0 };
+const LOCATION = { x: '30%', y: '30%' };
 // TODO: consolidate with webextension/manifest.json
 let DIMENSIONS = {
   height: 260,
@@ -214,7 +214,7 @@ function destroy(isUnload) {
   closeWindow();
   if (isUnload) {
     Services.obs.removeObserver(onWindowClosed, 'xul-window-destroyed');
-    Services.obs.removeObserver(closeRequested, 'browser-lastwindow-close-requested');
+    Services.obs.removeObserver(closeRequested, 'browser-lastwindow-close-granted');
   }
 }
 
