@@ -79,6 +79,7 @@ function onLaunch(opts, sender) {
   else if (title === 'inject-style') {
     if ('tab' in sender) {
       browser.tabs.insertCSS(sender.tab.id, {
+        cssOrigin: 'user',
         file: '/content-scripts/icon-overlay.css',
         frameId: opts.frameId,
         runAt: 'document_start'
