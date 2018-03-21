@@ -3,6 +3,9 @@ Pontoon changes have been redacted for readability, the true commit
 log can be accessed in the
 [GitHub repo](https://github.com/meandavejusticejustice/min-vid/commits/master).
 
+## 0.4.9 (2018-03-21)
+* [4970670d33] - adjust launch position and catch all window close events (#1275) (Dave Justice)
+
 ## 0.4.8 (2018-01-29)
 * [[`5b95bda091`](https://github.com/meandavejustice/min-vid/commit/5b95bda091)] - manually apply commit 299cca3 to address window drag issue (#1204) (Dave Justice)
 
