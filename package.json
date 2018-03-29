@@ -51,7 +51,7 @@
     "onchange": "3.2.1",
     "pontoon-to-webext": "1.0.2",
     "react": "15.6.1",
-    "react-dom": "15.6.1",
+    "react-dom": "16.3.0",
     "react-player": "0.25.3",
     "react-tabs": "0.8.3",
     "react-tooltip": "3.4.0",
