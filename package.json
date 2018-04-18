@@ -53,7 +53,7 @@
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-player": "0.25.3",
-    "react-tabs": "0.8.3",
+    "react-tabs": "2.2.2",
     "react-tooltip": "3.4.0",
     "sortablejs": "1.6.1",
     "testpilot-ga": "0.3.0",
