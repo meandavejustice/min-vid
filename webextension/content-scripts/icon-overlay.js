@@ -1,9 +1,10 @@
 const host = window.location.host;
-let availableMetricSent = false;
 
 browser.runtime.onMessage.addListener(onMessage);
 
+injectStyle();
 checkForEmbeds();
+
 const overlayCheckInterval = setInterval(checkForEmbeds, 3000);
 
 function onFullscreenChange() {
@@ -43,14 +44,12 @@ function newYtEmbedChecks() {
   // Youtube Home Page
   const ytNewHomeContainers = Array.from(document.querySelectorAll('#contents ytd-thumbnail'));
   if (ytNewHomeContainers.length) {
-    sendMetric('available');
     ytNewHomeContainers.forEach(ytHomePageHandler);
   }
 
   // Youtube Page related videos
   const ytNewRelatedContainers = Array.from(document.querySelectorAll('#items ytd-thumbnail'));
   if (ytNewRelatedContainers.length) {
-    sendMetric('available');
     ytNewRelatedContainers.filter((el) => {
       return !~el.querySelector('.yt-simple-endpoint').href.indexOf('list=');
     }).forEach(ytHomePageHandler);
@@ -63,7 +62,6 @@ function ytEmbedChecks() {
   // YouTube Home Page
   const ytHomeContainers = Array.from(document.querySelectorAll('#feed .yt-lockup-thumbnail'));
   if (ytHomeContainers.length) {
-    sendMetric('available');
     ytHomeContainers.forEach(ytHomePageHandler);
   }
 
@@ -75,7 +73,6 @@ function ytEmbedChecks() {
   // YouTube Watch Page and main featured videos on channel page
   const ytWatchContainers = document.querySelectorAll('.html5-video-player');
   if (ytWatchContainers) {
-    sendMetric('available');
     ytWatchContainers.forEach(ytChannelElementHandler);
   }
 
@@ -88,21 +85,18 @@ function ytEmbedChecks() {
   // YouTube Channel Page videos featured section
   const ytChannelFeaturedContainers = Array.from(document.querySelectorAll('#browse-items-primary .lohp-thumb-wrap'));
   if (ytChannelFeaturedContainers.length) {
-    sendMetric('available');
     ytChannelFeaturedContainers.forEach(ytHomePageHandler);
   }
 
   // YouTube Channel Page videos uploads section
   const ytChannelUploadsContainers = Array.from(document.querySelectorAll('#browse-items-primary .yt-lockup-thumbnail'));
   if (ytChannelUploadsContainers.length) {
-    sendMetric('available');
     ytChannelUploadsContainers.forEach(ytHomePageHandler);
   }
 
   // Youtube Gaming Home Page
   const ytGamingContainers = Array.from(document.querySelectorAll('#contents .game-cell-contents'));
   if (ytGamingContainers.length) {
-    sendMetric('available');
     ytGamingContainers.forEach(function ytGamingWrapper(el) {
       ytGamingHandler(el, { type: 'ytGamingHomePage' });
     });
@@ -111,7 +105,6 @@ function ytEmbedChecks() {
   // Youtube Gaming Home Page Carousel
   const ytGamingCarouselContainers = Array.from(document.querySelectorAll('#container.ytg-video-carousel .video-cell'));
   if (ytGamingCarouselContainers.length) {
-    sendMetric('available');
     ytGamingCarouselContainers.forEach(function ytGamingCarouselWrapper(el) {
       ytGamingHandler(el, { type: 'ytGamingCarousel' });
     });
@@ -267,18 +260,6 @@ function getTemplate(props) {
   // containerEl.appendChild(addIconEl);
 
   return containerEl;
-}
-
-function sendMetric(method) {
-  if (availableMetricSent) return;
-  if (method === 'available') availableMetricSent = true;
-  browser.runtime.sendMessage({
-    title: 'metric',
-    object: 'overlay_icon',
-    method
-  });
-  // only inject style if there are valid embeds on the page.
-  injectStyle();
 }
 
 function evNoop(ev) {

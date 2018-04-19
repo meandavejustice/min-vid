@@ -91,9 +91,6 @@ otherwise noted.
     * drag n drop reordering event
 
 * Object: `overlay_icon`
-  * method: `available`
-    * Sent when a video is available on a page.
-    * One call per page max (even if multiple videos)
   * method: `launch`
     * Sent when a video is launched from the overlay icon.
 
