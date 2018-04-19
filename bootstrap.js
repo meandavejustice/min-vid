@@ -145,12 +145,12 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
   currentVariation = chooseVariation();
 
   if (currentVariation === 'inactive') {
-    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=0&launched=0';
+    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=0&launches=0';
     config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
     return;
   }
 
-  const launchedCountString = '&launched=' + parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF));
+  const launchedCountString = '&launches=' + parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF));
 
   if (currentVariation === 'active') {
     config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=1' + launchedCountString;
@@ -222,7 +222,7 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
 };
 
 this.shutdown = function shutdown(data, reason) { // eslint-disable-line no-unused-vars
-  const launchedCountString = '&launched=' + parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF));
+  const launchedCountString = '&launches=' + parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF));
   config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + launchedCountString;
   config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
 
