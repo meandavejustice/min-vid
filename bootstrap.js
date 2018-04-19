@@ -20,6 +20,7 @@ XPCOMUtils.defineLazyModuleGetter(this, 'TelemetryController',
 let currentVariation;
 
 const TELEMETRY_ENABLED_PREF = 'datareporting.healthreport.uploadEnabled';
+const MINVID_LAUNCH_COUNT_PREF = 'minvid.launchcount';
 
 // Config.jsm, inlined
 const config = {
@@ -142,16 +143,21 @@ function chooseVariation() {
 this.startup = async function startup(data, reason) { // eslint-disable-line no-unused-vars
   addonMetadata = data;
   currentVariation = chooseVariation();
+
   if (currentVariation === 'inactive') {
+    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=0&launched=0';
+    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
     return;
   }
 
+  const launchedCountString = '&launched=' + parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF));
+
   if (currentVariation === 'active') {
-    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=1';
-    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl + '?ver=1';
+    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=1' + launchedCountString;
+    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
   } else if (currentVariation === 'activeAndOnboarding') {
-    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=2';
-    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl + '?ver=2';
+    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=2' + launchedCountString;
+    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
   }
 
   if (data.webExtension.started) return;
@@ -159,8 +165,13 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
     api.browser.runtime.onConnect.addListener(port => {
       webExtPort = port;
       webExtPort.onMessage.addListener((msg) => {
-        if (msg.content === 'window:send') send(msg.data);
-        else if (msg.content === 'window:prepare') updateWindow();
+        if (msg.content === 'window:send') {
+          if (typeof msg.data.queue !== 'undefined' && msg.data.queue.length) {
+            const launchCount = parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF), 10);
+            Preferences.set(MINVID_LAUNCH_COUNT_PREF, launchCount + 1);
+          }
+          send(msg.data);
+        } else if (msg.content === 'window:prepare') updateWindow();
         else if (msg.content === 'window:close') closeWindow();
         else if (msg.content === 'window:minimize') minimize();
         else if (msg.content === 'window:maximize') maximize();
@@ -194,6 +205,7 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
       // uses config.endings.ineligible.url if any,
       // sends UT for "ineligible"
       // then uninstalls addon
+      Preferences.set(MINVID_LAUNCH_COUNT_PREF, 0);
       await studyUtils.endStudy({ reason: 'ineligible' });
       return;
     }
@@ -204,11 +216,16 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
 
   const expirationDate = new Date(Preferences.get(EXPIRATION_DATE_STRING_PREF));
   if (Date.now() > expirationDate) {
+    Preferences.set(MINVID_LAUNCH_COUNT_PREF, 0);
     studyUtils.endStudy({ reason: 'expired' });
   }
 };
 
 this.shutdown = function shutdown(data, reason) { // eslint-disable-line no-unused-vars
+  const launchedCountString = '&launched=' + parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF));
+  config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + launchedCountString;
+  config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
+
   closeWindow();
 
   // are we uninstalling?
@@ -217,6 +234,7 @@ this.shutdown = function shutdown(data, reason) { // eslint-disable-line no-unus
     Preferences.reset(VARIATION_PREF);
     if (!studyUtils._isEnding) {
       // we are the first requestors, must be user action.
+      Preferences.set(MINVID_LAUNCH_COUNT_PREF, 0);
       studyUtils.endStudy({ reason: 'user-disable' });
     }
   }
