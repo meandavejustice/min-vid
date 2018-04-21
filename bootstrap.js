@@ -144,15 +144,14 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
   addonMetadata = data;
   currentVariation = chooseVariation();
 
+  // init launch count pref
+  if (!Preferences.has(MINVID_LAUNCH_COUNT_PREF)) Preferences.set(MINVID_LAUNCH_COUNT_PREF, 0);
+  const launchedCountString = '&launches=' + parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF));
+
   if (currentVariation === 'inactive') {
     config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=0&launches=0';
     config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
-    return;
-  }
-
-  const launchedCountString = '&launches=' + parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF));
-
-  if (currentVariation === 'active') {
+  } else if (currentVariation === 'active') {
     config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=1' + launchedCountString;
     config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
   } else if (currentVariation === 'activeAndOnboarding') {
@@ -161,29 +160,31 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
   }
 
   if (data.webExtension.started) return;
-  data.webExtension.startup(reason).then(api => {
-    api.browser.runtime.onConnect.addListener(port => {
-      webExtPort = port;
-      webExtPort.onMessage.addListener((msg) => {
-        if (msg.content === 'window:send') {
-          if (typeof msg.data.queue !== 'undefined' && msg.data.queue.length) {
-            const launchCount = parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF), 10);
-            Preferences.set(MINVID_LAUNCH_COUNT_PREF, launchCount + 1);
-          }
-          send(msg.data);
-        } else if (msg.content === 'window:prepare') updateWindow();
-        else if (msg.content === 'window:close') closeWindow();
-        else if (msg.content === 'window:minimize') minimize();
-        else if (msg.content === 'window:maximize') maximize();
-        else if (msg.content === 'window:dimensions:update') setDimensions(msg.data);
-        else if (msg.content === 'window:sendShieldMetric') submitExternalPing(msg.data, msg.localInfo);
-      });
-      webExtPort.postMessage({
-        content: 'variation',
-        data: {variation: currentVariation}
+  else if (currentVariation !== 'inactive') {
+    data.webExtension.startup(reason).then(api => {
+      api.browser.runtime.onConnect.addListener(port => {
+        webExtPort = port;
+        webExtPort.onMessage.addListener((msg) => {
+          if (msg.content === 'window:send') {
+            if (typeof msg.data.queue !== 'undefined' && msg.data.queue.length) {
+              const launchCount = parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF), 10);
+              Preferences.set(MINVID_LAUNCH_COUNT_PREF, launchCount + 1);
+            }
+            send(msg.data);
+          } else if (msg.content === 'window:prepare') updateWindow();
+          else if (msg.content === 'window:close') closeWindow();
+          else if (msg.content === 'window:minimize') minimize();
+          else if (msg.content === 'window:maximize') maximize();
+          else if (msg.content === 'window:dimensions:update') setDimensions(msg.data);
+          else if (msg.content === 'window:sendShieldMetric') submitExternalPing(msg.data, msg.localInfo);
+        });
+        webExtPort.postMessage({
+          content: 'variation',
+          data: {variation: currentVariation}
+        });
       });
     });
-  });
+  }
 
   // launch study setup
   studyUtils.setup(config);
@@ -205,7 +206,7 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
       // uses config.endings.ineligible.url if any,
       // sends UT for "ineligible"
       // then uninstalls addon
-      Preferences.set(MINVID_LAUNCH_COUNT_PREF, 0);
+      Preferences.reset(MINVID_LAUNCH_COUNT_PREF);
       await studyUtils.endStudy({ reason: 'ineligible' });
       return;
     }
@@ -216,7 +217,7 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
 
   const expirationDate = new Date(Preferences.get(EXPIRATION_DATE_STRING_PREF));
   if (Date.now() > expirationDate) {
-    Preferences.set(MINVID_LAUNCH_COUNT_PREF, 0);
+    Preferences.reset(MINVID_LAUNCH_COUNT_PREF);
     studyUtils.endStudy({ reason: 'expired' });
   }
 };
@@ -234,7 +235,7 @@ this.shutdown = function shutdown(data, reason) { // eslint-disable-line no-unus
     Preferences.reset(VARIATION_PREF);
     if (!studyUtils._isEnding) {
       // we are the first requestors, must be user action.
-      Preferences.set(MINVID_LAUNCH_COUNT_PREF, 0);
+      Preferences.reset(MINVID_LAUNCH_COUNT_PREF);
       studyUtils.endStudy({ reason: 'user-disable' });
     }
   }
