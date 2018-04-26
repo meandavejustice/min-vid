@@ -3,20 +3,16 @@ const { classes: Cc, interfaces: Ci, utils: Cu } = Components;
 Cu.import('resource://gre/modules/XPCOMUtils.jsm');
 Cu.import('resource://gre/modules/Console.jsm');
 
-XPCOMUtils.defineLazyModuleGetter(this, 'setTimeout',
-                                  'resource://gre/modules/Timer.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'clearTimeout',
-                                  'resource://gre/modules/Timer.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'LegacyExtensionsUtils',
-                                  'resource://gre/modules/LegacyExtensionsUtils.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'Preferences',
-                                  'resource://gre/modules/Preferences.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'AddonManager',
-                                  'resource://gre/modules/AddonManager.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'Services',
-                                  'resource://gre/modules/Services.jsm');
-XPCOMUtils.defineLazyModuleGetter(this, 'TelemetryController',
-                                  'resource://gre/modules/TelemetryController.jsm');
+XPCOMUtils.defineLazyModuleGetters(this, {
+  setTimeout: 'resource://gre/modules/Timer.jsm',
+  clearTimeout: 'resource://gre/modules/Timer.jsm',
+  LegacyExtensionsUtils: 'resource://gre/modules/LegacyExtensionsUtils.jsm',
+  Preferences: 'resource://gre/modules/Preferences.jsm',
+  AddonManager: 'resource://gre/modules/AddonManager.jsm',
+  Services: 'resource://gre/modules/Services.jsm',
+  TelemetryController: 'resource://gre/modules/TelemetryController.jsm'
+});
+
 let currentVariation;
 
 const TELEMETRY_ENABLED_PREF = 'datareporting.healthreport.uploadEnabled';
@@ -78,12 +74,12 @@ const config = {
   }
 };
 
-XPCOMUtils.defineLazyModuleGetter(this, 'topify',
-                                  'chrome://minvid-lib/content/topify.js');
-XPCOMUtils.defineLazyModuleGetter(this, 'DraggableElement',
-                                  'chrome://minvid-lib/content/dragging-utils.js');
-XPCOMUtils.defineLazyModuleGetter(this, 'studyUtils',
-                                  'chrome://minvid-lib/content/StudyUtils.jsm');
+// load our modules
+XPCOMUtils.defineLazyModuleGetters(this, {
+  topify: 'chrome://minvid-lib/content/topify.js',
+  DraggableElement: 'chrome://minvid-lib/content/dragging-utils.js',
+  studyUtils: 'chrome://minvid-lib/content/StudyUtils.jsm'
+});
 
 const ADDON_ID = 'min-vid@shield.mozilla.org';
 const startTime = Date.now();
