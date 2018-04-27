@@ -136,28 +136,32 @@ function chooseVariation() {
   return variation;
 }
 
-this.startup = async function startup(data, reason) { // eslint-disable-line no-unused-vars
-  addonMetadata = data;
-  currentVariation = chooseVariation();
+const APP_STARTUP = 1;
+let startupReason;
+let appStartupDone;
+let appStartupPromise = new Promise((resolve, reject) => {
+  appStartupDone = resolve;
+});
 
-  // init launch count pref
-  if (!Preferences.has(MINVID_LAUNCH_COUNT_PREF)) Preferences.set(MINVID_LAUNCH_COUNT_PREF, 0);
-  const launchedCountString = '&launches=' + parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF));
+const appStartupObserver = {
+  register() {
+    Services.obs.addObserver(this, 'sessionstore-windows-restored', false); // eslint-disable-line mozilla/no-useless-parameters
+  },
 
-  if (currentVariation === 'inactive') {
-    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=0&launches=0';
-    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
-  } else if (currentVariation === 'active') {
-    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=1' + launchedCountString;
-    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
-  } else if (currentVariation === 'activeAndOnboarding') {
-    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=2' + launchedCountString;
-    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
+  unregister() {
+    Services.obs.removeObserver(this, 'sessionstore-windows-restored', false); // eslint-disable-line mozilla/no-useless-parameters
+  },
+
+  observe() {
+    appStartupDone();
+    this.unregister();
   }
+};
 
-  if (data.webExtension.started) return;
+async function handleStartup() {
+  if (addonMetadata.webExtension.started) return;
   else if (currentVariation !== 'inactive') {
-    data.webExtension.startup(reason).then(api => {
+    addonMetadata.webExtension.startup(startupReason).then(api => {
       api.browser.runtime.onConnect.addListener(port => {
         webExtPort = port;
         webExtPort.onMessage.addListener((msg) => {
@@ -195,7 +199,7 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
     Preferences.set(EXPIRATION_DATE_STRING_PREF, expirationDateString);
   }
 
-  if (reason === studyUtils.REASONS.ADDON_INSTALL) {
+  if (startupReason === studyUtils.REASONS.ADDON_INSTALL) {
     studyUtils.firstSeen(); // sends telemetry "enter"
     const eligible = await config.isEligible(); // addon-specific
     if (!eligible) {
@@ -209,13 +213,43 @@ this.startup = async function startup(data, reason) { // eslint-disable-line no-
   }
   // sets experiment as active and sends installed telemetry upon
   // first install
-  await studyUtils.startup({ reason });
+  await studyUtils.startup({ startupReason });
 
   const expirationDate = new Date(Preferences.get(EXPIRATION_DATE_STRING_PREF));
   if (Date.now() > expirationDate) {
     Preferences.reset(MINVID_LAUNCH_COUNT_PREF);
     studyUtils.endStudy({ reason: 'expired' });
   }
+}
+
+this.startup = async function startup(data, reason) { // eslint-disable-line no-unused-vars
+  startupReason = reason;
+  if (reason === APP_STARTUP) {
+    appStartupObserver.register();
+  } else {
+    appStartupDone();
+  }
+
+  addonMetadata = data;
+  currentVariation = chooseVariation();
+
+  // init launch count pref
+  if (!Preferences.has(MINVID_LAUNCH_COUNT_PREF)) Preferences.set(MINVID_LAUNCH_COUNT_PREF, 0);
+  const launchedCountString = '&launches=' + parseInt(Preferences.get(MINVID_LAUNCH_COUNT_PREF));
+
+  if (currentVariation === 'inactive') {
+    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=0&launches=0';
+    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
+  } else if (currentVariation === 'active') {
+    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=1' + launchedCountString;
+    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
+  } else if (currentVariation === 'activeAndOnboarding') {
+    config.study.endings.expired.baseUrl = config.study.endings.expired.baseUrl + '?ver=2' + launchedCountString;
+    config.study.endings['user-disable'].baseUrl = config.study.endings.expired.baseUrl;
+  }
+
+  // eslint-disable-next-line promise/catch-or-return
+  appStartupPromise = appStartupPromise.then(handleStartup);
 };
 
 this.shutdown = function shutdown(data, reason) { // eslint-disable-line no-unused-vars
