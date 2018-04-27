@@ -137,6 +137,7 @@ function chooseVariation() {
 }
 
 const APP_STARTUP = 1;
+const APP_SHUTDOWN = 2;
 let startupReason;
 let appStartupDone;
 let appStartupPromise = new Promise((resolve, reject) => {
@@ -270,10 +271,20 @@ this.shutdown = function shutdown(data, reason) { // eslint-disable-line no-unus
     }
   }
 
-  LegacyExtensionsUtils.getEmbeddedExtensionFor({
-    id: ADDON_ID,
-    resourceURI: data.resourceURI
-  }).shutdown(reason);
+  if (reason === APP_SHUTDOWN) {
+    LegacyExtensionsUtils.getEmbeddedExtensionFor({
+      id: ADDON_ID,
+      resourceURI: data.resourceURI
+    }).shutdown(reason);
+    return;
+  }
+
+  appStartupPromise = appStartupPromise.then(() => {
+    return LegacyExtensionsUtils.getEmbeddedExtensionFor({
+      id: ADDON_ID,
+      resourceURI: data.resourceURI
+    }).shutdown(reason);
+  });
 };
 
 // These are mandatory in bootstrap.js, even if unused
