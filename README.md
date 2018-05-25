@@ -1,3 +1,10 @@
+# Deprecated
+
+Min Vid has [graduated from Test Pilot](https://medium.com/firefox-test-pilot/min-vid-graduation-report-9ad74dc37c1). Keep an eye on [WICG/picture-in-picture](https://github.com/WICG/picture-in-picture) for a possible future in Firefox.
+
+------
+
+
 <p align="center">
   <a href="https://testpilot.firefox.com/experiments/min-vid">
     <img width="192" src="docs/images/gradient-logo.png">
