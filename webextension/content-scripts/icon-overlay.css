@@ -1,0 +1,94 @@
+.minvid__overlay__container,
+.minvid__overlay__bottom_container {
+  --min-vid--button-gutter: 5px !important;
+  --min-vid--button-size: 32px !important;
+  --min-vid--container-border-size: 4px !important;
+  --min-vid--container-border-radius: var(--min-vid--container-border-size) !important;
+
+  display: flex !important;
+  align-items: center !important;
+  background-color: rgba(0,0,0,0.8) !important;
+  height: 100% !important;
+  opacity: 0 !important;
+  left: 4% !important;
+  max-height: 80px !important;
+  max-width: calc(var(--min-vid--button-size) + var(--min-vid--container-border-size)) !important;
+  padding: var(--min-vid--container-border-size) calc(var(--min-vid--container-border-size) / 2) !important;
+  position: absolute !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+}
+
+.minvid__overlay__container {
+  flex-direction: column !important;
+  border-radius: 0 0 var(--min-vid--container-border-radius) var(--min-vid--container-border-radius) !important;
+  top: 0 !important;
+}
+
+.minvid__overlay__bottom_container {
+  flex-direction: column-reverse !important;
+  border-radius: var(--min-vid--container-border-radius) var(--min-vid--container-border-radius) 0 0 !important;
+  bottom: 0 !important;
+}
+
+.minvid__overlay__container:hover,
+.minvid__overlay__bottom_container:hover {
+  background: rgba(0,0,0,0.9) !important;
+}
+
+.minvid__overlay__icon {
+  box-sizing: border-box !important;
+  padding: 0 calc(var(--min-vid--container-border-size) / 2) !important;
+  display: block !important;
+  cursor: pointer !important;
+  height: var(--min-vid--button-size) !important;
+  opacity: 0.7 !important;
+  width: 100% !important;
+}
+
+.minvid__overlay__container .minvid__overlay__icon:not(:first-child),
+.minvid__overlay__bottom_container .minvid__overlay__icon:not(:last-child) {
+  margin-top: calc(var(--min-vid--button-gutter) / 2) !important;
+}
+
+.minvid__overlay__container .minvid__overlay__icon:not(:last-child),
+.minvid__overlay__bottom_container .minvid__overlay__icon:not(:first-child) {
+  margin-bottom: calc(var(--min-vid--button-gutter) / 2) !important;
+}
+
+#minvid__overlay__icon__play {
+  background: url("icon-play.svg") no-repeat !important;
+  background-position: center bottom !important;
+  background-size: 32px auto !important;
+}
+
+#minvid__overlay__icon__add {
+  background: url("icon-add.svg") no-repeat !important;
+  background-position: center bottom !important;
+  background-size: 25px auto !important;
+}
+
+.minvid__overlay__wrapper:hover .minvid__overlay__container,
+.minvid__overlay__wrapper:hover .minvid__overlay__bottom_container {
+  opacity: 1 !important;
+  /*background-color: rgba(0, 0, 0, .8) !important;*/
+  /*animation-name: fade !important;
+  animation-duration: 4s !important;
+  animation-iteration-count: initial !important;
+  animation-fill-mode: forwards !important;*/
+}
+
+#minvid__overlay__icon__play:hover,
+#minvid__overlay__icon__add:hover {
+  opacity: 1 !important;
+}
+
+.minvid__overlay__container.fullscreen {
+  display: none !important;
+}
+
+@keyframes fade {
+  0%   {opacity: 0}
+  5%, 80% {opacity: 1}
+  100% {opacity: 0}
+}
