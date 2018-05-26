@@ -55,7 +55,7 @@ function onStorageChanged(changes) {
 
 browser.runtime.onMessage.addListener(onLaunch);
 
-function onLaunch(opts) {
+function onLaunch(opts, sender) {
   const title = opts.title;
   delete opts.title;
 
@@ -76,4 +76,13 @@ function onLaunch(opts) {
 
     launchVideo(opts);
   } else if (title === 'metric') sendMetricsData(opts);
+  else if (title === 'inject-style') {
+    if ('tab' in sender) {
+      browser.tabs.insertCSS(sender.tab.id, {
+        file: '/content-scripts/icon-overlay.css',
+        frameId: opts.frameId,
+        runAt: 'document_start'
+      });
+    }
+  }
 }
